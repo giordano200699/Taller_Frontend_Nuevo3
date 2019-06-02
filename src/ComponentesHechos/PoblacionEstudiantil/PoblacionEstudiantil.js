@@ -48,7 +48,9 @@ class PoblacionEstudiantil extends Component {
             miHtml2:'',
             imagen: null,
             cargoImagen:false,
-            esVisible:false
+            esVisible:false,
+
+            tipoGrafica : this.props.graficoMF
         };
         this.miFuncion = this.miFuncion.bind(this);
         this.miFuncion();
@@ -92,7 +94,7 @@ class PoblacionEstudiantil extends Component {
                         shared: true
                     },
                     data: [{
-                        type: "spline",
+                        type: this.state.tipoGrafica,
                         name: "Población Estudiantil",
                         showInLegend: true,
                         dataPoints: arregloDatos
@@ -127,6 +129,16 @@ class PoblacionEstudiantil extends Component {
     }
 
     render() {
+
+        if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini || this.props.graficoMF != this.state.tipoGrafica){
+            this.setState({
+                aniofin: this.props.anioFin,
+                anioini: this.props.anioIni,
+                tipoGrafica: this.props.graficoMF
+            },() => {
+                this.miFuncion();
+            });
+        }
         
         return (
             <div>

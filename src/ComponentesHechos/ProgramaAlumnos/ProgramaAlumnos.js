@@ -96,7 +96,9 @@ class ProgramaAlumnos extends Component {
             imagen2:null,
             cargoImagen2:false,
             key:"1",
-            esVisible:false
+            esVisible:false,
+
+            tipoGrafica : this.props.graficoMF
         };
 
         
@@ -161,6 +163,7 @@ class ProgramaAlumnos extends Component {
                 console.log(fila);
                 fila.name=''+miContador;
                 fila.showInLegend=true;
+                fila.type=this.state.tipoGrafica;
                 miContador++;
                 //resultado.push
             }
@@ -216,6 +219,7 @@ class ProgramaAlumnos extends Component {
             }
 
             for(var i in result) {
+
                 if(bandera==false){
                     bandera=true;
                     for(var j in result[i]){
@@ -446,11 +450,13 @@ class ProgramaAlumnos extends Component {
                 console.log(fila);
                 fila.name=''+miContador;
                 fila.showInLegend=true;
+                fila.type = 'spline';
+                alert(fila);
                 miContador++;
                 //resultado.push
             }
 
-            cambiarValor(result, "type", "column", "stackedColumn100");
+            //cambiarValor(result, "type", "column", 'spline');
 
             console.log(result);
 
@@ -498,10 +504,11 @@ class ProgramaAlumnos extends Component {
 
 
     render() {
-        if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini){
+        if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini || this.props.graficoMF != this.state.tipoGrafica){
             this.setState({
                 aniofin: this.props.anioFin,
-                anioini: this.props.anioIni
+                anioini: this.props.anioIni,
+                tipoGrafica: this.props.graficoMF
             },() => {
                 this.miFuncion();
                 const input = document.getElementById('tabla');
