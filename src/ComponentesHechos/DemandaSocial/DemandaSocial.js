@@ -6,6 +6,8 @@ import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
+import './DemandaSocial.css';
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class DemandaSocial extends Component {
@@ -51,6 +53,7 @@ class DemandaSocial extends Component {
             esVisible:false, 
             htmlGrafica: '',
             banderaCarga : false,
+            myleyenda: '',
 
             graficasCargadas : false,
             inicioRelativo : ''+this.props.anioIni,
@@ -77,6 +80,7 @@ class DemandaSocial extends Component {
 
             var cadena = '';
             var cadena2 = '';
+            var leyenda = "";
 
             for(var tipo in result){
                 var contador = 1;
@@ -109,12 +113,25 @@ class DemandaSocial extends Component {
             }
 
 
+             //Aqui se llena los datos de la leyenda
+             leyenda += "<hr></hr>"
+             leyenda += "<text className='leyenda'><tr><td>DISI: DOCTORADO EN INGENIERIA DE SISTEMAS E INFORMATICA</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GTIC: GESTION DE TECNOLOGIA DE INFORMACION Y COMUNICACIONES</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>ISW: INGENIERIA DE SOFTWARE</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GIC: GESTION DE LA INFORMACION Y DEL CONOCIMIENTO</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GTI: GOBIERNO DE TECNOLOGIAS DE INFORMACION</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GPTI: GERENCIA DE PROYECTOS DE TECNOLOGIA DE INFORMACION</td></text></br>";            
+             leyenda += "<text className='leyenda'><tr><td>ASTI: AUDITORIA Y SEGURIDAD DE TECNOLOGIA DE INFORMACION</td></text>";
+
+
             //console.log(result);
             this.setState({
                 isChartLoaded : true,
                 miHtml:cadena2,
                 miHtml2:cadena,
+                myleyenda:leyenda
             });
+
         })
     }
 
@@ -196,6 +213,9 @@ class DemandaSocial extends Component {
 
     render() {
 
+        const aI = this.props.anioIni;
+        const aF = this.props.anioFin;
+
         if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini || this.state.tipoGraficaVerificador!=this.props.graficoMF){
             var tipoCadena = '';
             if(this.props.graficoMF=="columnasMultiples"){
@@ -253,7 +273,11 @@ class DemandaSocial extends Component {
                     <Tab label="Tabla">
                         <div class="panel row align-items-center">
                             <div class="panel-heading mt-3 mb-3">
-                                <h4 class="panel-title titulo">Tabla de Demanda Social</h4>
+                                <h5 style={{marginLeft:10}} className="titulo">Leyenda: </h5>
+                                {Parser(this.state.myleyenda)} 
+                                <hr></hr>
+                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni}</h4>) : 
+                                (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
                             </div>
                             <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                                 <thead>
@@ -270,13 +294,22 @@ class DemandaSocial extends Component {
                         </div>
                     </Tab>
                     <Tab label="Grafico">
-                        {this.state.banderaCarga? this.state.htmlGrafica : null}
+                        <div class="panel row align-items-center">
+                            <div className="panel-heading mt-3 mb-3" >
+                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                                <hr></hr>
+                            </div>
+                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
+                                {this.state.banderaCarga? this.state.htmlGrafica : null}
+                            </div>
+                        </div>
                     </Tab>
 
                     <Tab label="Visualizar PDF" >
                         <div className="panel row align-items-center" >
                             <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{marginLeft:60}} className="titulo titulo">Visualizar PDF</h4>
+                                <h4 style={{marginLeft:10}} className="titulo titulo">Visualizar PDF:</h4>
+                                <hr></hr>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                                 {this.state.cargoImagen?<Pdf imagen={this.state.imagen}></Pdf>:null}
