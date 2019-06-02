@@ -126,8 +126,17 @@ class DemandaSocial extends Component {
              leyenda += "<text className='leyenda'><tr><td>ISW: INGENIERIA DE SOFTWARE</td></text></br>";
              leyenda += "<text className='leyenda'><tr><td>GIC: GESTION DE LA INFORMACION Y DEL CONOCIMIENTO</td></text></br>";
              leyenda += "<text className='leyenda'><tr><td>GTI: GOBIERNO DE TECNOLOGIAS DE INFORMACION</td></text></br>";
-             leyenda += "<text className='leyenda'><tr><td>GPTI: GERENCIA DE PROYECTOS DE TECNOLOGIA DE INFORMACION</td></text></br>";            
+             leyenda += "<text className='leyenda'><tr><td>GPTI: GERENCIA DE PROYECTOS DE TECNOLOGIA DE INFORMACION</td></text></br>";
              leyenda += "<text className='leyenda'><tr><td>ASTI: AUDITORIA Y SEGURIDAD DE TECNOLOGIA DE INFORMACION</td></text>";
+
+            leyenda += "<hr></hr>"
+
+            leyenda +=  "<text className='leyenda'><tr><td>AC: ACTIVO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>G: GRADUADO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>RM: RESERVA</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>INAC: INACTIVO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>AI: INGRESO ANULADO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>AC: EGRESADO</td></text>";
 
 
             //console.log(result);
@@ -342,7 +351,7 @@ class DemandaSocial extends Component {
                     <Tab label="Visualizar PDF" >
                         <div className="panel row align-items-center" >
                             <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{marginLeft:60}} className="titulo titulo">Visualizar PDF</h4>
+                                <h4 style={{marginLeft:60}} className="titulo">Visualizar PDF</h4>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                             {this.state.cargoImagen1&&this.state.cargoImagen2?<Pdf imagen={this.state.imagen1} imagen2={this.state.imagen2}></Pdf>:null}
@@ -354,8 +363,8 @@ class DemandaSocial extends Component {
 
                 <div style={this.state.cargoImagen1&&this.state.cargoImagen2&&this.state.banderaCarga?{display:'none'}:null} id="copia">
                     
-                        <div  id="tabla" >
-                            <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30}}/>
+                        <div  id="tabla" style={{marginTop:0}}>
+                            <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30,marginTop:-20}}/>
                             <div class="panel row align-items-center" style={{marginLeft:60}}>
                             <div class="panel-heading mt-3 mb-3">
                                 <h5 style={{marginLeft:10}} className="titulo">Leyenda: </h5>
@@ -379,7 +388,7 @@ class DemandaSocial extends Component {
                             </div>        
                         </div>
 
-                        <div class="panel row align-items-center" id="graficax">
+                        <div class="panel row align-items-center" id="graficax" style={{marginTop:0}}>
                             <div className="panel-heading mt-3 mb-3" >
                                 <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
                                 <hr></hr>

@@ -152,5 +152,17 @@ table.greenTable tfoot td {
   font-size: 13px;
 }
 
+.titulo2{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  letter-spacing: 2.4px;
+  word-spacing: 2.4px;
+  color: #4C4C4C;
+  font-weight: 400;
+  text-decoration: none solid rgb(68, 68, 68);
+  font-style: normal;
+  font-variant: normal;
+  text-transform: uppercase;
+}
 
 
