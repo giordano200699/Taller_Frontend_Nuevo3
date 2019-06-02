@@ -53,8 +53,25 @@ class Index extends Component {
     }
 
     handleChangeOpcion(event) { // cambiar opcion
+        var cadenaGrafica='';
+        var primeraGrafica='';
+        if(event.target.value==3){
+            cadenaGrafica = '<option value="pie">Pie</option>';
+            cadenaGrafica += '<option value="pyramid">Pirámide</option>';
+            cadenaGrafica += '<option value="funnel">Funeral</option>';
+            primeraGrafica = "pie";
+        }else if(event.target.value==1){
+            cadenaGrafica = '<option value="columnasMultiples">Columnas Mútliples</option>';
+            cadenaGrafica +='<option value="barrasHMultiples">Barras H Múltiples</option>';
+            cadenaGrafica +='<option value="splineMultiple">Spline Múltiple</option>';
+            primeraGrafica = "columnMulti";
+        }
+        
+
         this.setState({
-            opcion: event.target.value
+            opcion: event.target.value,
+            htmlGrafica:cadenaGrafica,
+            grafico : primeraGrafica
         });
     }
 

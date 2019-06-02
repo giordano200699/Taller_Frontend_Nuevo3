@@ -48,7 +48,9 @@ class RelacionAlumnos extends Component {
             miHtml: '',
             imagen: null,
             cargoImagen:false,
-            esVisible:false
+            esVisible:false,
+
+            tipoGrafica : this.props.graficoMF
         };
         this.miFuncion = this.miFuncion.bind(this);
         this.miFuncion();
@@ -117,14 +119,14 @@ class RelacionAlumnos extends Component {
                         text: "Relación Alumnos"
                     },
                     data: [{
-                        type: "funnel",
-                        indexLabelPlacement: "inside",
-                        //startAngle: 75,
-                        toolTipContent: "<b>{label}: {y} </b>",
+                        type: this.state.tipoGrafica,
+                        indexLabelPlacement: "",
+                        startAngle: 75,
+                        toolTipContent: "<b>{label}</b>: {y}",
                         showInLegend: "true",
                         legendText: "{label}",
-                        //indexLabelFontSize: 16,
-                        indexLabel: "{label}  ({porcentaje}%)",
+                        indexLabelFontSize: 16,
+                        indexLabel: "{label} - {porcentaje}%",
                         dataPoints: arregloDatos
                     }]
                 },
@@ -157,10 +159,11 @@ class RelacionAlumnos extends Component {
 
     render() {
 
-         if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini){
+         if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini || this.props.graficoMF != this.state.tipoGrafica){
             this.setState({
                 aniofin: this.props.anioFin,
-                anioini: this.props.anioIni
+                anioini: this.props.anioIni,
+                tipoGrafica: this.props.graficoMF
             },() => {
                 this.miFuncion();
             });
