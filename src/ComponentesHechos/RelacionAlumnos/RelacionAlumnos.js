@@ -75,7 +75,7 @@ class RelacionAlumnos extends Component {
             }
             for(var i in result){
                 cadena= cadena+'<tr>';
-                cadena= cadena+'<td>'+result[i]["cod_perm"]+'</td>';
+                //cadena= cadena+'<td>'+result[i]["cod_perm"]+'</td>';
                 switch(result[i]["cod_perm"]){
                     case 'AC':
                         cadena= cadena+'<td>Activo</td>';
@@ -108,7 +108,7 @@ class RelacionAlumnos extends Component {
                 arregloDatos.push({y:parseInt(result[i]["count"]),label:result[i]["cod_perm"],porcentaje:Math.round((parseInt(result[i]["count"])/suma)*10000)/100});
                 cadena= cadena+'</tr>';
             }
-            cadena= cadena+'<tr><td>Total</td><td>Total</td><td>'+suma+'</td><td>100%</td></tr>';
+            cadena= cadena+'<tr><td>Total</td><td>'+suma+'</td><td>100%</td></tr>';
 
 
             this.setState({
@@ -181,8 +181,8 @@ class RelacionAlumnos extends Component {
                             <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                                 <thead>
                                     <tr>
-                                        <th>Clave</th>
-                                        <th>Etiquetas</th>
+                                        {/* <th>Clave</th> */}
+                                        <th>Programas</th>
                                         <th>Total</th>
                                         <th>Porcentaje</th>
                                     </tr>
@@ -217,6 +217,7 @@ class RelacionAlumnos extends Component {
                 </Tabs>
 
                 <div style={this.state.esVisible?null:{display:'none'}} id="copia">
+                    <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30}}/>
                     <div class="panel row align-items-center" style={{marginLeft:80}}>
                         <div class="panel-heading mt-3 mb-3">
                             <h4 class="panel-title titulo">Tabla de Relación de Alumnos</h4>

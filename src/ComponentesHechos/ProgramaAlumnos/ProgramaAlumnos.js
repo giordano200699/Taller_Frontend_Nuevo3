@@ -9,7 +9,7 @@ import html2canvas from 'html2canvas';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var opciones = ({
         title: {
-            text: "Demanda Social"
+            text: "Programa Alumno"
         },
         data: [{
             type:"column",
@@ -174,7 +174,7 @@ class ProgramaAlumnos extends Component {
                 isChartLoaded : true,
                 data: {
                     title: {
-                        text: "Demanda Social"
+                        text: "Programa Alumnos"
                     },
                     data: result
                 }
@@ -409,7 +409,7 @@ class ProgramaAlumnos extends Component {
                 isChartLoaded : true,
                 data: {
                     title: {
-                        text: "Demanda Social"
+                        text: "Programa Alumnos"
                     },
                     data: result
                 }
@@ -465,7 +465,7 @@ class ProgramaAlumnos extends Component {
                 data: {
                     animationEnabled: true,
                     title: {
-                        text: "Demanda Social"
+                        text: "Programa Alumnos"
                     },
                     legend: {
                         verticalAlign: "center",
@@ -549,13 +549,13 @@ class ProgramaAlumnos extends Component {
                         <div className="panel-heading mt-3 mb-3">
                             <h5 className="titulo">LEYENDA: {Parser(this.state.miLeyenda)} </h5>
                             <hr></hr>
-                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Demanda Social del año {this.props.anioIni}</h4>) : 
-                            (<h4 className="titulo">Tabla de Datos - Demanda Social del {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Programa Alumnos del año {this.props.anioIni}</h4>) : 
+                            (<h4 className="titulo">Tabla de Datos - Programa Alumnos del {this.props.anioIni} al {this.props.anioFin}</h4>)}
                         </div>                    
                         <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
                             <thead>
                                 <tr>
-                                    <th><b>Etiquetas</b></th>
+                                    <th><b>Programas</b></th>
                                     {Parser(this.state.cadenaAnios)} 
                                     <th><b>Total General</b></th>
                                 </tr>
@@ -572,7 +572,7 @@ class ProgramaAlumnos extends Component {
                 <Tab label="Grafico" >
                 <div className="panel row align-items-center">
                     <div className="panel-heading mt-3 mb-3" >
-                        <h2 style={{marginLeft:60}} className="titulo">Gráfica de Demanda Social</h2>
+                        <h2 style={{marginLeft:60}} className="titulo">Gráfica de Programa Alumnos</h2>
                     </div>
                     <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
                         <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
@@ -604,12 +604,14 @@ class ProgramaAlumnos extends Component {
 
 
             <div style={this.state.esVisible?null:{display:'none'}}>
-                <div className="panel row align-items-center" id="tabla" style={{paddingLeft:70}}>
+                <div id="tabla" style={{paddingLeft:70}}>
+                        <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30}}/>
+                        <div  className="panel row align-items-center">
                         <div className="panel-heading mt-3 mb-3">
                             <h5 className="titulo">LEYENDA: {Parser(this.state.miLeyenda)} </h5>
                             <hr></hr>
-                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Demanda Social del año {this.props.anioIni}</h4>) : 
-                            (<h4 className="titulo">Tabla de Datos - Demanda Social del {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Programa Alumnos del año {this.props.anioIni}</h4>) : 
+                            (<h4 className="titulo">Tabla de Datos - Programa Alumnos del {this.props.anioIni} al {this.props.anioFin}</h4>)}
                         </div>                     
                         <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
                             <thead>
@@ -626,6 +628,7 @@ class ProgramaAlumnos extends Component {
                                 {Parser(this.state.tablaFooter)}                                  
                             </tfoot>
                         </table>
+                        </div>
                 </div>
 
                 <div className="panel row align-items-center"  id="graficax">

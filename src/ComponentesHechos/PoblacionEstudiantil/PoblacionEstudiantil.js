@@ -69,7 +69,7 @@ class PoblacionEstudiantil extends Component {
 
             var arregloDatos = [];
             var cadena1 = '<tr><th>Año</th>';
-            var cadena2 = '<tr><td>Total</td>';
+            var cadena2 = '<tr><td>Total Alumnos</td>';
 
             for(var i in result){
                 arregloDatos.push({y:parseInt(result[i]["count"]),label:result[i]["anio_ingreso"]});
@@ -183,6 +183,8 @@ class PoblacionEstudiantil extends Component {
                 </Tabs>
 
                 <div style={this.state.esVisible?null:{display:'none'}} id="copia">
+
+                    <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30}}/>
                     
                     <div class="panel row align-items-center" style={{marginLeft:80}}>
                         <div class="panel-heading mt-3 mb-3">

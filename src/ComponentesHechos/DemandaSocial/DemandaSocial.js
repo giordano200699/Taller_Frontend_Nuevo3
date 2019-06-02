@@ -59,7 +59,13 @@ class DemandaSocial extends Component {
             inicioRelativo : ''+this.props.anioIni,
             finRelativo: ''+this.props.anioFin,
             tipoGrafica: 'column',
-            tipoGraficaVerificador : this.props.graficoMF
+            tipoGraficaVerificador : this.props.graficoMF,
+
+            
+            imagen1: null,
+            cargoImagen1:false,
+            imagen2:null,
+            cargoImagen2:false,
         };
         this.miFuncion = this.miFuncion.bind(this);
         this.miFuncion();
@@ -130,6 +136,17 @@ class DemandaSocial extends Component {
                 miHtml:cadena2,
                 miHtml2:cadena,
                 myleyenda:leyenda
+            },()=>{
+                const input = document.getElementById('tabla');
+                html2canvas(input)
+                .then((canvas) => {
+                    const imgData = canvas.toDataURL('image/png');
+                    this.setState({
+                        imagen1 : imgData,
+                        cargoImagen1:true
+                    },()=>{
+                    });
+                });
             });
 
         })
@@ -204,6 +221,7 @@ class DemandaSocial extends Component {
                 finRelativo: anioUltimoRelativo
 
             },()=>{
+                
                 this.setState({
                     graficasCargadas:true
                 });
@@ -232,7 +250,9 @@ class DemandaSocial extends Component {
                 tipoGraficaVerificador: this.props.graficoMF,
                 tipoGrafica: tipoCadena,
                 banderaCarga:false,
-                graficasCargadas:false
+                graficasCargadas:false,
+                cargoImagen1:false,
+                cargoImagen2:false
 
             },() => {
                 this.miFuncion();
@@ -258,7 +278,21 @@ class DemandaSocial extends Component {
                 htmlGrafica: etiqueta,
                 banderaCarga: true
             },()=>{
-                //alert(this.state.htmlGrafica);
+                setTimeout (()=>{
+                    const input2 = document.getElementById('graficax');
+                    html2canvas(input2)
+                    .then((canvas2) => {
+                        const imgData2 = canvas2.toDataURL('image/png');
+                        this.setState({
+                            imagen2 : imgData2,
+                            cargoImagen2:true
+                        },()=>{
+                        });
+                        
+                        
+                    });
+                }, 2000); 
+                
             })
         }
         
@@ -276,8 +310,8 @@ class DemandaSocial extends Component {
                                 <h5 style={{marginLeft:10}} className="titulo">Leyenda: </h5>
                                 {Parser(this.state.myleyenda)} 
                                 <hr></hr>
-                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni}</h4>) : 
-                                (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Demanda Social: {this.props.anioIni}</h4>) : 
+                                (<h4 style={{marginLeft:10}}  className="titulo">Demanda Social: {this.props.anioIni} al {this.props.anioFin}</h4>)}
                             </div>
                             <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                                 <thead>
@@ -308,16 +342,53 @@ class DemandaSocial extends Component {
                     <Tab label="Visualizar PDF" >
                         <div className="panel row align-items-center" >
                             <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{marginLeft:10}} className="titulo titulo">Visualizar PDF:</h4>
-                                <hr></hr>
+                                <h4 style={{marginLeft:60}} className="titulo titulo">Visualizar PDF</h4>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
-                                {this.state.cargoImagen?<Pdf imagen={this.state.imagen}></Pdf>:null}
+                            {this.state.cargoImagen1&&this.state.cargoImagen2?<Pdf imagen={this.state.imagen1} imagen2={this.state.imagen2}></Pdf>:null}
                                 
                             </div>           
                         </div>
                     </Tab>
                 </Tabs>
+
+                <div style={this.state.cargoImagen1&&this.state.cargoImagen2&&this.state.banderaCarga?{display:'none'}:null} id="copia">
+                    
+                        <div  id="tabla" >
+                            <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30}}/>
+                            <div class="panel row align-items-center" style={{marginLeft:60}}>
+                            <div class="panel-heading mt-3 mb-3">
+                                <h5 style={{marginLeft:10}} className="titulo">Leyenda: </h5>
+                                {Parser(this.state.myleyenda)} 
+                                <hr></hr>
+                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Demanda Social: {this.props.anioIni}</h4>) : 
+                                (<h4 style={{marginLeft:10}}  className="titulo">Demanda Social: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                            </div>
+                            <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
+                                <thead>
+                                     
+                                    <th>Etiqueta</th>
+                                    <th>Estado</th>
+                                    {Parser(this.state.miHtml)} 
+                                    
+                                </thead>
+                                <tbody>
+                                    {Parser(this.state.miHtml2)}                            
+                                </tbody>
+                            </table>  
+                            </div>        
+                        </div>
+
+                        <div class="panel row align-items-center" id="graficax">
+                            <div className="panel-heading mt-3 mb-3" >
+                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                                <hr></hr>
+                            </div>
+                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
+                                {this.state.banderaCarga? this.state.htmlGrafica : null}
+                            </div>
+                        </div>
+                </div>
         </div>
         );
     }
