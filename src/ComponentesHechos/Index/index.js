@@ -25,7 +25,7 @@ import Parser from 'html-react-parser';
 let opcionGlobal = 1;
 let AnioIni = 2014;
 let AnioFin = 2018;
-let Grafico = "columnMulti";
+let Grafico = "columnasMultiples";
 
 
 class Index extends Component {
@@ -38,7 +38,8 @@ class Index extends Component {
             periodo:2009,
             anioini:2014,
             aniofin:2018,
-            htmlGrafica:''
+            htmlGrafica:'',
+            grafico:'columnasMultiples'
         };
         this.handleChangeOpcion = this.handleChangeOpcion.bind(this);
         this.handleChangeOpcionFiltro = this.handleChangeOpcionFiltro.bind(this);
@@ -64,7 +65,7 @@ class Index extends Component {
             cadenaGrafica = '<option value="columnasMultiples">Columnas Mútliples</option>';
             cadenaGrafica +='<option value="barrasHMultiples">Barras H Múltiples</option>';
             cadenaGrafica +='<option value="splineMultiple">Spline Múltiple</option>';
-            primeraGrafica = "columnMulti";
+            primeraGrafica = "columnasMultiples";
         }
         
 
