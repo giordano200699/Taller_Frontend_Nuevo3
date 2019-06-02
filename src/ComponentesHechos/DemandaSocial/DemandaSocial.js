@@ -122,6 +122,15 @@ class DemandaSocial extends Component {
              leyenda += "<text className='leyenda'><tr><td>GTI: GOBIERNO DE TECNOLOGIAS DE INFORMACION</td></text></br>";
              leyenda += "<text className='leyenda'><tr><td>GPTI: GERENCIA DE PROYECTOS DE TECNOLOGIA DE INFORMACION</td></text></br>";            
              leyenda += "<text className='leyenda'><tr><td>ASTI: AUDITORIA Y SEGURIDAD DE TECNOLOGIA DE INFORMACION</td></text>";
+             
+            leyenda += "<hr></hr>"
+
+            leyenda +=  "<text className='leyenda'><tr><td>AC: ACTIVO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>G: GRADUADO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>RM: RESERVA</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>INAC: INACTIVO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>AI: INGRESO ANULADO</td></text></br>";
+            leyenda +=  "<text className='leyenda'><tr><td>AC: EGREASDO</td></text>";
 
 
             //console.log(result);
@@ -273,11 +282,13 @@ class DemandaSocial extends Component {
                     <Tab label="Tabla">
                         <div class="panel row align-items-center">
                             <div class="panel-heading mt-3 mb-3">
-                                <h5 style={{marginLeft:10}} className="titulo">Leyenda: </h5>
+                                <h5 style={{marginLeft:10}} className="titulo">Demanda Social </h5>
+                                <hr></hr>
+                                <h5 style={{marginLeft:10}} className="titulo2">Leyenda: </h5>
                                 {Parser(this.state.myleyenda)} 
                                 <hr></hr>
-                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni}</h4>) : 
-                                (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4>) : 
+                                (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
                             </div>
                             <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                                 <thead>
@@ -296,7 +307,7 @@ class DemandaSocial extends Component {
                     <Tab label="Grafico">
                         <div class="panel row align-items-center">
                             <div className="panel-heading mt-3 mb-3" >
-                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                                <h5 style={{marginLeft:10}} className="titulo2">Gráficas: </h5>
                                 <hr></hr>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
@@ -308,7 +319,7 @@ class DemandaSocial extends Component {
                     <Tab label="Visualizar PDF" >
                         <div className="panel row align-items-center" >
                             <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{marginLeft:10}} className="titulo titulo">Visualizar PDF:</h4>
+                                <h4 style={{marginLeft:10}} className="titulo2">Visualizar PDF:</h4>
                                 <hr></hr>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
@@ -318,6 +329,18 @@ class DemandaSocial extends Component {
                         </div>
                     </Tab>
                 </Tabs>
+
+
+
+
+
+
+
+
+
+
+
+                
         </div>
         );
     }

@@ -159,6 +159,11 @@ class RelacionAlumnos extends Component {
 
     render() {
 
+
+        const aI = this.props.anioIni;
+        const aF = this.props.anioFin;
+
+
          if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini || this.props.graficoMF != this.state.tipoGrafica){
             this.setState({
                 aniofin: this.props.anioFin,
@@ -176,7 +181,11 @@ class RelacionAlumnos extends Component {
                     <Tab label="Tabla">
                         <div class="panel row align-items-center">
                             <div class="panel-heading mt-3 mb-3">
-                                <h4 class="panel-title titulo">Tabla de Relación de Alumnos</h4>
+                                <h5 style={{marginLeft:10}} className="titulo">Relación de Alumnos </h5>
+                                <hr></hr>
+                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4> ) : 
+                                (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                                <hr></hr>
                             </div>
                             <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                                 <thead>
@@ -196,7 +205,8 @@ class RelacionAlumnos extends Component {
                     <Tab label="Grafico">
                     <div class="panel row align-items-center">
                         <div class="panel-heading mt-3 mb-3">
-                            <h4 class="panel-title titulo">Grafica de Relación de Alumnos</h4>
+                            <h5 style={{marginLeft:10}} class="panel-title titulo2">Graficas: </h5>
+                            <hr></hr>
                         </div>
                         <div class="panel-body col-md-11 mr-md-auto ml-md-auto">
                             <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
@@ -206,7 +216,8 @@ class RelacionAlumnos extends Component {
                     <Tab label="Visualizar PDF" >
                         <div className="panel row align-items-center" >
                             <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{marginLeft:60}} className="titulo">Visualizar PDF</h4>
+                                <h4 style={{marginLeft:10}} className="titulo2">Visualizar PDF: </h4>
+                                <hr></hr>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                                 {this.state.cargoImagen?<Pdf imagen={this.state.imagen}></Pdf>:null}
@@ -219,7 +230,11 @@ class RelacionAlumnos extends Component {
                 <div style={this.state.esVisible?null:{display:'none'}} id="copia">
                     <div class="panel row align-items-center" style={{marginLeft:80}}>
                         <div class="panel-heading mt-3 mb-3">
-                            <h4 class="panel-title titulo">Tabla de Relación de Alumnos</h4>
+                            <h5 style={{marginLeft:10}} className="titulo">Relación de Alumnos </h5>
+                            <hr></hr>
+                            {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4> ) : 
+                            (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                            <hr></hr>
                         </div>
                         <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                             <thead>
@@ -231,18 +246,19 @@ class RelacionAlumnos extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                        {Parser(this.state.miHtml)}                            
+                                    {Parser(this.state.miHtml)}                            
                             </tbody>
                         </table>          
                     </div>
 
                     <div class="panel row align-items-center"  style={{marginLeft:80}}>
-                        <div class="panel-heading mt-3 mb-3">
-                            <h4 class="panel-title titulo">Grafica de Relación de Alumnos</h4>
-                        </div>
-                        <div class="panel-body col-md-11 mr-md-auto ml-md-auto">
-                            <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
-                        </div>           
+                    <div class="panel-heading mt-3 mb-3">
+                        <h5 style={{marginLeft:10}} class="panel-title titulo2">Graficas: </h5>
+                        <hr></hr>
+                    </div>
+                    <div class="panel-body col-md-11 mr-md-auto ml-md-auto">
+                        <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
+                    </div>         
                     </div>
                 </div>
             </div>

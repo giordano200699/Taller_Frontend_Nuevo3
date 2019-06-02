@@ -6,6 +6,9 @@ import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
+
+
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var opciones = ({
         title: {
@@ -545,13 +548,16 @@ class ProgramaAlumnos extends Component {
             <div id="contenido">  
             <Tabs align="center" >
                 <Tab label="Tabla">
-                    <div className="panel row align-items-center" style={{paddingLeft:70}}>
-                        <div className="panel-heading mt-3 mb-3">
-                            <h5 className="titulo">LEYENDA: {Parser(this.state.miLeyenda)} </h5>
-                            <hr></hr>
-                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Demanda Social del año {this.props.anioIni}</h4>) : 
-                            (<h4 className="titulo">Tabla de Datos - Demanda Social del {this.props.anioIni} al {this.props.anioFin}</h4>)}
-                        </div>                    
+                    <div className="panel row align-items-center">
+                        <div class="panel-heading mt-3 mb-3">
+                        <h5 style={{marginLeft:10}} className="titulo">Programa Alumnos </h5>
+                        <hr></hr>
+                        <h5 style={{marginLeft:10}} className="titulo2">Leyenda: </h5>
+                        {Parser(this.state.miLeyenda)} 
+                        <hr></hr>
+                        {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4>) : 
+                        (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                    </div>                  
                         <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
                             <thead>
                                 <tr>
@@ -572,8 +578,9 @@ class ProgramaAlumnos extends Component {
                 <Tab label="Grafico" >
                 <div className="panel row align-items-center">
                     <div className="panel-heading mt-3 mb-3" >
-                        <h2 style={{marginLeft:60}} className="titulo">Gráfica de Demanda Social</h2>
-                    </div>
+                                <h5 style={{marginLeft:10}} className="titulo2">Gráficas: </h5>
+                                <hr></hr>
+                            </div>
                     <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
                         <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
                     </div>           
@@ -582,14 +589,14 @@ class ProgramaAlumnos extends Component {
                 <Tab label="Visualizar PDF" >
                 <div className="panel row align-items-center" >
                     <div className="panel-heading mt-3 mb-3">
-                        <h4 style={{marginLeft:60}} className="titulo">Visualizar PDF</h4>
+                        <h4 style={{marginLeft:10}} className="titulo2">Visualizar: </h4>
+                        <hr></hr>
                     </div>
                     <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                         {/* <CanvasJSChart options = {opciones} /> */}
                         {/* <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} /> */}
                         {/* <PDFViewer backend={WebviewerBackend} src='/myPDF.pdf'></PDFViewer> */}
                         {this.state.cargoImagen&&this.state.cargoImagen2?<Pdf imagen={this.state.imagen} imagen2={this.state.imagen2}></Pdf>:null}
-                        
                     </div>           
                 </div>
                 </Tab>
@@ -597,20 +604,18 @@ class ProgramaAlumnos extends Component {
             </Tabs>
 
 
-
-
-
-
-
-
             <div style={this.state.esVisible?null:{display:'none'}}>
-                <div className="panel row align-items-center" id="tabla" style={{paddingLeft:70}}>
-                        <div className="panel-heading mt-3 mb-3">
-                            <h5 className="titulo">LEYENDA: {Parser(this.state.miLeyenda)} </h5>
-                            <hr></hr>
-                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Demanda Social del año {this.props.anioIni}</h4>) : 
-                            (<h4 className="titulo">Tabla de Datos - Demanda Social del {this.props.anioIni} al {this.props.anioFin}</h4>)}
-                        </div>                     
+
+                <div className="panel row align-items-center" id="tabla" style={{marginLeft:80}}>
+                    <div class="panel-heading mt-3 mb-3">
+                        <h5 style={{marginLeft:10}} className="titulo">Programa Alumnos </h5>
+                        <hr></hr>
+                        <h5 style={{marginLeft:10}} className="titulo2">Leyenda: </h5>
+                        {Parser(this.state.miLeyenda)} 
+                        <hr></hr>
+                        {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4>) : 
+                        (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                    </div>                  
                         <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
                             <thead>
                                 <tr>
@@ -626,18 +631,23 @@ class ProgramaAlumnos extends Component {
                                 {Parser(this.state.tablaFooter)}                                  
                             </tfoot>
                         </table>
-                </div>
-
-                <div className="panel row align-items-center"  id="graficax">
-                    <div className="panel-heading mt-3 mb-3">
-                        <h4 style={{marginLeft:60}} className="titulo">Visualizar PDF</h4>
                     </div>
-                    <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
-                        <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
-                    </div>           
+
+                
+
+                <div className="panel row align-items-center"  id="graficax" style={{marginLeft:10}}>
+                     <div className="panel row align-items-center">
+                        <div className="panel-heading mt-3 mb-3" >
+                            <h5 style={{marginLeft:10}} className="titulo2">Gráficas: </h5>
+                            <hr></hr>
+                        </div>
+                        <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
+                            <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
+                        </div>            
+                    </div>          
                 </div>
             </div>
-            {/*<p>DISI: Doctorado en Ingeniería de Sistemas e Informática </p>*/}
+
         </div>
         );
     }
