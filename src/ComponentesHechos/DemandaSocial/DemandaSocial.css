@@ -157,6 +157,115 @@ table.greenTable tfoot td {
   font-size: 13px;
 }
 
+.titulo3{
+
+  font-family: "Times New Roman", Times, serif;
+  font-size: 20px;
+  letter-spacing: 1.6px;
+  word-spacing: 1.6px;
+  color: #000000;
+  font-weight: normal;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  align-content: center
+
+}
+
+.titulo4{
+
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
+  letter-spacing: 1.6px;
+  word-spacing: 1.6px;
+  color: #000000;
+  font-weight: normal;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  align-content: center
+
+}
 
 
 
+/*Estilo para la leyenda*/
+
+.leyendaPDF{
+  font-family: Arial, Helvetica, sans-serif;
+  /*font-family: Calibri, Helvetica, sans-serif;*/
+  font-size: 11px;
+  letter-spacing: 2.4px;
+  word-spacing: 2.4px;
+  color: #272727;
+  font-weight: 400;
+  text-decoration: none solid rgb(68, 68, 68);
+  font-style: normal;
+  font-variant: normal;
+  text-transform: capitalize;
+  padding-left: 25px;
+}
+
+/*Estilo para los titulos*/
+
+.tituloPDF{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  word-spacing: 2px;
+  color: #000000;
+  font-weight: 600;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+
+/*Estilo para los subtitulos*/
+
+.titulo2PDF{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  word-spacing: 2px;
+  color: #000000;
+  font-weight: 600;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+
+/*estilos tabla pdf*/
+table.paleBlueRows {
+  font-family: Calibri, Helvetica, sans-serif;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.paleBlueRows td, table.paleBlueRows th {
+  border: 1px solid #ACC7F5;
+  padding: 2px 2px;
+}
+table.paleBlueRows tbody td {
+  font-size: 15px;
+}
+table.paleBlueRows thead {
+  background: #D0E4F5;
+}
+table.paleBlueRows thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1A1A1A;
+  text-align: center;
+}
+table.paleBlueRows tfoot {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333333;
+  background: #D0E4F5;
+}
+table.paleBlueRows tfoot td {
+  font-size: 15px;
+}

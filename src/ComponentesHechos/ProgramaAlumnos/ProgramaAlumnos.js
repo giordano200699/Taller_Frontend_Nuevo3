@@ -7,50 +7,7 @@ import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
 
-
-
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var opciones = ({
-        title: {
-            text: "Demanda Social"
-        },
-        data: [{
-            type:"column",
-            name: "2002",
-            showInLegend: true,
-            dataPoints:[
-                {label:"DISI ",y:0},
-                {label:"GTIC ",y:0},
-                {label:"ISW ",y:15},
-                {label:"GIC ",y:0},
-                {label:"GTI ",y:0},
-                {label:"GPTI ",y:0},
-                {label:"ASTI ",y:0},
-                {label:"GPGE ",y:0},
-                {label:"DGTI ",y:74},
-                {label:"SATD ",y:0}
-            ]
-        },
-        {
-            type:"column",
-            name: "2003",
-            showInLegend: true,
-            dataPoints:[
-                {label:"DISI ",y:0},
-                {label:"GTIC ",y:0},
-                {label:"ISW ",y:18},
-                {label:"GIC ",y:0},
-                {label:"GTI ",y:0},
-                {label:"GPTI ",y:0},
-                {label:"ASTI ",y:0},
-                {label:"GPGE ",y:0},
-                {label:"DGTI ",y:37},
-                {label:"SATD ",y:0}
-            ]
-        }]
-    });
-
-//var pdf = require('html-pdf');
 
 
 class ProgramaAlumnos extends Component {
@@ -105,10 +62,10 @@ class ProgramaAlumnos extends Component {
         };
 
         
-        this.myStackedColumn100 = this.myStackedColumn100.bind(this);
-        this.myColumnMulti = this.myColumnMulti.bind(this);
+       // this.myStackedColumn100 = this.myStackedColumn100.bind(this);
+        // this.myColumnMulti = this.myColumnMulti.bind(this);
         
-        this.myGeneradorGrafica = this.myGeneradorGrafica.bind(this);
+        //this.myGeneradorGrafica = this.myGeneradorGrafica.bind(this);
 
 
         this.miFuncion = this.miFuncion.bind(this);
@@ -128,41 +85,10 @@ class ProgramaAlumnos extends Component {
         })
         .then((result)=>{
 
-            /*DEBE BOTAR ALGO ASI :
-                [{
-                    "type":"column",
-                    "name": "2002",
-                    "showInLegend": true,
-                    "dataPoints":[{"label":"DISI ","y":0},
-                    {"label":"GTIC ","y":0},
-                    {"label":"ISW ","y":15},
-                    {"label":"GIC ","y":0},
-                    {"label":"GTI ","y":0},
-                    {"label":"GPTI ","y":0},
-                    {"label":"ASTI ","y":0},
-                    {"label":"GPGE ","y":0},
-                    {"label":"DGTI ","y":74},
-                    {"label":"SATD ","y":0}]
-                },
-                {
-                    "type":"column",
-                    "name": "2003",
-                    "showInLegend": true,
-                    "dataPoints":[{"label":"DISI ","y":0},
-                    {"label":"GTIC ","y":0},
-                    {"label":"ISW ","y":18},
-                    {"label":"GIC ","y":0},
-                    {"label":"GTI ","y":0},
-                    {"label":"GPTI ","y":0},
-                    {"label":"ASTI ","y":0},
-                    {"label":"GPGE ","y":0},
-                    {"label":"DGTI ","y":37},
-                    {"label":"SATD ","y":0}]
-                }]
-            */
             var miContador = this.state.anioini;
             var resultado =[];
-           for (let fila of result) {
+           
+            for (let fila of result) {
                 console.log(fila);
                 fila.name=''+miContador;
                 fila.showInLegend=true;
@@ -288,7 +214,7 @@ class ProgramaAlumnos extends Component {
 
     }
 
-    
+    /*
     myGeneradorGrafica(){
         
         if(this.state.grafico === 'columnMulti'){
@@ -503,7 +429,7 @@ class ProgramaAlumnos extends Component {
         })
 
     }
-
+*/
 
 
     render() {
@@ -606,17 +532,34 @@ class ProgramaAlumnos extends Component {
 
             <div style={this.state.esVisible?null:{display:'none'}}>
 
-                <div className="panel row align-items-center" id="tabla" style={{marginLeft:80}}>
-                    <div class="panel-heading mt-3 mb-3">
-                        <h5 style={{marginLeft:10}} className="titulo">Programa Alumnos </h5>
-                        <hr></hr>
-                        <h5 style={{marginLeft:10}} className="titulo2">Leyenda: </h5>
-                        {Parser(this.state.miLeyenda)} 
-                        <hr></hr>
-                        {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4>) : 
-                        (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
-                    </div>                  
-                        <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
+                <div id="tabla" style={{marginLeft:0}}>
+
+                    <img src='blanco.png' width='50' height='50' align="center" style={{marginLeft:120}}/>
+                    <div class="row">
+                        <div className='panel col-md-3'>
+                            <img src='unmsm.jpg' width='180' height='180' align="center" style={{marginLeft:120}}/>
+                        </div>
+                        <div className='panel col-md-9'>
+                            <h1 className="titulo3" align="center" style={{paddingTop: 20}}>Universidad Nacional Mayor de San Marcos</h1>
+                            <h2 className="titulo4" align="center">Universidad del Perú, Decana de América Marcos</h2>
+                            <h1 className="titulo3" align="center">Facultad de Ingeniería de Sistemas e Informática</h1>
+                            <h1 className="titulo3" align="center">Vicedecano de Investigación y Postgrado</h1>
+                            <h1 className="titulo3" align="center">Unidad de Postgrado</h1>
+                        </div>
+                    
+                    </div> 
+
+                    <div class="panel row align-items-center" style={{marginLeft:30}}>
+                        <div class="panel-heading col-md-11 mr-md-auto">
+                            <h5 style={{marginLeft:10}} className="titulo">Programa Alumnos </h5>
+                            <hr></hr>
+                            <h5 style={{marginLeft:10}} className="titulo2">Leyenda: </h5>
+                            {Parser(this.state.miLeyenda)} 
+                            <hr></hr>
+                            {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4>) : 
+                            (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                        </div>                
+                        <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                             <thead>
                                 <tr>
                                     <th><b>Etiquetas</b></th>
@@ -631,20 +574,18 @@ class ProgramaAlumnos extends Component {
                                 {Parser(this.state.tablaFooter)}                                  
                             </tfoot>
                         </table>
-                    </div>
+                    </div>  
+                </div>
 
-                
-
+            
                 <div className="panel row align-items-center"  id="graficax" style={{marginLeft:10}}>
-                     <div className="panel row align-items-center">
                         <div className="panel-heading mt-3 mb-3" >
-                            <h5 style={{marginLeft:10}} className="titulo2">Gráficas: </h5>
+                            <h5 style={{marginLeft:30}} className="titulo2">Gráficas: </h5>
                             <hr></hr>
                         </div>
                         <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
                             <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
-                        </div>            
-                    </div>          
+                        </div>                      
                 </div>
             </div>
 
@@ -652,14 +593,6 @@ class ProgramaAlumnos extends Component {
         );
     }
 }
-
-
-function cambiarValor(my_array, valorABuscar, valorViejo, valorNuevo) {
-    my_array.forEach(function (elemento) { // recorremos el array
-       //asignamos el valor del elemento dependiendo del valor a buscar, validamos que el valor sea el mismo y se reemplaza con el nuevo. 
-      elemento[valorABuscar] = elemento[valorABuscar] == valorViejo ? valorNuevo : elemento[valorABuscar]
-    })
-  }
 
 
 export default ProgramaAlumnos;

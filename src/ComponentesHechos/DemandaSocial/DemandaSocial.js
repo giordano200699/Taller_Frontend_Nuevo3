@@ -54,6 +54,8 @@ class DemandaSocial extends Component {
             htmlGrafica: '',
             banderaCarga : false,
             myleyenda: '',
+            myleyendaPDF: '',
+            miEncabezado: '',
 
             graficasCargadas : false,
             inicioRelativo : ''+this.props.anioIni,
@@ -81,6 +83,8 @@ class DemandaSocial extends Component {
             var cadena = '';
             var cadena2 = '';
             var leyenda = "";
+            var leyendaPDF = "";
+            var encabezado = "";
 
             for(var tipo in result){
                 var contador = 1;
@@ -109,7 +113,6 @@ class DemandaSocial extends Component {
             for(var i = this.state.anioini;i<=this.state.aniofin;i++){
                 cadena2+='<th>'+i+'</th>';
 
-
             }
 
 
@@ -132,14 +135,56 @@ class DemandaSocial extends Component {
             leyenda +=  "<text className='leyenda'><tr><td>AI: INGRESO ANULADO</td></text></br>";
             leyenda +=  "<text className='leyenda'><tr><td>AC: EGREASDO</td></text>";
 
+            leyenda += "<hr></hr>"
+
+
+
+            //LeyendaPDF
+
+             leyendaPDF += "<hr></hr>"
+             leyendaPDF += "<text className='leyendaPDF'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática </td></text></br>";
+             leyendaPDF += "<text className='leyendaPDF'><tr><td>GTIC: Maestría en Ingeniería de Sistemas e Informática con mención en Gestión de Tecnologías de Información y Comunicaciones </td></text></br>";
+             leyendaPDF += "<text className='leyendaPDF'><tr><td>ISW: Maestría en Ingeniería de Sistemas e Informática con mención en Ingeniería de Software</td></text></br>";
+             leyendaPDF += "<text className='leyendaPDF'><tr><td>GIC: Maestría en Ingeniería de Sistemas e Informática con mención en Dirección y Gestión de Tecnologías de Información</td></text></br>";
+             leyendaPDF += "<text className='leyendaPDF'><tr><td>GTI: Maestria Profesional en Gobierno de Tecnologías de Información </td></text></br>";
+             leyendaPDF += "<text className='leyendaPDF'><tr><td>GPTI:  Diplomatura en Gerencia de Proyectos en Tecnología de Información</td></text></br>";            
+             leyendaPDF += "<text className='leyendaPDF'><tr><td>ASTI: Diplomatura en Especialización en Auditoría y Seguridad de Tecnologías de Información </td></text>";
+             
+            leyendaPDF += "<hr></hr>"
+
+            leyendaPDF +=  "<text className='leyendaPDF'><tr><td>AC: Activo</td></text></br>";
+            leyendaPDF +=  "<text className='leyendaPDF'><tr><td>G: Graduado</td></text></br>";
+            leyendaPDF +=  "<text className='leyendaPDF'><tr><td>RM: Reserva</td></text></br>";
+            leyendaPDF +=  "<text className='leyendaPDF'><tr><td>INAC: Inactivo</td></text></br>";
+            leyendaPDF +=  "<text className='leyendaPDF'><tr><td>AI: Ingreso Anulado</td></text></br>";
+            leyendaPDF +=  "<text className='leyendaPDF'><tr><td>AC: Egresado</td></text>";
+
+            leyendaPDF += "<hr></hr>"
+
+
+
 
             //console.log(result);
             this.setState({
                 isChartLoaded : true,
                 miHtml:cadena2,
                 miHtml2:cadena,
-                myleyenda:leyenda
+                myleyenda:leyenda,
+                myleyendaPDF: leyendaPDF,
+                miEncabezado:encabezado
+            },()=>{
+                const input = document.getElementById('tabla');
+                html2canvas(input)
+                .then((canvas) => {
+                    const imgData = canvas.toDataURL('image/png');
+                    this.setState({
+                        imagen1 : imgData,
+                        cargoImagen1:true
+                    },()=>{
+                    });
+                });
             });
+
 
         })
     }
@@ -267,7 +312,21 @@ class DemandaSocial extends Component {
                 htmlGrafica: etiqueta,
                 banderaCarga: true
             },()=>{
-                //alert(this.state.htmlGrafica);
+                setTimeout (()=>{
+                    const input2 = document.getElementById('graficax');
+                    html2canvas(input2)
+                    .then((canvas2) => {
+                        const imgData2 = canvas2.toDataURL('image/png');
+                        this.setState({
+                            imagen2 : imgData2,
+                            cargoImagen2:true
+                        },()=>{
+                        });
+                        
+                        
+                    });
+                }, 2000); 
+                
             })
         }
         
@@ -286,7 +345,6 @@ class DemandaSocial extends Component {
                                 <hr></hr>
                                 <h5 style={{marginLeft:10}} className="titulo2">Leyenda: </h5>
                                 {Parser(this.state.myleyenda)} 
-                                <hr></hr>
                                 {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni}</h4>) : 
                                 (<h4 style={{marginLeft:10}}  className="titulo2">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
                             </div>
@@ -323,22 +381,68 @@ class DemandaSocial extends Component {
                                 <hr></hr>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
-                                {this.state.cargoImagen?<Pdf imagen={this.state.imagen}></Pdf>:null}
-                                
+                                {this.state.cargoImagen1&&this.state.cargoImagen2?<Pdf imagen={this.state.imagen1} imagen2={this.state.imagen2}></Pdf>:null}
+                             
                             </div>           
                         </div>
                     </Tab>
                 </Tabs>
 
+                <div style={this.state.cargoImagen1&&this.state.cargoImagen2&&this.state.banderaCarga?{display:'none'}:null} id="copia">
+                     
+                    <div  id="tabla" style={{marginTop:0}}>
+                        
+                        <img src='blanco.png' width='50' height='50' align="center" style={{marginLeft:120}}/>
+                        <div class="row">
+                            <div className='panel col-md-3'>
+                                <img src='unmsm.jpg' width='180' height='180' align="center" style={{marginLeft:120}}/>
+                            </div>
+                            <div className='panel col-md-9'>
+                                <h1 className="titulo3" align="center" style={{paddingTop: 20}}>Universidad Nacional Mayor de San Marcos</h1>
+                                <h2 className="titulo4" align="center">Universidad del Perú, Decana de América Marcos</h2>
+                                <h1 className="titulo3" align="center">Facultad de Ingeniería de Sistemas e Informática</h1>
+                                <h1 className="titulo3" align="center">Vicedecano de Investigación y Postgrado</h1>
+                                <h1 className="titulo3" align="center">Unidad de Postgrado</h1>
+                            </div>
+                        
+                        </div> 
+                        
+                        <div class="panel row align-items-center" style={{marginLeft:20}}>
+                            <div class="panel-heading col-md-11 mr-md-auto">
+                                <h5 style={{marginLeft:10}} className="tituloPDF" align="center">Demanda Social </h5>
+                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo2PDF" align="center">Espacio Temporal: {this.props.anioIni}</h4>) : 
+                                (<h4 style={{marginLeft:10}}  className="titulo2PDF" align="center">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                                <hr></hr>
+                            </div>
+                            <table className="paleBlueRows col-md-11 mr-md-auto table-bordered">
+                                <thead>
+                                    <th>Etiqueta</th>
+                                    <th>Estado</th>
+                                    {Parser(this.state.miHtml)} 
+                                    
+                                </thead>
+                                <tbody>
+                                    {Parser(this.state.miHtml2)}                            
+                                </tbody>
+                            </table>
+                            <div class="panel-heading col-md-11 mr-md-auto">
+                                <hr></hr>
+                                <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5>
+                                {Parser(this.state.myleyendaPDF)} 
+                            </div>
+                        </div>         
+                    </div>
 
-
-
-
-
-
-
-
-
+                    <div class="panel row align-items-center" id="graficax" style={{marginTop:0}}>
+                        <div className="panel-heading mt-3 mb-3" >
+                            <h5 style={{marginLeft:70}} className="titulo2">Gráficas: </h5>
+                            <hr></hr>
+                        </div>
+                        <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
+                            {this.state.banderaCarga? this.state.htmlGrafica : null}
+                        </div>
+                    </div>
+                </div>
 
                 
         </div>
