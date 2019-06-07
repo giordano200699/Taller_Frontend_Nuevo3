@@ -13,7 +13,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 //import Formulario from "./../../componentes/formulario";
 import './index.css';
 import App from '../../App';
-import DemandaSocial from '../DemandaSocial/DemandaSocial';
+import EstadoPermanencia from '../EstadoPermanencia/EstadoPermanencia';
 import Movilidad from './../Movilidad/Movilidad';
 import RelacionAlumnos from './../RelacionAlumnos/RelacionAlumnos';
 import ProgramaAlumnos from './../ProgramaAlumnos/ProgramaAlumnos';
@@ -163,9 +163,9 @@ class Index extends Component {
                                 <div className="form-group">
                                     <label>Tipo:</label>
                                     <select className="form-control" value={this.state.opcion} onChange={this.handleChangeOpcion}>
-                                        <option value="1">Demanda Social</option>
-                                        <option value="3">Relación de Alumnos</option>
-                                        <option value="4">Programa Alumnos</option>
+                                        <option value="3">Demanda Social</option>
+                                        <option value="1">Estado de Permanencia</option>
+                                        <option value="4">Estado de Permanencia General</option>
                                         <option value="5">Población Estudiantil</option>
                                         <option disabled value="2">Movilidad</option>
                                     </select>
@@ -228,7 +228,7 @@ class Index extends Component {
 
 function miFuncion(){
     if(opcionGlobal == 1){
-        return(<DemandaSocial  anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
+        return(<EstadoPermanencia  anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
     }else if(opcionGlobal == 2){
         return(<Movilidad anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
     }else if(opcionGlobal == 3){
