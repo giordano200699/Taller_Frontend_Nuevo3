@@ -99,7 +99,7 @@ class EstadoPermanencia extends Component {
                 for(var anio in result[tipo]){
                     
                     if(contador==1){
-                        cadena += '<tr  style="border-width: 3px"><td style="vertical-align: middle;" rowspan="'+(Object.keys(result[tipo]).length+1)+'" style="border-width: 3px">'+tipo+'</td>';
+                        cadena += '<tr><td style="vertical-align: middle;" rowspan="'+(Object.keys(result[tipo]).length+1)+'" style="border-width: 3px">'+tipo+'</td>';
                     }else{
                         cadena += '<tr>';
                     }
