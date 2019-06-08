@@ -99,34 +99,34 @@ class EstadoPermanencia extends Component {
                 for(var anio in result[tipo]){
                     
                     if(contador==1){
-                        cadena += '<tr><td style="vertical-align: middle;" rowspan="'+(Object.keys(result[tipo]).length+1)+'">'+tipo+'</td>';
+                        cadena += '<tr  style="border-width: 3px"><td style="vertical-align: middle;" rowspan="'+(Object.keys(result[tipo]).length+1)+'" style="border-width: 3px">'+tipo+'</td>';
                     }else{
                         cadena += '<tr>';
                     }
                      
-                    cadena += '<td>'+anio+'</td>';
+                    cadena += '<td style="border-width: 3px">'+anio+'</td>';
 
                     var sumaHorizontal =0;
                     
                     for(var i = this.state.anioini;i<=this.state.aniofin;i++){
                         if(result[tipo][anio][i]){
-                            cadena+='<td>'+result[tipo][anio][i]+'</td>';
+                            cadena+='<td  style="border-width: 3px">'+result[tipo][anio][i]+'</td>';
                             sumaHorizontal += result[tipo][anio][i];
                             sumaVertical[i] += result[tipo][anio][i];
                         }else{
-                            cadena+='<td>0</td>';
+                            cadena+='<td  style="border-width: 3px">0</td>';
                         }
                     }
-                    cadena+='<td>'+sumaHorizontal+'</td>';
+                    cadena+='<td  style="border-width: 3px">'+sumaHorizontal+'</td>';
                     sumaVertical['total']+=sumaHorizontal;
                     cadena+='</tr>';
                     contador++;
                 }
-                cadena += '<tr><td>Total</td>';
+                cadena += '<tr><td  style="border-width: 3px">Total</td>';
                 for(var i = this.state.anioini;i<=this.state.aniofin;i++){
                     cadena+='<th>'+sumaVertical[i]+'</th>';
                 }
-                cadena+='<th>'+sumaVertical['total']+'</th>'
+                cadena+='<th  style="border-width: 3px">'+sumaVertical['total']+'</th>'
                 cadena +='</tr>';
             }
 
