@@ -57,10 +57,14 @@ class Index extends Component {
         var cadenaGrafica='';
         var primeraGrafica='';
         if(event.target.value==3){
-            cadenaGrafica = '<option value="pie">Pie</option>';
-            cadenaGrafica += '<option value="pyramid">Pirámide</option>';
-            cadenaGrafica += '<option value="funnel">Funeral</option>';
-            primeraGrafica = "pie";
+            // cadenaGrafica = '<option value="pie">Pie</option>';
+            // cadenaGrafica += '<option value="pyramid">Pirámide</option>';
+            // cadenaGrafica += '<option value="funnel">Funeral</option>';
+            // primeraGrafica = "pie";
+            cadenaGrafica = '<option value="columnasMultiples">Columnas Mútliples</option>';
+            cadenaGrafica +='<option value="barrasHMultiples">Barras H Múltiples</option>';
+            cadenaGrafica +='<option value="splineMultiple">Spline Múltiple</option>';
+            primeraGrafica = "columnasMultiples";
         }else if(event.target.value==1){
             cadenaGrafica = '<option value="columnasMultiples">Columnas Mútliples</option>';
             cadenaGrafica +='<option value="barrasHMultiples">Barras H Múltiples</option>';
@@ -163,9 +167,9 @@ class Index extends Component {
                                 <div className="form-group">
                                     <label>Tipo:</label>
                                     <select className="form-control" value={this.state.opcion} onChange={this.handleChangeOpcion}>
-                                        <option value="3">Demanda Social</option>
+                                        <option value="4">Demanda Social</option>
                                         <option value="1">Estado de Permanencia</option>
-                                        <option value="4">Estado de Permanencia General</option>
+                                        <option value="3">Estado de Permanencia General</option>
                                         <option value="5">Población Estudiantil</option>
                                         <option disabled value="2">Movilidad</option>
                                     </select>
