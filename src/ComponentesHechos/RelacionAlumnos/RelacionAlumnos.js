@@ -327,7 +327,7 @@ class RelacionAlumnos extends Component {
                             <div class="panel-heading"  >
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
-                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado (General)</h5>
                                     </div>
                                     {aI == aF ? (<div className="titulo col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
                                     (<div className="titulo col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
