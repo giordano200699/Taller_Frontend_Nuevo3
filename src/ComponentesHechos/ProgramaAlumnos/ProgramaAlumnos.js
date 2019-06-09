@@ -174,7 +174,7 @@ class ProgramaAlumnos extends Component {
                 isChartLoaded : true,
                 data: {
                     title: {
-                        text: "Programa Alumnos"
+                        text: "Demanda Social de los Programas de Posgrado"
                     },
                     data: result
                 }
@@ -409,7 +409,7 @@ class ProgramaAlumnos extends Component {
                 isChartLoaded : true,
                 data: {
                     title: {
-                        text: "Programa Alumnos"
+                        text: "Demanda Social de los Programas de Posgrado"
                     },
                     data: result
                 }
@@ -465,7 +465,7 @@ class ProgramaAlumnos extends Component {
                 data: {
                     animationEnabled: true,
                     title: {
-                        text: "Programa Alumnos"
+                        text: "Demanda Social de los Programas de Posgrado"
                     },
                     legend: {
                         verticalAlign: "center",
@@ -546,11 +546,13 @@ class ProgramaAlumnos extends Component {
             <Tabs align="center" >
                 <Tab label="Tabla">
                     <div className="panel row align-items-center" style={{paddingLeft:70}}>
-                        <div className="panel-heading mt-3 mb-3">
-                            <h5 className="titulo">LEYENDA: {Parser(this.state.miLeyenda)} </h5>
-                            <hr></hr>
-                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Programa Alumnos del año {this.props.anioIni}</h4>) : 
-                            (<h4 className="titulo">Tabla de Datos - Programa Alumnos del {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                        <div className="panel-heading">
+                            <div  class="row" style={{alignItems:'center',justifyContent:'center'}}>
+                                <h5 style={{marginLeft:10, marginTop:10}} className="titulo" align="center"> Demanda Social de los Programas de Posgrado</h5>   
+                                {aI == aF ? (<div style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni}</div>) : 
+                                (<div style={{marginLeft:10}}  className="titulo" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                            </div>
+                            
                         </div>                    
                         <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
                             <thead>
@@ -572,7 +574,7 @@ class ProgramaAlumnos extends Component {
                 <Tab label="Grafico" >
                 <div className="panel row align-items-center">
                     <div className="panel-heading mt-3 mb-3" >
-                        <h2 style={{marginLeft:60}} className="titulo">Gráfica de Programa Alumnos</h2>
+                        <h2 style={{marginLeft:60}} className="titulo">Gráfica de Demanda Social de los Programas de Posgrado</h2>
                     </div>
                     <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
                         <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
@@ -604,15 +606,15 @@ class ProgramaAlumnos extends Component {
 
 
             <div style={this.state.esVisible?null:{display:'none'}}>
-                <div id="tabla" style={{paddingLeft:70}}>
-                        <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30}}/>
-                        <div  className="panel row align-items-center">
-                        <div className="panel-heading mt-3 mb-3">
-                            <h5 className="titulo">LEYENDA: {Parser(this.state.miLeyenda)} </h5>
-                            <hr></hr>
-                            {aI == aF ? (<h4 className="titulo">Tabla de Datos - Programa Alumnos del año {this.props.anioIni}</h4>) : 
-                            (<h4 className="titulo">Tabla de Datos - Programa Alumnos del {this.props.anioIni} al {this.props.anioFin}</h4>)}
-                        </div>                     
+                <div id="tabla" style={{marginTop:0}} class="row justify-content-md-center">
+                        <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30,marginTop:-20}}/>
+                        <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
+                                <div  class="row" style={{alignItems:'center',justifyContent:'center'}}>
+                                <h5 style={{marginLeft:10, marginTop:10}} className="titulo" align="center"> Demanda Social de los Programas de Posgrado</h5> 
+                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Demanda Social de los Programas de Posgrado :</h4>) : 
+                                (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
+                                <br/>
+                        </div>
                         <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
                             <thead>
                                 <tr>
@@ -628,7 +630,7 @@ class ProgramaAlumnos extends Component {
                                 {Parser(this.state.tablaFooter)}                                  
                             </tfoot>
                         </table>
-                        </div>
+                        </div> 
                 </div>
 
                 <div className="panel row align-items-center"  id="graficax">
