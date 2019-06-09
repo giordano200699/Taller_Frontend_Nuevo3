@@ -6,46 +6,8 @@ import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
+import './ProgramaAlumnos.css';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var opciones = ({
-        title: {
-            text: "Programa Alumno"
-        },
-        data: [{
-            type:"column",
-            name: "2002",
-            showInLegend: true,
-            dataPoints:[
-                {label:"DISI ",y:0},
-                {label:"GTIC ",y:0},
-                {label:"ISW ",y:15},
-                {label:"GIC ",y:0},
-                {label:"GTI ",y:0},
-                {label:"GPTI ",y:0},
-                {label:"ASTI ",y:0},
-                {label:"GPGE ",y:0},
-                {label:"DGTI ",y:74},
-                {label:"SATD ",y:0}
-            ]
-        },
-        {
-            type:"column",
-            name: "2003",
-            showInLegend: true,
-            dataPoints:[
-                {label:"DISI ",y:0},
-                {label:"GTIC ",y:0},
-                {label:"ISW ",y:18},
-                {label:"GIC ",y:0},
-                {label:"GTI ",y:0},
-                {label:"GPTI ",y:0},
-                {label:"ASTI ",y:0},
-                {label:"GPGE ",y:0},
-                {label:"DGTI ",y:37},
-                {label:"SATD ",y:0}
-            ]
-        }]
-    });
 
 //var pdf = require('html-pdf');
 
@@ -125,38 +87,6 @@ class ProgramaAlumnos extends Component {
         })
         .then((result)=>{
 
-            /*DEBE BOTAR ALGO ASI :
-                [{
-                    "type":"column",
-                    "name": "2002",
-                    "showInLegend": true,
-                    "dataPoints":[{"label":"DISI ","y":0},
-                    {"label":"GTIC ","y":0},
-                    {"label":"ISW ","y":15},
-                    {"label":"GIC ","y":0},
-                    {"label":"GTI ","y":0},
-                    {"label":"GPTI ","y":0},
-                    {"label":"ASTI ","y":0},
-                    {"label":"GPGE ","y":0},
-                    {"label":"DGTI ","y":74},
-                    {"label":"SATD ","y":0}]
-                },
-                {
-                    "type":"column",
-                    "name": "2003",
-                    "showInLegend": true,
-                    "dataPoints":[{"label":"DISI ","y":0},
-                    {"label":"GTIC ","y":0},
-                    {"label":"ISW ","y":18},
-                    {"label":"GIC ","y":0},
-                    {"label":"GTI ","y":0},
-                    {"label":"GPTI ","y":0},
-                    {"label":"ASTI ","y":0},
-                    {"label":"GPGE ","y":0},
-                    {"label":"DGTI ","y":37},
-                    {"label":"SATD ","y":0}]
-                }]
-            */
             var miContador = this.state.anioini;
             var resultado =[];
            for (let fila of result) {
@@ -252,13 +182,13 @@ class ProgramaAlumnos extends Component {
             
             //Aqui se llena los datos de la leyenda
             leyenda += "<hr></hr>"
-            leyenda += "<h5 className='leyenda'><tr><td>ASTI: AUDITORIA Y SEGURIDAD DE TECNOLOGIA DE INFORMACION</td></h5>";
-            leyenda += "<h5 className='leyenda'><tr><td>DISI: DOCTORADO EN INGENIERIA DE SISTEMAS E INFORMATICA</td></h5>";
-            leyenda += "<h5 className='leyenda'><tr><td>GIC: GESTION DE LA INFORMACION Y DEL CONOCIMIENTO</td></h5>";
-            leyenda += "<h5 className='leyenda'><tr><td>GPTI: GERENCIA DE PROYECTOS DE TECNOLOGIA DE INFORMACION</td></h5>";
-            leyenda += "<h5 className='leyenda'><tr><td>GTI: GOBIERNO DE TECNOLOGIAS DE INFORMACION</td></h5>";
-            leyenda += "<h5 className='leyenda'><tr><td>GTIC: GESTION DE TECNOLOGIA DE INFORMACION Y COMUNICACIONES</td></h5>";
-            leyenda += "<h5 className='leyenda'><tr><td>ISW: INGENIERIA DE SOFTWARE</td></h5>";
+             leyenda += "<text className='leyenda'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GTIC: Gestión de tecnología de información y comunicaciones</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>ISW: Ingeniería de Software</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GIC: Gestión de la información y del conocimiento</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GTI: Gobierno de tecnologías de información</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
+             leyenda += "<text className='leyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
 
             this.setState({
                 miHtml: cadena,
@@ -542,33 +472,43 @@ class ProgramaAlumnos extends Component {
         
         return (
             
-            <div id="contenido">  
+            <div>  
             <Tabs align="center" >
                 <Tab label="Tabla">
-                    <div className="panel row align-items-center" style={{paddingLeft:70}}>
-                        <div className="panel-heading">
-                            <div  class="row" style={{alignItems:'center',justifyContent:'center'}}>
-                                <h5 style={{marginLeft:10, marginTop:10}} className="titulo" align="center"> Demanda Social de los Programas de Posgrado</h5>   
-                                {aI == aF ? (<div style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni}</div>) : 
-                                (<div style={{marginLeft:10}}  className="titulo" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                    <div className="panel row" style={{alignItems:'center',justifyContent:'center'}}>
+                        <div class="panel-heading">                              
+                            <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
+                                <div className="col-md-12 ">
+                                    <h5 className="titulo" align="center"> Demanda Social de los Programas de Posgrado</h5>
+                                    </div>
+                                {aI == aF ? (<div className="titulo col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
+                                (<div className="titulo col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
                             </div>
-                            
-                        </div>                    
-                        <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
-                            <thead>
-                                <tr>
-                                    <th><b>Programas</b></th>
-                                    {Parser(this.state.cadenaAnios)} 
-                                    <th><b>Total General</b></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Parser(this.state.miHtml)}                                  
-                            </tbody>
-                            <tfoot>
-                                {Parser(this.state.tablaFooter)}                                  
-                            </tfoot>
-                        </table>
+                            <br/>
+                        </div> 
+                        <div className="col-md-9" style={{marginTop:20}}>
+                            <table className="table table-bordered col-md-11 mr-md-auto TablaEstadisticaAzul" >
+                                <thead>
+                                    <tr>
+                                        <th><b>Programas</b></th>
+                                        {Parser(this.state.cadenaAnios)} 
+                                        <th><b>Total General</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Parser(this.state.miHtml)}                                  
+                                </tbody>
+                                <tfoot>
+                                    {Parser(this.state.tablaFooter)}                                  
+                                </tfoot>
+                            </table>                  
+                        </div>
+                        <div className="col col-md-11">
+                                <hr></hr>
+                                <h5 style={{marginLeft:10, fontSize:11}} className="subtitulo">Leyenda: </h5> 
+                                {Parser(this.state.miLeyenda)}       
+                        </div>   
+
                     </div>
                 </Tab>
                 <Tab label="Grafico" >
@@ -607,35 +547,52 @@ class ProgramaAlumnos extends Component {
 
             <div style={this.state.esVisible?null:{display:'none'}}>
                 <div id="tabla" style={{marginTop:0}} class="row justify-content-md-center">
-                        <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30,marginTop:-20}}/>
-                        <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
-                                <div  class="row" style={{alignItems:'center',justifyContent:'center'}}>
-                                <h5 style={{marginLeft:10, marginTop:10}} className="titulo" align="center"> Demanda Social de los Programas de Posgrado</h5> 
-                                {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Demanda Social de los Programas de Posgrado :</h4>) : 
-                                (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
-                                <br/>
+                
+                    <img src="encabezado2.png" height="250" style={{marginLeft:30,marginTop:-20}}/>
+                                
+                    <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
+                        
+                        <div  class="row" style={{alignItems:'center',justifyContent:'center', marginTop:15}}>                                    
+                            <div className="col-md-12 ">
+                                <h5 className="tituloPDF" align="center"> Demanda Social de los Programas de Posgrado</h5>
+                            </div>
+                            {aI == aF ? (<div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
+                            (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
                         </div>
-                        <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" >
-                            <thead>
-                                <tr>
-                                    <th><b>Etiquetas</b></th>
-                                    {Parser(this.state.cadenaAnios)} 
-                                    <th><b>Total General</b></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Parser(this.state.miHtml)}                                  
-                            </tbody>
-                            <tfoot>
-                                {Parser(this.state.tablaFooter)}                                  
-                            </tfoot>
-                        </table>
-                        </div> 
+
+                        <div className="col-md-11" style={{marginTop:20}}>
+                            <table className="table table-bordered col-md-10 TablaEstadisticaAzul" >
+                                <thead>
+                                    <tr>
+                                        <th><b>Etiquetas</b></th>
+                                        {Parser(this.state.cadenaAnios)} 
+                                        <th><b>Total General</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Parser(this.state.miHtml)}                                  
+                                </tbody>
+                                <tfoot>
+                                    {Parser(this.state.tablaFooter)}                                  
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div className="col col-md-10">
+                            <hr></hr>
+                            <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
+                            {Parser(this.state.miLeyenda)} 
+                                
+                        </div>
+                    
+                    </div> 
                 </div>
 
                 <div className="panel row align-items-center"  id="graficax">
-                    <div className="panel-heading mt-3 mb-3">
-                        <h4 style={{marginLeft:60}} className="titulo">Visualizar PDF</h4>
+                    <div className="col-md-3" >
+                        <hr></hr>
+                        <h5 style={{marginLeft:60}} className="titulo">Gráficas: </h5>
+                        <hr></hr>
                     </div>
                     <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                         <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />

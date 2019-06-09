@@ -99,7 +99,7 @@ class EstadoPermanencia extends Component {
                 for(var anio in result[tipo]){
                     
                     if(contador==1){
-                        cadena += '<tr><td style="vertical-align: middle;" rowspan="'+(Object.keys(result[tipo]).length+1)+'" style="border-width: 3px">'+tipo+'</td>';
+                        cadena += '<tr><td style="vertical-align: middle; border-bottom-width: 3px;" rowspan="'+(Object.keys(result[tipo]).length+1)+'">'+tipo+'</td>';
                     }else{
                         cadena += '<tr>';
                     }
@@ -333,7 +333,7 @@ class EstadoPermanencia extends Component {
             
             <Tabs align="center" >
                     <Tab label="Tabla">
-                        <div class="panel row ">
+                        <div class="panel row" style={{alignItems:'center',justifyContent:'center'}}>
                             <div class="panel-heading">                               
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
@@ -344,6 +344,7 @@ class EstadoPermanencia extends Component {
                                 </div>
                                 <br/>
                             </div>
+                            <div className="col-md-10" style={{marginTop:20}}>
                             <table className="table table-bordered col-md-11 mr-md-auto TablaEstadisticaAzul">
                                 <thead>
                                      
@@ -356,7 +357,8 @@ class EstadoPermanencia extends Component {
                                     {Parser(this.state.miHtml2)}                            
                                 </tbody>
                             </table>  
-                            <div>
+                            </div>
+                            <div className="col col-md-11">
                                 <br/>
                                 <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
                                 {Parser(this.state.myleyenda)} 
@@ -405,27 +407,27 @@ class EstadoPermanencia extends Component {
                                     (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
                                 </div>
                             
-                            <div className="col-md-11" style={{marginTop:20}}>
-                                <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
-                                    <thead>
-                                        
-                                        <th>Programa</th>
-                                        <th>Estado</th>
-                                        {Parser(this.state.miHtml)} 
-                                        
-                                    </thead>
-                                    <tbody>
-                                        {Parser(this.state.miHtml2)}                            
-                                    </tbody>
-                                </table>
-                            </div>
+                                <div className="col-md-10" style={{marginTop:20}}>
+                                    <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
+                                        <thead>
+                                            
+                                            <th>Programa</th>
+                                            <th>Estado</th>
+                                            {Parser(this.state.miHtml)} 
+                                            
+                                        </thead>
+                                        <tbody>
+                                            {Parser(this.state.miHtml2)}                            
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                            <div className="col col-md-10">
-                                <hr></hr>
-                                <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
-                                {Parser(this.state.myleyenda)} 
-                              
-                            </div>  
+                                <div className="col col-md-10">
+                                    <hr></hr>
+                                    <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
+                                    {Parser(this.state.myleyenda)} 
+                                
+                                </div>  
                             </div>        
                         </div>
 
