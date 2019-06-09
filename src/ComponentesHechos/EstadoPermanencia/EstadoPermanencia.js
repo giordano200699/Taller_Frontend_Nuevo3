@@ -99,41 +99,41 @@ class EstadoPermanencia extends Component {
                 for(var anio in result[tipo]){
                     
                     if(contador==1){
-                        cadena += '<tr  style="border-width: 3px"><td style="vertical-align: middle;" rowspan="'+(Object.keys(result[tipo]).length+1)+'" style="border-width: 3px">'+tipo+'</td>';
+                        cadena += '<tr><td style="vertical-align: middle; border-bottom-width: 3px;" rowspan="'+(Object.keys(result[tipo]).length+1)+'" style="border-width: 3px">'+tipo+'</td>';
                     }else{
                         cadena += '<tr>';
                     }
                      
-                    cadena += '<td style="border-width: 3px">'+anio+'</td>';
+                    cadena += '<td style="border-left-width: 3px">'+anio+'</td>';
 
                     var sumaHorizontal =0;
                     
                     for(var i = this.state.anioini;i<=this.state.aniofin;i++){
                         if(result[tipo][anio][i]){
-                            cadena+='<td  style="border-width: 3px">'+result[tipo][anio][i]+'</td>';
+                            cadena+='<td>'+result[tipo][anio][i]+'</td>';
                             sumaHorizontal += result[tipo][anio][i];
                             sumaVertical[i] += result[tipo][anio][i];
                         }else{
-                            cadena+='<td  style="border-width: 3px">0</td>';
+                            cadena+='<td>0</td>';
                         }
                     }
-                    cadena+='<td  style="border-width: 3px">'+sumaHorizontal+'</td>';
+                    cadena+='<td>'+sumaHorizontal+'</td>';
                     sumaVertical['total']+=sumaHorizontal;
                     cadena+='</tr>';
                     contador++;
                 }
-                cadena += '<tr><td  style="border-width: 3px">Total</td>';
+                cadena += '<tr><th style="border-bottom-width: 3px; border-left-width: 3px;">Total</th>';
                 for(var i = this.state.anioini;i<=this.state.aniofin;i++){
-                    cadena+='<th>'+sumaVertical[i]+'</th>';
+                    cadena+='<th style="border-bottom-width: 3px">'+sumaVertical[i]+'</th>';
                 }
-                cadena+='<th  style="border-width: 3px">'+sumaVertical['total']+'</th>'
+                cadena+='<th style="border-bottom-width: 3px">'+sumaVertical['total']+'</th>'
                 cadena +='</tr>';
             }
 
             for(var i = this.state.anioini;i<=this.state.aniofin;i++){
-                cadena2+='<th style="border-width: 3px">'+i+'</th>';
+                cadena2+='<th>'+i+'</th>';
             }
-            cadena2+='<th style="border-width: 3px">Total</th>';
+            cadena2+='<th>Total</th>';
 
              //Aqui se llena los datos de la leyenda
   
@@ -334,20 +334,21 @@ class EstadoPermanencia extends Component {
             <Tabs align="center" >
                     <Tab label="Tabla">
                         <div class="panel row ">
-                            <div class="panel-heading"  >
-                                
-                                <div  class="row" style={{alignItems:'center',justifyContent:'center'}}>
-                                 <h5 style={{marginLeft:10, marginTop:10}} className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado</h5>   
-                                {aI == aF ? (<div style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni}</div>) : 
-                                (<div style={{marginLeft:10}}  className="titulo" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                            <div class="panel-heading">                               
+                                <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
+                                    <div className="col-md-12 ">
+                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                                    </div>
+                                    {aI == aF ? (<div className="titulo col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
+                                    (<div className="titulo col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
                                 </div>
                                 <br/>
                             </div>
-                            <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable" style={{borderWidth: 3}}>
+                            <table className="table table-bordered col-md-11 mr-md-auto TablaEstadisticaAzul">
                                 <thead>
                                      
-                                    <th style={{borderWidth: 3}}>Programa</th>
-                                    <th style={{borderWidth: 3}}>Estado</th>
+                                    <th>Programa</th>
+                                    <th>Estado</th>
                                     {Parser(this.state.miHtml)} 
                                     
                                 </thead>
@@ -356,8 +357,8 @@ class EstadoPermanencia extends Component {
                                 </tbody>
                             </table>  
                             <div>
-                                <hr></hr>
-                                <h5 style={{marginLeft:10, fontSize:13}} className="titulo">Leyenda: </h5> 
+                                <br/>
+                                <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
                                 {Parser(this.state.myleyenda)} 
                               
                             </div>    
@@ -366,8 +367,8 @@ class EstadoPermanencia extends Component {
                     <Tab label="Grafico">
                         <div class="panel row align-items-center">
                             <div className="panel-heading mt-3 mb-3" >
-                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
-                                <hr></hr>
+                                <h5 style={{marginLeft:60}} className="titulo">Gráficas: </h5>
+                                <br/>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
                                 {this.state.banderaCarga? this.state.htmlGrafica : null}
@@ -391,29 +392,37 @@ class EstadoPermanencia extends Component {
                 <div style={this.state.cargoImagen1&&this.state.cargoImagen2&&this.state.banderaCarga?{display:'none'}:null} id="copia">
                     
                         <div  id="tabla" style={{marginTop:0}} class="row justify-content-md-center">
-                            <img src="encabezado.png" width="1100" height="200" style={{marginLeft:30,marginTop:-20}}/>
+                            
+                            <img src="encabezado2.png" height="250" style={{marginLeft:30,marginTop:-20}}/>
+                            
                             <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
-                                    <div  class="row" style={{alignItems:'center',justifyContent:'center'}}>
-                                    <h5 style={{marginLeft:10, marginTop:10}} className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado</h5> 
-                                    {aI == aF ? (<h4 style={{marginLeft:10}}  className="titulo">Estado de permanencia en los Programas de Posgrado</h4>) : 
-                                    (<h4 style={{marginLeft:10}}  className="titulo">Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</h4>)}
-                                    <br/>
+                                
+                                <div  class="row" style={{alignItems:'center',justifyContent:'center', marginTop:15}}>                                    
+                                    <div className="col-md-12 ">
+                                        <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                                    </div>
+                                    {aI == aF ? (<div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
+                                    (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                                </div>
+                            
+                            <div className="col-md-11" style={{marginTop:20}}>
+                                <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
+                                    <thead>
+                                        
+                                        <th>Programa</th>
+                                        <th>Estado</th>
+                                        {Parser(this.state.miHtml)} 
+                                        
+                                    </thead>
+                                    <tbody>
+                                        {Parser(this.state.miHtml2)}                            
+                                    </tbody>
+                                </table>
                             </div>
-                            <table className="table table-bordered table-striped col col-md-10 greenTable">
-                                <thead>
-                                     
-                                    <th>Programa</th>
-                                    <th>Estado</th>
-                                    {Parser(this.state.miHtml)} 
-                                    
-                                </thead>
-                                <tbody>
-                                    {Parser(this.state.miHtml2)}                            
-                                </tbody>
-                            </table>  
+
                             <div className="col col-md-10">
                                 <hr></hr>
-                                <h5 style={{marginLeft:10, fontSize:13}} className="titulo">Leyenda: </h5> 
+                                <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
                                 {Parser(this.state.myleyenda)} 
                               
                             </div>  
@@ -421,8 +430,9 @@ class EstadoPermanencia extends Component {
                         </div>
 
                         <div class="panel row align-items-center" id="graficax" style={{marginTop:0}}>
-                            <div className="panel-heading mt-3 mb-3" >
-                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                            <div className="col-md-3" >
+                                <hr></hr>
+                                <h5 style={{marginLeft:60}} className="titulo">Gráficas: </h5>
                                 <hr></hr>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
