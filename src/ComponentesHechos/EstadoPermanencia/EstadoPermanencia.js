@@ -6,7 +6,7 @@ import CanvasJSReact, {CanvasJS} from '../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
-import './EstadoPermanencia.css';
+//import './EstadoPermanencia.css';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -393,42 +393,56 @@ class EstadoPermanencia extends Component {
 
                 <div style={this.state.cargoImagen1&&this.state.cargoImagen2&&this.state.banderaCarga?{display:'none'}:null} id="copia">
                     
-                        <div  id="tabla" style={{marginTop:0}} class="row justify-content-md-center">
+                        <div id="tabla" className='container'>
                             
-                            <img src="encabezado2.png" height="250" style={{marginLeft:30,marginTop:-20}}/>
-                            
-                            <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
-                                
-                                <div  class="row" style={{alignItems:'center',justifyContent:'center', marginTop:15}}>                                    
-                                    <div className="col-md-12 ">
-                                        <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
-                                    </div>
-                                    {aI == aF ? (<div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
-                                    (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                            <div class="row justify-content-center">
+                                <div class="col-md-3">
+                                    <img src="unmsmIMagen.png" height="240" width='180' style={{marginLeft:60, marginTop:20}}/>
                                 </div>
-                            
-                                <div className="col-md-10" style={{marginTop:20}}>
-                                    <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
-                                        <thead>
-                                            
-                                            <th>Programa</th>
-                                            <th>Estado</th>
-                                            {Parser(this.state.miHtml)} 
-                                            
-                                        </thead>
-                                        <tbody>
-                                            {Parser(this.state.miHtml2)}                            
-                                        </tbody>
-                                    </table>
+                                <div class="col-md-7">
+                                <img src="unmsmTitulo.png" height="240" width='500' style={{marginLeft:25, marginTop:10}}/>
                                 </div>
+                                <div class="col-md-2">
 
-                                <div className="col col-md-10">
-                                    <hr></hr>
-                                    <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
-                                    {Parser(this.state.myleyenda)} 
+                                </div>
+                            </div>
+
+                            <div style={{marginTop:0}} class="row justify-content-md-center">
+                                <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
+                                    
+                                    <div  class="row" style={{alignItems:'center',justifyContent:'center', marginTop:15}}>                                    
+                                        <div className="col-md-12 ">
+                                            <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                                        </div>
+                                        {aI == aF ? (<div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
+                                        (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                                    </div>
                                 
-                                </div>  
-                            </div>        
+                                    <div className="col-md-10" style={{marginTop:20}}>
+                                        <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
+                                            <thead>
+                                                
+                                                <th>Programa</th>
+                                                <th>Estado</th>
+                                                {Parser(this.state.miHtml)} 
+                                                
+                                            </thead>
+                                            <tbody>
+                                                {Parser(this.state.miHtml2)}                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div className="col col-md-10">
+                                        <hr></hr>
+                                        <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
+                                        {Parser(this.state.myleyenda)} 
+                                    
+                                    </div>  
+                                </div>        
+
+                            </div>
+                            
                         </div>
 
                         <div class="panel row align-items-center" id="graficax" style={{marginTop:0}}>
