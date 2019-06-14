@@ -153,6 +153,46 @@ td{
   text-transform: none;
 }
 
+
+/*estilos tabla*/
+table.TablaEstadisticaAzul {
+  font-family: Calibri, Helvetica, sans-serif;
+  border: 3px solid #B3D5F5;
+  background-color: #FBFBFB;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.TablaEstadisticaAzul td, table.TablaEstadisticaAzul th {
+  border-bottom: 1px solid #B3D5F5;
+  border-top: 1px solid #B3D5F5;
+  border-left: 0px solid #B3D5F5;
+  border-right: 0px solid #B3D5F5;
+  padding: 1px 3px;
+}
+table.TablaEstadisticaAzul tbody td {
+  font-size: 15px;
+}
+table.TablaEstadisticaAzul thead {
+  background: #D0E4F5;
+  border-bottom: 3px solid #B3D5F5;
+}
+table.TablaEstadisticaAzul thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #444444;
+  text-align: center;
+}
+table.TablaEstadisticaAzul tfoot {
+  font-size: 15px;
+  font-weight: bold;
+  color: #444444;
+  background: #D0E4F5;
+}
+table.TablaEstadisticaAzul tfoot td {
+  font-size: 15px;
+}
+
 /*Estilo para los subtitulos*/
 
 .titulo2PDF{
@@ -170,7 +210,7 @@ td{
 }
 
 /*estilos tabla pdf*/
-table.TablaEstadisticaAzul {
+table.TablaEstadisticaAzulPDF {
   font-family: Arial, Helvetica, sans-serif;
   border: 3px solid #B3D5F5;
   background-color: #FBFBFB;
@@ -178,7 +218,7 @@ table.TablaEstadisticaAzul {
   text-align: center;
   border-collapse: collapse;
 }
-table.TablaEstadisticaAzul td, table.TablaEstadisticaAzul th {
+table.TablaEstadisticaAzulPDF td, table.TablaEstadisticaAzulPDF th {
   border-bottom: 1px solid #B3D5F5;
   border-top: 1px solid #B3D5F5;
   border-left: 0px solid #B3D5F5;
@@ -186,26 +226,26 @@ table.TablaEstadisticaAzul td, table.TablaEstadisticaAzul th {
   padding: 1px 3px;
   font-size: 16px;
 }
-table.TablaEstadisticaAzul tbody td {
+table.TablaEstadisticaAzulPDF tbody td {
   font-size: 17px;
 }
-table.TablaEstadisticaAzul thead {
+table.TablaEstadisticaAzulPDF thead {
   background: #D0E4F5;
   border-bottom: 3px solid #B3D5F5;
 }
-table.TablaEstadisticaAzul thead th {
+table.TablaEstadisticaAzulPDF thead th {
   font-size: 16px;
   font-weight: bold;
   color: #444444;
   text-align: center;
 }
-table.TablaEstadisticaAzul tfoot {
+table.TablaEstadisticaAzulPDF tfoot {
   font-size: 16px;
   font-weight: bold;
   color: #444444;
   background: #D0E4F5;
 }
-table.TablaEstadisticaAzul tfoot td {
+table.TablaEstadisticaAzulPDF tfoot td {
   font-size: 16px;
 }
 

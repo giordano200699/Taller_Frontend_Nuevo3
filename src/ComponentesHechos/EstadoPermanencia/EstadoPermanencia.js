@@ -54,6 +54,7 @@ class EstadoPermanencia extends Component {
             htmlGrafica: '',
             banderaCarga : false,
             myleyenda: '',
+            myleyenda2: '',
 
             graficasCargadas : false,
             inicioRelativo : ''+this.props.anioIni,
@@ -87,6 +88,7 @@ class EstadoPermanencia extends Component {
             var cadena = '';
             var cadena2 = '';
             var leyenda = "";
+            var leyenda2 = "";
 
             for(var tipo in result){
                 var contador = 1;
@@ -149,13 +151,17 @@ class EstadoPermanencia extends Component {
 
 
             leyenda += "<hr></hr>"
-
-            leyenda +=  "<text className='leyenda'><tr><td>AC: Activo</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>G: Graduado</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>RM: Reserva</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>INAC: Inactivo</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>AC: Egresado</td></text>";
+            
+            leyenda2 += "<br/>"
+            leyenda2 += "<br/>"
+            leyenda2 += "<br/>"
+            leyenda2 += "<br/>"
+            leyenda2 +=  "<text className='leyenda'><tr><td>AC: Activo</td></text></br>";
+            leyenda2 +=  "<text className='leyenda'><tr><td>G: Graduado</td></text></br>";
+            leyenda2 +=  "<text className='leyenda'><tr><td>RM: Reserva</td></text></br>";
+            leyenda2 +=  "<text className='leyenda'><tr><td>INAC: Inactivo</td></text></br>";
+            leyenda2 +=  "<text className='leyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
+            leyenda2 +=  "<text className='leyenda'><tr><td>AC: Egresado</td></text>";
 
 
             //console.log(result);
@@ -163,7 +169,8 @@ class EstadoPermanencia extends Component {
                 isChartLoaded : true,
                 miHtml:cadena2,
                 miHtml2:cadena,
-                myleyenda:leyenda
+                myleyenda:leyenda,
+                myleyenda2:leyenda2
             },()=>{
                 const input = document.getElementById('tabla');
                 html2canvas(input)
@@ -419,7 +426,7 @@ class EstadoPermanencia extends Component {
                                     </div>
                                 
                                     <div className="col-md-10" style={{marginTop:20}}>
-                                        <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
+                                        <table className="table table-bordered col-md-10 TablaEstadisticaAzulPDF">
                                             <thead>
                                                 
                                                 <th>Programa</th>
@@ -432,15 +439,20 @@ class EstadoPermanencia extends Component {
                                             </tbody>
                                         </table>
                                     </div>
-
-                                    <div className="col col-md-10">
-                                        <hr></hr>
-                                        <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
-                                        {Parser(this.state.myleyenda)} 
-                                    
-                                    </div>  
                                 </div>        
+                            </div>
 
+                            <div class="row justify-content-md-center">
+                                <div className="col-md-6">
+                                    <hr></hr>
+                                    <h5 className="titulo2PDF">Leyenda: </h5> 
+                                    {Parser(this.state.myleyenda)} 
+                                
+                                </div>
+                                <div className="col-md-1"></div>
+                                <div className="col-md-3">
+                                    {Parser(this.state.myleyenda2)}                                        
+                                </div>  
                             </div>
                             
                         </div>
