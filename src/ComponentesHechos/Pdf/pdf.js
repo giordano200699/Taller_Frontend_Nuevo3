@@ -22,7 +22,9 @@ class Pdf extends Component {
     constructor(props){
         super(props);
         this.state = {
+            paginasCargadas : null
         };
+        
 
     }
 
@@ -30,22 +32,39 @@ class Pdf extends Component {
     
 
     render() {
+
+        var arregloCodigo = [];
+        var resultado = this.props.imagen2;
+        resultado.sort(function (a, b) {
+            if (a.orden > b.orden) {
+              return 1;
+            }
+            if (a.orden < b.orden) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+        for(var imagen of resultado){
+            arregloCodigo.push(
+                <Page size="A4">
+                    <View >
+                        <Image src={imagen.imagen}></Image>
+                    </View>
+                </Page>
+            );
+        }
         
         return (
             <PDFViewer  style={{width:'100%', height:'100vh'}}>
             <Document >
-            <Page size="A4">
+            {/* <Page size="A4">
                 <View >
                     <Image src={this.props.imagen}></Image>
                 </View>
-            </Page>
-            {this.props.imagen2?
-            <Page size="A4">
-                <View >
-                    <Image src={this.props.imagen2}></Image>
-                </View>
-            </Page>
-            :null}
+            </Page> */}
+            
+            {arregloCodigo}
                 
             </Document>
             </PDFViewer>
