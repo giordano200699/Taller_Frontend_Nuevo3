@@ -1,5 +1,4 @@
-/* App.js */
-
+//Importamos las librerias
 import React, { Component } from 'react';
 import {Tabs, Tab} from 'react-bootstrap-tabs';
 import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
@@ -11,14 +10,25 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class RelacionAlumnos extends Component {
 
-    constructor(props){//constructor inicial
+    constructor(props){
+        //Recibiendo las propiedades del padre
         super(props);
         this.state = {
+            anioini : ''+this.props.anioIni, //año inicial
+            aniofin : ''+this.props.anioFin, //año final
+            htmlTabla : '',   //Html de la tabla
+            tipoGrafica: 'column',
+            tipoGraficaVerificador: this.props.graficoMF,
+            jsonGrafica: null,
+            cargoGrafica: false,
+            cargoTabla: false,
+            leyenda1: ''
+            /*
             isUsed:false, //usado para saber si las aplicacion es usada
             showPopover: false, //usado para mostrar o no el popup
             verdades : {}, //usado para  ver que conceptos estan sieno usados
             chartData : {}, //usado para dar datos al FusionChart (cuadro)
-            isChartLoaded: true, //usado para mostrat el FusionChart
+            isChartLoaded: false, //usado para mostrat el FusionChart
             tableData: {}, //usado para dar datos a la tabla
             isTableLoaded: false, //usado para mostrar la tabla
             conceptsData: {}, //usado para guardar los conceptos de la BD
@@ -46,48 +56,58 @@ class RelacionAlumnos extends Component {
             listaConceptosEncontrados : "", //usado para saber que conceptos se encontraron en la consulta,
             data: {},
             miHtml: '',
-            miHtml2:'',
+            miHtml2: '',
             imagen: null,
-            cargoImagen:false,
-            esVisible:false, 
+            cargoImagen: false,
+            esVisible: false,
             htmlGrafica: '',
-            banderaCarga : false,
+            banderaCarga: false,
             myleyenda: '',
+            myleyenda2: '',
+            paginacion: '',
+            htmlencabezado: '',
+            contTabla: '',
+            contLeyenda: '',
+            miPDF: '',
 
-            graficasCargadas : false,
-            inicioRelativo : ''+this.props.anioIni,
-            finRelativo: ''+this.props.anioFin,
+            graficasCargadas: false,
+            inicioRelativo: '' + this.props.anioIni,
+            finRelativo: '' + this.props.anioFin,
             tipoGrafica: 'column',
-            tipoGraficaVerificador : this.props.graficoMF,
+            tipoGraficaVerificador: this.props.graficoMF,
 
-            
+
             imagen1: null,
-            cargoImagen1:false,
-            imagen2:null,
-            cargoImagen2:false,
+            cargoImagen1: false,
+            imagen2: null,
+            cargoImagen2: false,
+            cantidadDePaginas: 0,
+            contadorCargaPaginas: 0
+
+            */
         };
-        this.miFuncion = this.miFuncion.bind(this);
-        this.miFuncion();
-        this.miFuncion2 = this.miFuncion2.bind(this);
-        this.miFuncion2();
+        this.obtenerTabla = this.obtenerTabla.bind(this);
+        this.obtenerGrafica = this.obtenerGrafica.bind(this);
 
-        
+        //this.miFuncion2 = this.miFuncion2.bind(this)
 
+        this.obtenerTabla();
+        this.obtenerGrafica();
     }
 
-
-    miFuncion(){
-        fetch('http://tallerbackend.herokuapp.com/ApiController/programaAlumnos?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)//hace el llamado al dominio que se le envió donde retornara respuesta de la funcion
-        .then((response)=>{
-            return response.json();
+    // Esta función nos permitirá obtener los datos de la tabla
+    obtenerTabla(){
+        fetch('http://tallerbackend.herokuapp.com/ApiController/programaAlumnos?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)
+        .then(async (respuesta) => {
+            return await respuesta.json();
         })
-        .then((result)=>{
-
-            var cadena = '';
-            var cadena2 = '';
-            var leyenda = "";
-
-            for(var tipo in result){
+        .then(async(resultado)=>{
+            console.log(resultado);
+            var htmlTabla = ''; 
+            var contadorTabla = 2;
+            var contadorLinea = 0;
+            const diferenciaAnios = this.state.aniofin - this.state.anioini + 1;
+            for(var programa in resultado){
                 var contador = 1;
                 var sumaVertical = [];
                 for(var i = this.state.anioini;i<=this.state.aniofin;i++){
@@ -95,108 +115,83 @@ class RelacionAlumnos extends Component {
                 }
                 sumaVertical['total']=0;
                 
-                for(var anio in result[tipo]){
+                for(var anio in resultado[programa]){
                     
                     if(contador==1){
-                        cadena += '<tr><td style="vertical-align: middle; border-bottom-width: 3px;" rowspan="'+(Object.keys(result[tipo]).length+1)+'">'+tipo+'</td>';
+                        htmlTabla += '<tr><td style="vertical-align: middle; border-bottom-width: 3px;" rowspan="'+(Object.keys(resultado[programa]).length+1)+'">'+programa+'</td>';
                     }else{
-                        cadena += '<tr>';
+                        htmlTabla += '<tr>';
                     }
                      
-                    cadena += '<td style="border-left-width: 3px">'+anio+'</td>';
-
+                    htmlTabla += '<td style="border-left-width: 3px">'+anio+'</td>';
+                    contadorTabla++;
                     var sumaHorizontal =0;
                     
                     for(var i = this.state.anioini;i<=this.state.aniofin;i++){
-                        if(result[tipo][anio][i]){
-                            //cadena+='<td  style="border-width: 3px">'+result[tipo][anio][i]+'</td>';
-                            sumaHorizontal += result[tipo][anio][i];
-                            sumaVertical[i] += result[tipo][anio][i];
+                        if(resultado[programa][anio][i]){
+                            sumaHorizontal += resultado[programa][anio][i];
+                            sumaVertical[i] += resultado[programa][anio][i];
                         }
                     }
-                    cadena+='<td >'+sumaHorizontal+'</td>';
+                    htmlTabla+='<td >'+sumaHorizontal+'</td>';
                     sumaVertical['total']+=sumaHorizontal;
-                    cadena+='</tr>';
+                    htmlTabla+='</tr>';
                     contador++;
                 }
-                cadena += '<tr><td style="border-bottom-width: 3px; border-left-width: 3px;">Total</td>';
-                cadena+='<th style="border-bottom-width: 3px">'+sumaVertical['total']+'</th>'
-                cadena +='</tr>';
+                htmlTabla += '<tr><th style="border-bottom-width: 3px; border-left-width: 3px;">Total</th>';
+                htmlTabla +='<th style="border-bottom-width: 3px">'+sumaVertical['total']+'</th>'
+                htmlTabla +='</tr>';
+                contadorTabla++;
+            }
+            
+            contadorLinea += 11 + contadorTabla;
+            contadorLinea += diferenciaAnios * 10 + (diferenciaAnios - 1) * 2;
+            if (contadorLinea < 50) {
+                contadorLinea = 50 + diferenciaAnios * 10 + (diferenciaAnios - 1) * 2;
             }
 
-            cadena2+='<th>Total</th>';
+            var leyenda = '';
+            leyenda += "<hr></hr>";
+            leyenda += "<text className='leyenda'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática</td></text></br>";
+            leyenda += "<text className='leyenda'><tr><td>GTIC: Gestión de tecnología de información y comunicaciones</td></text></br>";
+            leyenda += "<text className='leyenda'><tr><td>ISW: Ingeniería de Software</td></text></br>";
+            leyenda += "<text className='leyenda'><tr><td>GIC: Gestión de la información y del conocimiento</td></text></br>";
+            leyenda += "<text className='leyenda'><tr><td>GTI: Gobierno de tecnologías de información</td></text></br>";
+            leyenda += "<text className='leyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
+            leyenda += "<text className='leyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
 
-             //Aqui se llena los datos de la leyenda
-  
-             leyenda += "<hr></hr>"
-             leyenda += "<text className='leyenda'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática</td></text></br>";
-             leyenda += "<text className='leyenda'><tr><td>GTIC: Gestión de tecnología de información y comunicaciones</td></text></br>";
-             leyenda += "<text className='leyenda'><tr><td>ISW: Ingeniería de Software</td></text></br>";
-             leyenda += "<text className='leyenda'><tr><td>GIC: Gestión de la información y del conocimiento</td></text></br>";
-             leyenda += "<text className='leyenda'><tr><td>GTI: Gobierno de tecnologías de información</td></text></br>";
-             leyenda += "<text className='leyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
-             leyenda += "<text className='leyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
-
-
-
-            leyenda += "<hr></hr>"
-
-            leyenda +=  "<text className='leyenda'><tr><td>AC: Activo</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>G: Graduado</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>RM: Reserva</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>INAC: Inactivo</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
-            leyenda +=  "<text className='leyenda'><tr><td>AC: Egresado</td></text>";
-
-
-            //console.log(result);
-            this.setState({
-                isChartLoaded : true,
-                miHtml:cadena2,
-                miHtml2:cadena,
-                myleyenda:leyenda
-            },()=>{
-                const input = document.getElementById('tabla');
-                html2canvas(input)
-                .then((canvas) => {
-                    const imgData = canvas.toDataURL('image/png');
-                    this.setState({
-                        imagen1 : imgData,
-                        cargoImagen1:true
-                    },()=>{
-                    });
-                });
+            await this.setState({
+                htmlTabla:htmlTabla,
+                leyenda1: leyenda,
+                cargoTabla:true
             });
 
-        })
+        });
+           
     }
 
-    miFuncion2(){
-        
+    obtenerGrafica(){
         fetch('http://tallerbackend.herokuapp.com/ApiController/demandaInversa?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)
-        .then((response)=>{
-            return response.json();
+        .then(async (response) => {
+            return await response.json();
         })
-        .then((result2)=>{
-
+        .then(async (resultado) => {
             var arregloData = [];
-            
-            var bandera = false;
+            var bandera = true;
             var anioInicioRelativo; 
             var anioUltimoRelativo;
-            
-            for(var anio in result2){
-                if(!bandera){
+            for(var anio in resultado){
+                if(bandera){
                     anioInicioRelativo = anio;
-                    bandera = true;
+                    bandera = false;
                 }
                 anioUltimoRelativo = anio;
                 var nuevaData = [];
 
-                for(var estado in result2[anio]){
+                for(var estado in resultado[anio]){
                     var miniArreglo = [];
-                    for(var tipo in result2[anio][estado]){
-                        miniArreglo.push({ label: tipo, y: result2[anio][estado][tipo] });
+                    for(var tipo in resultado[anio][estado]){
+                        miniArreglo.push({ label: tipo, y: resultado[anio][estado][tipo] });
                     }
                     nuevaData.push({
                         type: this.state.tipoGrafica,
@@ -208,232 +203,115 @@ class RelacionAlumnos extends Component {
                 }
 
                 arregloData.push(
-                    {
-                        animationEnabled: true,
-                        title:{
-                            text: "Estado de Permanencia - "+anio
-                        },	
-                        axisY: {
-                            title: "Número de Alumnos",
-                            titleFontColor: "#4F81BC",
-                            lineColor: "#4F81BC",
-                            labelFontColor: "#4F81BC",
-                            tickColor: "#4F81BC"
-                        },	
-                        toolTip: {
-                            shared: true
-                        },
-                        legend: {
-                            cursor:"pointer"
-                        },
-                        data: nuevaData
-                    }
-                );
-
-            }
-
-
-            //console.log(result);
-            this.setState({
-                data: arregloData,
-                inicioRelativo: anioInicioRelativo,
-                finRelativo: anioUltimoRelativo
-
-            },()=>{
-                
-                this.setState({
-                    graficasCargadas:true
-                });
-            });
-        })
-    }
-
-    render() {
-
-        const aI = this.props.anioIni;
-        const aF = this.props.anioFin;
-
-        if(this.props.anioFin!=this.state.aniofin || this.props.anioIni!=this.state.anioini || this.state.tipoGraficaVerificador!=this.props.graficoMF){
-            var tipoCadena = '';
-            if(this.props.graficoMF=="columnasMultiples"){
-                tipoCadena = 'column';
-            }else if(this.props.graficoMF=="barrasHMultiples"){
-                tipoCadena = 'bar';
-            }else if(this.props.graficoMF=="splineMultiple"){
-                tipoCadena = 'spline';
-            }
-            
-            this.setState({
-                aniofin: this.props.anioFin,
-                anioini: this.props.anioIni,
-                tipoGraficaVerificador: this.props.graficoMF,
-                tipoGrafica: tipoCadena,
-                banderaCarga:false,
-                graficasCargadas:false,
-                cargoImagen1:false,
-                cargoImagen2:false
-
-            },() => {
-                this.miFuncion();
-                this.miFuncion2();
-            });
-        }
-        
-        if(this.state.isChartLoaded && this.state.graficasCargadas && Object.keys(this.state.data).length!=0  && this.state.banderaCarga != this.state.isChartLoaded){
-            let etiqueta = []
-            var iterador = 0;
-            for(var i = this.state.inicioRelativo;i<=this.state.finRelativo;i++){
-                etiqueta.push(
                     <div class="panel row align-items-center">
                         <div class="panel-body col-md-11 mr-md-auto ml-md-auto" style={{marginBottom: 50}}>
-                            <CanvasJSChart options = {this.state.data[iterador]} />
+                            <CanvasJSChart options = {{
+                                animationEnabled: true,
+                                title:{
+                                    text: "Estado de Permanencia - "+anio
+                                },	
+                                axisY: {
+                                    title: "Número de Alumnos",
+                                    titleFontColor: "#4F81BC",
+                                    lineColor: "#4F81BC",
+                                    labelFontColor: "#4F81BC",
+                                    tickColor: "#4F81BC"
+                                },	
+                                toolTip: {
+                                    shared: true
+                                },
+                                legend: {
+                                    cursor:"pointer"
+                                },
+                                data: nuevaData
+                            }} />
                         </div>           
                     </div>
                 );
-                iterador++;
             }
-            
-            this.setState({
-                htmlGrafica: etiqueta,
-                banderaCarga: true
-            },()=>{
-                setTimeout (()=>{
-                    const input2 = document.getElementById('graficax');
-                    html2canvas(input2)
-                    .then((canvas2) => {
-                        const imgData2 = canvas2.toDataURL('image/png');
-                        this.setState({
-                            imagen2 : imgData2,
-                            cargoImagen2:true
-                        },()=>{
-                        });
-                        
-                        
-                    });
-                }, 2000); 
-                
+            await this.setState({
+                jsonGrafica:arregloData,
+                cargoGrafica:true
             })
-        }
-        
-        
+
+        });
+    }
+
+    render() {
+        const aI = this.props.anioIni;
+        const aF = this.props.anioFin;
         return (
-
-            
-
-        <div>    
-            <Tabs align="center" >
+            <div>
+                <Tabs align="center" >
                     <Tab label="Tabla">
-                        <div class="panel row" style={{alignItems:'center',justifyContent:'center'}}>
+                        {/* Aca ponemos la tabla */}
+                        <div class="panel">
                             <div class="panel-heading"  >
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
                                         <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado (General)</h5>
                                     </div>
-                                    {aI == aF ? (<div className="titulo col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
-                                    (<div className="titulo col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                                    <div className="titulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
                                 </div>
-                                <br/>
                             </div>
-                            <div className="col-md-9" style={{marginTop:20}}>
-                                <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
-                                    <thead>
-                                        
-                                        <th>Programa</th>
-                                        <th>Estado</th>
-                                        {Parser(this.state.miHtml)} 
-                                        
-                                    </thead>
-                                    <tbody>
-                                        {Parser(this.state.miHtml2)}                            
-                                    </tbody>
-                                </table>
+                            <div className="panel-body" style={{marginTop:20}}>
+                                <div class="row">
+                                    <div className="col-md-1"></div>
+                                    <div className="col-md-10" style={{marginTop:20}}>
+                                        <table className="table table-bordered TablaEstadisticaAzul">
+                                            <thead>
+                                                
+                                                <th>Programa</th>
+                                                <th>Estado</th>
+                                                <th>Total</th>
+                                                
+                                            </thead>
+                                            <tbody>
+
+                                                { Parser(this.state.htmlTabla) }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div className="col col-md-1"></div>
+                                    <div className="col col-md-10">
+                                        <hr></hr>
+                                        <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
+                                        {Parser(this.state.leyenda1)} 
+                                    </div> 
+                                </div>
                             </div>
-                            <div className="col col-md-11">
-                                <hr></hr>
-                                <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
-                                {Parser(this.state.myleyenda)} 
-                              
-                            </div>    
-                    </div>
+                        </div>
                     </Tab>
-                    <Tab label="Grafico">
-                        <div class="panel row align-items-center">
-                            <div className="panel-heading mt-3 mb-3" >
+                    <Tab label="Gráfica">
+                        {/* Aca ponemos la gráfica */}
+                        <div class="panel align-items-center">
+                            <div className="panel-heading" >
                                 <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
                                 <hr></hr>
                             </div>
-                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
-                                {this.state.banderaCarga? this.state.htmlGrafica : null}
+                            <div class="panel-body">
+                                <div className="col-md-1"></div>
+                                <div className="col-md-10">
+                                     {this.state.cargoGrafica?this.state.jsonGrafica:null} 
+                                </div>
                             </div>
+                            
                         </div>
                     </Tab>
-
-                    <Tab label="Visualizar PDF" >
-                        <div className="panel row align-items-center" >
-                            <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{marginLeft:60}} className="titulo">Visualizar PDF</h4>
-                            </div>
-                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
-                            {this.state.cargoImagen1&&this.state.cargoImagen2?<Pdf imagen={this.state.imagen1} imagen2={this.state.imagen2}></Pdf>:null}
-                                
-                            </div>           
-                        </div>
+                    <Tab label="PDF">
+                        {/* Aca ponemos el pdf */}
                     </Tab>
                 </Tabs>
 
-                <div style={this.state.cargoImagen1&&this.state.cargoImagen2&&this.state.banderaCarga?{display:'none'}:null} id="copia">
-                    
-                        <div  id="tabla" style={{marginTop:0}} class="row justify-content-md-center">
-                            
-                            <img src="encabezado2.png" height="250" style={{marginLeft:30,marginTop:-20}}/>
-                                
-                            <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
-                                
-                                <div  class="row" style={{alignItems:'center',justifyContent:'center', marginTop:15}}>                                    
-                                    <div className="col-md-12 ">
-                                        <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado (General)</h5>
-                                    </div>
-                                    {aI == aF ? (<div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
-                                    (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
-                                </div>
-                            
-                            <div className="col-md-9" style={{marginTop:20}}>
-                                <table className="table table-bordered col-md-10 TablaEstadisticaAzul">
-                                    <thead>
-                                        
-                                        <th>Programa</th>
-                                        <th>Estado</th>
-                                        {Parser(this.state.miHtml)} 
-                                        
-                                    </thead>
-                                    <tbody>
-                                        {Parser(this.state.miHtml2)}                            
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div className="col col-md-10">
-                                <hr></hr>
-                                <h5 style={{marginLeft:10}} className="titulo2PDF">Leyenda: </h5> 
-                                {Parser(this.state.myleyenda)} 
-                            
-                            </div>  
-                            </div>     
-                        </div>
-
-                        <div class="panel row align-items-center" id="graficax" style={{marginTop:0}}>
-                            <div className="col-md-3" >
-                                <hr></hr>
-                                <h5 style={{marginLeft:60}} className="titulo">Gráficas: </h5>
-                                <hr></hr>
-                            </div>
-                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
-                                {this.state.banderaCarga? this.state.htmlGrafica : null}
-                            </div>
-                        </div>
+                <div style={this.state.cargoTabla && this.state.cargoGrafica ? null : { display: 'none' }} id="copia">
+                    HOLA MUNDO
                 </div>
-        </div>
-        );
+                    
+            </div>
+        )
     }
 }
 export default RelacionAlumnos;
