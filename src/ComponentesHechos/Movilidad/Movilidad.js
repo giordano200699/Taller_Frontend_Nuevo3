@@ -146,11 +146,11 @@ class Movilidad extends Component {
         
         return (
             <div>
-                <Tabs align="center" >
+                <Tabs align="center" className="textTab" >
                     <Tab label="Tabla">
                         <div class="panel row align-items-center">
                             <div class="panel-heading mt-3 mb-3">
-                                <h4 class="panel-title titulo">Tabla de Movilidad</h4>
+                                <h4 class="panel-title textTitulo">Tabla de Movilidad</h4>
                             </div>
                             <table className="table table-bordered table-striped col-md-11 mr-md-auto greenTable">
                                 <thead>

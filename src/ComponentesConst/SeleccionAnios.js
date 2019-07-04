@@ -12,8 +12,8 @@ class SelectAnios extends Component{
     render(){
         return(
             <div className="form-group">
-                <label>{this.state.titulo}</label>
-                <select className="form-control" value={this.props.anio} onChange={this.props.cambiar}>
+                <label className="textLabel">{this.state.titulo}</label>
+                <select className="form-control textSelect" value={this.props.anio} onChange={this.props.cambiar}>
                     {/*<option value='1990'>1990</option>
                     <option value='1991'>1991</option>
                     <option value='1992'>1992</option>

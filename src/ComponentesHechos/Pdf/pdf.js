@@ -35,6 +35,7 @@ class Pdf extends Component {
 
         var arregloCodigo = [];
         var resultado = this.props.imagen2;
+        
         resultado.sort(function (a, b) {
             if (a.orden > b.orden) {
               return 1;
@@ -45,6 +46,7 @@ class Pdf extends Component {
             // a must be equal to b
             return 0;
           });
+          
         for(var imagen of resultado){
             arregloCodigo.push(
                 <Page size="A4">

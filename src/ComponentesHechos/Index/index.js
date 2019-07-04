@@ -13,6 +13,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 //import Formulario from "./../../componentes/formulario";
 import './index.css';
 import App from '../../App';
+import EstadoAlumno from './../EstadoAlumno/EstadoAlumno'
+import TiposDeBeneficio from './../TiposDeBeneficio/TiposDeBeneficio'
 import EstadoPermanencia from '../EstadoPermanencia/EstadoPermanencia';
 import Movilidad from './../Movilidad/Movilidad';
 import RelacionAlumnos from './../RelacionAlumnos/RelacionAlumnos';
@@ -76,6 +78,16 @@ class Index extends Component {
             cadenaGrafica +='<option value="spline">Spline Múltiple</option>';
             primeraGrafica = "column";
         }else if(event.target.value==5){
+            cadenaGrafica = '<option value="column">Columnas</option>';
+            cadenaGrafica +='<option value="bar">Barras H</option>';
+            cadenaGrafica +='<option value="spline">Spline</option>';
+            primeraGrafica = "column";
+        }else if(event.target.value==6){
+            cadenaGrafica = '<option value="column">Columnas</option>';
+            cadenaGrafica +='<option value="bar">Barras H</option>';
+            cadenaGrafica +='<option value="spline">Spline</option>';
+            primeraGrafica = "column";
+        }else if(event.target.value==7){
             cadenaGrafica = '<option value="column">Columnas</option>';
             cadenaGrafica +='<option value="bar">Barras H</option>';
             cadenaGrafica +='<option value="spline">Spline</option>';
@@ -160,24 +172,26 @@ class Index extends Component {
         return (
 
             <Router>
-                <div className="row">
-                    <div className="panel col-md-2">
-                        <Tabs align="center" >
-                            <Tab label="Datos" className="panelDibujado">
+                <div className = "row">
+                    <div className = "panel col-md-2.5" style = {{ marginLeft: 15 }}>
+                        <Tabs align = "center" className = "textTab">
+                            <Tab label = "Datos" className = "panelDibujado">
                                 <div className="form-group">
-                                    <label>Tipo:</label>
-                                    <select className="form-control" value={this.state.opcion} onChange={this.handleChangeOpcion}>
+                                    <label className="textLabel">Tipo:</label>
+                                    <select className="form-control textSelect" value = {this.state.opcion} onChange={this.handleChangeOpcion}>
                                         <option value="4">Demanda Social</option>
                                         <option value="1">Estado de Permanencia</option>
                                         <option value="3">Estado de Permanencia General</option>
                                         <option value="5">Población Estudiantil</option>
+                                        <option value="6">Tipos de Beneficio</option>
+                                        <option value="7">Estado de Alumno</option>
                                         <option disabled value="2">Movilidad</option>
                                     </select>
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Filtro:</label>
-                                    <select className="form-control" value={this.state.opcionFiltro} onChange={this.handleChangeOpcionFiltro}>
+                                    <label className="textLabel">Filtro:</label>
+                                    <select className="form-control textSelect" value={this.state.opcionFiltro} onChange={this.handleChangeOpcionFiltro}>
                                         <option value="periodo">Periodo</option>
                                         <option value="intervalo">Intervalo de años</option>
                                     </select>
@@ -201,25 +215,19 @@ class Index extends Component {
                                 ) : (null)}
                                 
                                 <div className="form-group">
-                                    <label>Tipo de grafica:</label>
-                                    <select className="form-control" value={this.state.grafico} onChange={this.handleChangeGrafico}>
+                                    <label className="textLabel">Tipo de grafica:</label>
+                                    <select className="form-control textSelect" value={this.state.grafico} onChange={this.handleChangeGrafico}>
                                         {Parser(this.state.htmlGrafica)}  
                                     </select>
                                 </div>
 
-                                <button className="btn btn-success btn-block" onClick={this.handleApretarBoton}><Link to="/" className="btn btn-success btn-block" >Generar Gráfica</Link></button>
+                                <button className="btn btn-success btn-block textLabel" onClick={this.handleApretarBoton}><Link to="/" className="btn btn-success btn-block" >Generar Gráfica</Link></button>
                             
                             </Tab>
-                            {/*<Tab label="Gráfica">
-                                <div className="panelDibujado">
-                                    <form className="opciones-formulario" onSubmit={this.onClickPreventDefault}>
-                                        <SelectGrafica grafico={this.state.grafico} grad={this.state.grad} colores={this.state.colores} cambioGrafico={this.handleChangeGrafico} cambioGrad={this.handleChangeGrad} cambioColores={this.handleChangeColores}/>
-                                    </form>
-                                </div>
-                            </Tab>*/}
+
                         </Tabs>
                     </div>
-                    <div className="panel col-md-10">
+                    <div className="panel col-md-9">
                         <Route path='/' component={miFuncion} />
                     </div>
                 </div>
@@ -239,8 +247,13 @@ function miFuncion(){
         return(<RelacionAlumnos anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
     }else if(opcionGlobal == 4){
         return(<ProgramaAlumnos anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
-    }else{
+    }else if(opcionGlobal == 5){
         return(<PoblacionEstudiantil  anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
+    }else if(opcionGlobal == 6){
+        return(<TiposDeBeneficio  anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
+    }
+    else if(opcionGlobal == 7){
+        return(<EstadoAlumno  anioIni={AnioIni} anioFin ={AnioFin} graficoMF={Grafico}/>)
     }
     
 }
