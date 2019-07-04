@@ -145,16 +145,16 @@ class PoblacionEstudiantil extends Component {
         
         return (
             <div>
-                <Tabs align="center" >
+                <Tabs align="center" className="textTab">
                     <Tab label="Tabla">
                         <div class="panel row"  style={{alignItems:'center',justifyContent:'center'}}>
                             <div class="panel-heading">                               
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
-                                        <h5 className="titulo" align="center">Poblacion Estudiantil</h5>
+                                        <h5 className="textTitulo" align="center">Poblacion Estudiantil</h5>
                                     </div>
-                                    {aI == aF ? (<div className="titulo col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
-                                    (<div className="titulo col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                                    {aI == aF ? (<div className="textTitulo col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) : 
+                                    (<div className="textTitulo col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
                                 </div>
                                 <br/>
                             </div>
@@ -173,7 +173,7 @@ class PoblacionEstudiantil extends Component {
                     <Tab label="Grafico">
                     <div class="panel row align-items-center">
                         <div class="panel-heading mt-3 mb-3">
-                            <h4 style={{marginLeft:60}}  class="panel-title titulo">Grafica de Población Estudiantil</h4>
+                            <h4 style={{marginLeft:60}}  class="panel-title textTitulo">Grafica de Población Estudiantil</h4>
                         </div>
                         <div class="panel-body col-md-11 mr-md-auto ml-md-auto">
                             <CanvasJSChart options = {(this.state.isChartLoaded) ? this.state.data : (null)} />
@@ -184,7 +184,7 @@ class PoblacionEstudiantil extends Component {
                     <Tab label="Visualizar PDF" >
                         <div className="panel row align-items-center" >
                             <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{marginLeft:60}} className="titulo titulo">Visualizar PDF</h4>
+                                <h4 style={{marginLeft:60}} className="titulo textTitulo">Visualizar PDF</h4>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                                 {this.state.cargoImagen?<Pdf imagen={this.state.imagen}></Pdf>:null}

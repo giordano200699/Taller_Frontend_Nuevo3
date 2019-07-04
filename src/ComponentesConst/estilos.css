@@ -135,35 +135,3 @@ body {
   word-spacing: 1px;
   color: rgb(87, 91, 92);
 }
-
-.textSubtitulo{
-  font-family: "Encode Sans", sans-serif;
-  text-align: left;
-  /*text-shadow: rgba(0, 0, 0, 0.24) 2px 2px 2px;*/
-
-  font-size: 15px;
-  letter-spacing: 3px;
-  word-spacing: 3px;
-  color: #4C4C4C;
-  font-weight: 400;
-  text-decoration: none solid rgb(68, 68, 68);
-  font-style: normal;
-  font-variant: normal;
-  text-transform: capitalize;
-}
-
-.textLeyenda{
-  font-family: "Encode Sans", sans-serif;
-  text-align: left;
-  /*text-shadow: rgba(0, 0, 0, 0.24) 2px 2px 2px;*/
-
-  font-size: 11px;
-  letter-spacing: 3px;
-  word-spacing: 3px;
-  color: #7C7C7C;
-  font-weight: 400;
-  text-decoration: none solid rgb(68, 68, 68);
-  font-style: normal;
-  font-variant: normal;
-  text-transform: capitalize;
-}

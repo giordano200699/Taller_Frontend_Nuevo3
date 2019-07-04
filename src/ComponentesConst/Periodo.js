@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+
 class Periodo extends Component{
 
     constructor(props){
@@ -12,8 +13,8 @@ class Periodo extends Component{
     render(){
         return(
             <div className="form-group">
-                <label>{this.state.titulo}</label>
-                <select className="form-control" value={this.state.anio} onChange={this.props.cambiar}>
+                <label className="textLabel">{this.state.titulo}</label>
+                <select className="form-control textSelect" value={this.state.anio} onChange={this.props.cambiar}>
                     <option value="2009">2009</option>
                     <option value="2010">2010</option>
                     <option value="2011">2011</option>
