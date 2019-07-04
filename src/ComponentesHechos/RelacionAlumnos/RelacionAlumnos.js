@@ -5,7 +5,9 @@ import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
+import htmlAFoto from './../../BibliotecaFunciones/HtmlAFoto.js';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 
 
 class RelacionAlumnos extends Component {
@@ -22,7 +24,11 @@ class RelacionAlumnos extends Component {
             jsonGrafica: null,
             cargoGrafica: false,
             cargoTabla: false,
-            leyenda1: ''
+            leyenda1: '',
+            leyenda2: '',
+            contadorLineaTabla: 0,
+            contadorTabla: 0,
+            htmlencabezado: []
             /*
             isUsed:false, //usado para saber si las aplicacion es usada
             showPopover: false, //usado para mostrar o no el popup
@@ -160,10 +166,37 @@ class RelacionAlumnos extends Component {
             leyenda += "<text className='leyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
             leyenda += "<text className='leyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
 
+            var leyenda2 = '';
+            leyenda2 += "<text className='leyenda'><tr><td>AC: Activo</td></text></br>";
+            leyenda2 += "<text className='leyenda'><tr><td>G: Graduado</td></text></br>";
+            leyenda2 += "<text className='leyenda'><tr><td>RM: Reserva</td></text></br>";
+            leyenda2 += "<text className='leyenda'><tr><td>INAC: Inactivo</td></text></br>";
+            leyenda2 += "<text className='leyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
+            leyenda2 += "<text className='leyenda'><tr><td>AC: Egresado</td></text>";
+
+            //Encabezado (Logo UNMSM)
+            let encabezado = []
+            await encabezado.push(
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
+                        <img src="unmsmIMagen.png" height="240" width='180' style={{ marginLeft: 60, marginTop: 20 }} />
+                    </div>
+                    <div class="col-md-7">
+                        <img src="unmsmTitulo.png" height="240" width='500' style={{ marginLeft: 25, marginTop: 10 }} />
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                </div>
+            );
+
             await this.setState({
                 htmlTabla:htmlTabla,
                 leyenda1: leyenda,
-                cargoTabla:true
+                leyenda2: leyenda2,
+                cargoTabla:true,
+                contadorLineaTabla: contadorLinea,
+                contadorTabla: contadorTabla,
+                htmlencabezado: encabezado
             });
 
         });
@@ -238,6 +271,15 @@ class RelacionAlumnos extends Component {
     }
 
     render() {
+        // alert(htmlAFoto);
+        //console.log(htmlAFoto);
+        
+        var arregloImagen = [];
+        htmlAFoto(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,arregloImagen).then(x => {
+            alert(x);
+            console.log(x);
+        });
+        
         const aI = this.props.anioIni;
         const aF = this.props.anioFin;
         return (
