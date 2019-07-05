@@ -127,7 +127,7 @@ class EstadoPermanencia extends Component {
                             cadena += '<tr>';
                         }
 
-                        cadena += '<td style="border-left-width: 3px">' + anio + '</td>';
+                        cadena += '<td style="border-left-width: 3px; border-right-width: 3px">' + anio + '</td>';
                         contadorTabla++;
 
                         var sumaHorizontal = 0;
@@ -146,7 +146,7 @@ class EstadoPermanencia extends Component {
                         cadena += '</tr>';
                         contador++;
                     }
-                    cadena += '<tr><th style="border-bottom-width: 3px; border-left-width: 3px;">Total</th>';
+                    cadena += '<tr><th style="border-bottom-width: 3px; border-left-width: 3px; border-right-width: 3px;">Total</th>';
                     for (var i = this.state.anioini; i <= this.state.aniofin; i++) {
                         cadena += '<th style="border-bottom-width: 3px">' + sumaVertical[i] + '</th>';
                     }
@@ -167,19 +167,19 @@ class EstadoPermanencia extends Component {
 
                 leyenda += "<hr></hr>";
                 contadorLeyenda += 2;
-                leyenda += "<text className='leyenda'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática</td></text></br>";
+                leyenda += "<text className='textLeyenda'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática</td></text></br>";
                 contadorLeyenda++;
-                leyenda += "<text className='leyenda'><tr><td>GTIC: Gestión de tecnología de información y comunicaciones</td></text></br>";
+                leyenda += "<text className='textLeyenda'><tr><td>GTIC: Gestión de tecnología de información y comunicaciones</td></text></br>";
                 contadorLeyenda++;
-                leyenda += "<text className='leyenda'><tr><td>ISW: Ingeniería de Software</td></text></br>";
+                leyenda += "<text className='textLeyenda'><tr><td>ISW: Ingeniería de Software</td></text></br>";
                 contadorLeyenda++;
-                leyenda += "<text className='leyenda'><tr><td>GIC: Gestión de la información y del conocimiento</td></text></br>";
+                leyenda += "<text className='textLeyenda'><tr><td>GIC: Gestión de la información y del conocimiento</td></text></br>";
                 contadorLeyenda++;
-                leyenda += "<text className='leyenda'><tr><td>GTI: Gobierno de tecnologías de información</td></text></br>";
+                leyenda += "<text className='textLeyenda'><tr><td>GTI: Gobierno de tecnologías de información</td></text></br>";
                 contadorLeyenda++;
-                leyenda += "<text className='leyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
+                leyenda += "<text className='textLeyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
                 contadorLeyenda++;
-                leyenda += "<text className='leyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
+                leyenda += "<text className='textLeyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
                 contadorLeyenda++;
                 contadorLeyenda += 2;
 
@@ -189,12 +189,12 @@ class EstadoPermanencia extends Component {
                 leyenda2 += "<br/>";
                 leyenda2 += "<br/>";
                 leyenda2 += "<br/>";
-                leyenda2 += "<text className='leyenda'><tr><td>AC: Activo</td></text></br>";
-                leyenda2 += "<text className='leyenda'><tr><td>G: Graduado</td></text></br>";
-                leyenda2 += "<text className='leyenda'><tr><td>RM: Reserva</td></text></br>";
-                leyenda2 += "<text className='leyenda'><tr><td>INAC: Inactivo</td></text></br>";
-                leyenda2 += "<text className='leyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
-                leyenda2 += "<text className='leyenda'><tr><td>AC: Egresado</td></text>";
+                leyenda2 += "<text className='textLeyenda'><tr><td>AC: Activo</td></text></br>";
+                leyenda2 += "<text className='textLeyenda'><tr><td>G: Graduado</td></text></br>";
+                leyenda2 += "<text className='textLeyenda'><tr><td>RM: Reserva</td></text></br>";
+                leyenda2 += "<text className='textLeyenda'><tr><td>INAC: Inactivo</td></text></br>";
+                leyenda2 += "<text className='textLeyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
+                leyenda2 += "<text className='textLeyenda'><tr><td>AC: Egresado</td></text>";
 
                 contadorLinea += contadorLeyenda + contadorTabla;
                 contadorLinea += diferenciaAnios * 10 + (diferenciaAnios - 1) * 2; //10: el tamaño que ocupa el grafico
@@ -329,6 +329,7 @@ class EstadoPermanencia extends Component {
             })
     }
 
+
     render() {
 
         const aI = this.props.anioIni;
@@ -419,6 +420,7 @@ class EstadoPermanencia extends Component {
                                             </table>
                                         </div>
                                     </div>
+                                    
                                 </div>
                                 {/*Leyenda*/}
                                 <div class="row justify-content-md-center">
@@ -433,7 +435,9 @@ class EstadoPermanencia extends Component {
                                     </div>
                                 </div>
                                 {/*"[paginaActual] de [totalPag]"*/}
-                                {paginaActual} de {totalPag}
+                                <div class="row align-items-end">
+                                    <div class="col">{paginaActual} de {totalPag}</div>
+                                </div>
                                 {/*Crear hoja*/}
 
                                 {/* Aca acaba la pimera hoja */}
@@ -490,8 +494,24 @@ class EstadoPermanencia extends Component {
                                         </div>
                                     </div>
                                 </div>
+                                {/*Leyenda*/}
+                                <div class="row justify-content-md-center">
+                                    <div className="col-md-6">
+                                        <hr></hr>
+                                        <h5 className="titulo2PDF">Leyenda: </h5>
+                                        {Parser(this.state.myleyenda)}
+                                    </div>
+                                    <div className="col-md-1"></div>
+                                    <div className="col-md-3">
+                                        {Parser(this.state.myleyenda2)}
+                                    </div>
+                                </div>
                                 {/*"[paginaActual] de [totalPag]"*/}
-                                {paginaActual} de {totalPag}
+                                <div class="row justify-content-md-center">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-9"></div>
+                                    <div class="col-md-1" style={{textAlign: "right"}}>{paginaActual} de {totalPag}</div>
+                                </div>
                                 {/*Crear hoja*/}
                             </div>
                             {/* Aca termina la primera pagina */}
@@ -523,7 +543,7 @@ class EstadoPermanencia extends Component {
                 // Ignorar----------------------------------------------------------------
                 etiqueta.push(
                     <div class="panel row align-items-center">
-                        <div class="panel-body col-md-11 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                        <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
                             <CanvasJSChart options={this.state.data[iterador]} />
                         </div>
                     </div>
@@ -536,12 +556,24 @@ class EstadoPermanencia extends Component {
                     arregloInterno.push(
                         //Generar gráfico
                         <div class="panel row align-items-center">
-                            <div class="panel-body col-md-11 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                            <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
                                 <CanvasJSChart options={this.state.data[iterador]} />
                             </div>
                         </div>
                     );
                     lineaActual += 11;
+
+                    if(iterador === this.state.data.length -1){
+                        
+                        for (var j = lineaActual; j <= topeLinea - 15; j++) {
+                            //alert(j);
+                            arregloInterno.push(<br/>)
+                        }
+            
+                    }
+
+
+
                 } else {
                     //Me indica que ya debo acabar la pagina
                     lineaActual = 0;
@@ -549,7 +581,7 @@ class EstadoPermanencia extends Component {
                     arregloInterno = [];
                     arregloInterno.push(
                         <div class="panel row align-items-center">
-                            <div class="panel-body col-md-11 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                            <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
                                 <CanvasJSChart options={this.state.data[iterador]} />
                             </div>
                         </div>
@@ -568,6 +600,7 @@ class EstadoPermanencia extends Component {
 
                         {this.state.htmlencabezado}
                         {/*Leyenda*/}
+                        {/*
                         {banderaLeyendaGrande ?
                             <div class="row justify-content-md-center">
                                 <div className="col-md-6">
@@ -581,12 +614,16 @@ class EstadoPermanencia extends Component {
                                 </div>
                             </div>
                             : null}
-
+                        */}
 
                         {pagina}
 
                         {/*"[paginaActual] de [totalPag]"*/}
-                        {paginaActual} de {totalPag}
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-9"></div>
+                            <div class="col-md-1" style={{textAlign: "right"}}>{paginaActual} de {totalPag}</div>
+                        </div>
 
                     </div>
 
@@ -595,7 +632,7 @@ class EstadoPermanencia extends Component {
 
             }
 
-
+            
 
 
 
@@ -677,19 +714,29 @@ class EstadoPermanencia extends Component {
                                 </table>
                             </div>
                             <div className="col col-md-10">
-                                <br />
-                                <h5 style={{ marginLeft: 10, fontSize: 13 }} className="subtitulo">Leyenda: </h5>
-                                {Parser(this.state.myleyenda)}
+
+                                <div class="row justify-content-md-center">
+                                    <div className="col-md-6">
+                                        <br />
+                                        <h5 style={{ marginLeft: 10}} className="textSubtitulo">Leyenda: </h5>
+                                        {Parser(this.state.myleyenda)}      
+                                    </div>
+                                    <div className="col-md-1"></div>
+                                    <div className="col-md-3">
+                                        {Parser(this.state.myleyenda2)}
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </Tab>
                     <Tab label="Grafico">
                         <div class="panel row align-items-center">
                             <div className="panel-heading mt-3 mb-3" >
-                                <h5 style={{ marginLeft: 60 }} className="titulo">Gráficas: </h5>
+                                <h5 style={{ marginLeft: 60 }} className="textTitulo">Gráficas: </h5>
                                 <br />
                             </div>
-                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
+                            <div className="panel-body col-md-11 justify-content-md-center">
                                 {this.state.banderaCarga ? this.state.htmlGrafica : null}
                             </div>
                         </div>
@@ -698,7 +745,7 @@ class EstadoPermanencia extends Component {
                     <Tab label="Visualizar PDF" >
                         <div className="panel row align-items-center" >
                             <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                                <h4 style={{ marginLeft: 60 }} className="textTitulo">Visualizar PDF</h4>
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                                 {this.state.cargoImagen1 && this.state.cargoImagen2 ? <Pdf imagen={this.state.imagen1} imagen2={this.state.imagen2}></Pdf> : null}
