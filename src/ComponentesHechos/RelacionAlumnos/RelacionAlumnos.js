@@ -5,7 +5,8 @@ import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
-import htmlAFoto from './../../BibliotecaFunciones/HtmlAFoto.js';
+import htmlPDF from '../../BibliotecaFunciones/HtmlPDF.js';
+import './RelacionAlumnos.css';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
@@ -35,68 +36,6 @@ class RelacionAlumnos extends Component {
             contadorCargaPaginas:0,
             arregloImagen:[],
             tipoGraficaVerificador: this.props.graficoMF
-            /*
-            isUsed:false, //usado para saber si las aplicacion es usada
-            showPopover: false, //usado para mostrar o no el popup
-            verdades : {}, //usado para  ver que conceptos estan sieno usados
-            chartData : {}, //usado para dar datos al FusionChart (cuadro)
-            isChartLoaded: false, //usado para mostrat el FusionChart
-            tableData: {}, //usado para dar datos a la tabla
-            isTableLoaded: false, //usado para mostrar la tabla
-            conceptsData: {}, //usado para guardar los conceptos de la BD
-            isConceptsLoaded: false, //usado para saber si ya obtuvimos los conceptos de la BD
-            infoType : "importes", //usado para saber el tipo de informacion mostrada
-            titulo: 'REPORTE ESTADISTICO DE IMPORTES POR CONCEPTO', //usado para el titulo del cuadro
-            subtitulo: 'DEL 03/01/2015 AL 06/01/2015', //usado para el subtitulo del cuadro
-            fechaInicio: '1420243200', //usado para la fecha inicial del cuadro
-            fechaFin: '1420502400', //usado para la fecha final del cuadro
-            grafico : 'column2d', //usado para el tipo de grafico del cuadro
-            anioini : ''+this.props.anioIni, //usado para el año inicial del cuadro
-            aniofin : ''+this.props.anioFin, //usado para el año final del cuadro
-            anio: '2015', //usado para el año a biscar con el intervalo del mes
-            mesini : '1', //usado para el mes inicial del cuadro
-            mesfin : '12', //usado para el mes final del cuadro/grafico
-            opcion : 'fecha', //usado para la opcion del filtro
-            colores : "", //usado para el tipo de color del cuadro/grafico
-            grad : "0", //usado para el gradiente del cuadro
-            prefijo : "S/", //usado para el prefijo del cuadro
-            listaConceptos : "", //usado para guardar una lista de los conceptos del cuadro
-            todos : true, //usado para marcar todos los checkbox
-            conceptos : [], //usado para saber que checkboxes son marcados
-            todosConceptos : [], //usado para saber todos los conceptos que hay en la BD en otro tipo formato de dato
-            usuario : '', //usado para la sesion del usuario
-            listaConceptosEncontrados : "", //usado para saber que conceptos se encontraron en la consulta,
-            data: {},
-            miHtml: '',
-            miHtml2: '',
-            imagen: null,
-            cargoImagen: false,
-            esVisible: false,
-            htmlGrafica: '',
-            banderaCarga: false,
-            myleyenda: '',
-            myleyenda2: '',
-            paginacion: '',
-            htmlencabezado: '',
-            contTabla: '',
-            contLeyenda: '',
-            miPDF: '',
-
-            graficasCargadas: false,
-            inicioRelativo: '' + this.props.anioIni,
-            finRelativo: '' + this.props.anioFin,
-            tipoGrafica: 'column',
-            tipoGraficaVerificador: this.props.graficoMF,
-
-
-            imagen1: null,
-            cargoImagen1: false,
-            imagen2: null,
-            cargoImagen2: false,
-            cantidadDePaginas: 0,
-            contadorCargaPaginas: 0
-
-            */
         };
         this.obtenerTabla = this.obtenerTabla.bind(this);
         this.obtenerGrafica = this.obtenerGrafica.bind(this);
@@ -282,7 +221,7 @@ class RelacionAlumnos extends Component {
         
         if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos){
             setTimeout(() => {
-                htmlAFoto(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioIni,this.state.jsonGrafica,this.props.anioFin).then(async(x) => {
+                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioIni,this.state.jsonGrafica,this.props.anioFin).then(async(x) => {
                     
                     this.setState({
                         copiaParaPdf:x,
@@ -293,6 +232,9 @@ class RelacionAlumnos extends Component {
                             var arregloImagen = [];
                             for (var i = 1; i <= this.state.copiaParaPdf.length; i++) {
                                 const input2 = await document.getElementById('imagenPdf'+i);
+                                input2.addEventListener("load", ()=>{
+                                    alert("HE SIDO CARGADO");
+                                });
                                 await html2canvas(input2)
                                     .then(async (canvas2) => {
                                         const imgData2 = await canvas2.toDataURL('image/png');
@@ -336,6 +278,11 @@ class RelacionAlumnos extends Component {
         
         const aI = this.props.anioIni;
         const aF = this.props.anioFin;
+        if(!this.state.cargoFotos){
+            document.body.classList.add("oculto");
+        }else{
+            document.body.classList.remove("oculto");
+        }
 
         if (this.props.anioFin != this.state.aniofin || this.props.anioIni != this.state.anioini || this.state.tipoGraficaVerificador != this.props.graficoMF) {
             var tipoCadena = '';

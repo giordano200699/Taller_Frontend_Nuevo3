@@ -3,7 +3,7 @@ import React, { Component }  from 'react';
 import CanvasJSReact, { CanvasJS } from '../canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-var htmlAFoto = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1,leyenda2,htmlencabezado,inicioRelativo,finRelativo,jsonGrafica,finFake) =>{
+var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1,leyenda2,htmlencabezado,inicioRelativo,finRelativo,jsonGrafica,finFake) =>{
     //En esta variable guardaremos las hojas del pdf
     let pdf = [];
     var topeLinea = 50;
@@ -194,4 +194,4 @@ var htmlAFoto = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyend
     return pdf;
 };
  
-export default htmlAFoto;
+export default htmlPDF;
