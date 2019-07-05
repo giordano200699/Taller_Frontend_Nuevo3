@@ -24,17 +24,11 @@ class RelacionAlumnos extends Component {
             jsonGrafica: null,
             cargoGrafica: false,
             cargoTabla: false,
-            cargoTomadorFotos: false,
-            cargoFotos: false,
             leyenda1: '',
             leyenda2: '',
             contadorLineaTabla: 0,
             contadorTabla: 0,
-            htmlencabezado: [],
-            copiaParaPdf: [],
-            contadorCargaPaginas:0,
-            arregloImagen:[],
-            tipoGraficaVerificador: this.props.graficoMF
+            htmlencabezado: []
             /*
             isUsed:false, //usado para saber si las aplicacion es usada
             showPopover: false, //usado para mostrar o no el popup
@@ -118,7 +112,7 @@ class RelacionAlumnos extends Component {
             var htmlTabla = ''; 
             var contadorTabla = 2;
             var contadorLinea = 0;
-            const diferenciaAnios = this.state.anioini - this.state.anioini + 1;
+            const diferenciaAnios = this.state.aniofin - this.state.anioini + 1;
             for(var programa in resultado){
                 var contador = 1;
                 var sumaVertical = [];
@@ -280,89 +274,14 @@ class RelacionAlumnos extends Component {
         // alert(htmlAFoto);
         //console.log(htmlAFoto);
         
-        if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos){
-            setTimeout(() => {
-                htmlAFoto(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioIni,this.state.jsonGrafica,this.props.anioFin).then(async(x) => {
-                    
-                    this.setState({
-                        copiaParaPdf:x,
-                        cargoTomadorFotos:true
-                    },()=>{
-                        setTimeout(async () => {
-                            //const input2 = document.getElementById('graficax');
-                            var arregloImagen = [];
-                            for (var i = 1; i <= this.state.copiaParaPdf.length; i++) {
-                                const input2 = await document.getElementById('imagenPdf'+i);
-                                await html2canvas(input2)
-                                    .then(async (canvas2) => {
-                                        const imgData2 = await canvas2.toDataURL('image/png');
-                                        console.log(imgData2);
-                                        await arregloImagen.push({ imagen: imgData2, orden: i });
-                                        await this.setState({
-                                            contadorCargaPaginas: this.state.contadorCargaPaginas + 1
-                                        }, () => {
-                                            if (this.state.contadorCargaPaginas == this.state.copiaParaPdf.length) {
-                                                setTimeout(async () => {
-                                                    this.setState({
-                                                        
-                                                        arregloImagen: arregloImagen,
-                                                        cargoFotos:true,
-                                                        //imagen2: arregloImagen,
-                                                        //cargoImagen2: true,
-                                                        //isChartLoaded: false,
-                                                        contadorCargaPaginas: 0
-                                                    },()=>{
-                                                        this.setState({
-                                                            cargoFotos: true
-                                                        })
-                                                    });
-                                                    
-                                                }, 2000);
-                                            }
-                                        });
-        
-        
-                                    });
-                            }
-        
-                        }, 2000);
-                    });
-                });
-            },2000);
-            
-        }
-
-        
+        var arregloImagen = [];
+        htmlAFoto(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,arregloImagen).then(x => {
+            alert(x);
+            console.log(x);
+        });
         
         const aI = this.props.anioIni;
         const aF = this.props.anioFin;
-
-        if (this.props.anioFin != this.state.aniofin || this.props.anioIni != this.state.anioini || this.state.tipoGraficaVerificador != this.props.graficoMF) {
-            var tipoCadena = '';
-            if (this.props.graficoMF == "columnasMultiples") {
-                tipoCadena = 'column';
-            } else if (this.props.graficoMF == "barrasHMultiples") {
-                tipoCadena = 'bar';
-            } else if (this.props.graficoMF == "splineMultiple") {
-                tipoCadena = 'spline';
-            }
-
-            this.setState({
-                aniofin: this.props.anioFin,
-                anioini: this.props.anioIni,
-                tipoGraficaVerificador: this.props.graficoMF,
-                tipoGrafica: tipoCadena,
-                cargoGrafica: false,
-                cargoTabla: false,
-                cargoTomadorFotos: false,
-                cargoFotos: false
-
-            }, async () => {
-                this.obtenerTabla();
-                this.obtenerGrafica();
-            });
-        }
-
         return (
             <div>
                 <Tabs align="center" >
@@ -424,29 +343,14 @@ class RelacionAlumnos extends Component {
                             
                         </div>
                     </Tab>
-                    
                     <Tab label="PDF">
-                    
-                        <div className="panel row align-items-center" >
-                            <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
-                            </div>
-                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
-                                {this.state.cargoFotos ?
-                                    <Pdf imagen2={this.state.arregloImagen}></Pdf> 
-                                : null}
-                            </div>
-                        </div>
-                        
+                        {/* Aca ponemos el pdf */}
                     </Tab>
-                    
                 </Tabs>
 
-                <div style={this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoFotos  ? null : { display: 'none' }} id="copia">
-                     {this.state.copiaParaPdf}
-                    
+                <div style={this.state.cargoTabla && this.state.cargoGrafica ? null : { display: 'none' }} id="copia">
+                    HOLA MUNDO
                 </div>
-                
                     
             </div>
         )
