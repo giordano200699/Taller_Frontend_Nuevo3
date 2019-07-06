@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import {Tabs, Tab} from 'react-bootstrap-tabs';
 import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
 import Parser from 'html-react-parser';
-import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
+import Pdf from '../Pdf/pdf';
 import htmlPDF from '../../BibliotecaFunciones/HtmlPDF.js';
 import './RelacionAlumnos.css';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -25,6 +25,8 @@ class RelacionAlumnos extends Component {
             jsonGrafica: null,
             cargoGrafica: false,
             cargoTabla: false,
+            cargoTomadorFotos: false,
+            cargoFotos: false,
             leyenda1: '',
             leyenda2: '',
             contadorLineaTabla: 0,
@@ -55,7 +57,7 @@ class RelacionAlumnos extends Component {
             var htmlTabla = ''; 
             var contadorTabla = 2;
             var contadorLinea = 0;
-            const diferenciaAnios = this.state.aniofin - this.state.anioini + 1;
+            const diferenciaAnios = this.state.anioini - this.state.anioini + 1;
             for(var programa in resultado){
                 var contador = 1;
                 var sumaVertical = [];
@@ -230,9 +232,6 @@ class RelacionAlumnos extends Component {
                             var arregloImagen = [];
                             for (var i = 1; i <= this.state.copiaParaPdf.length; i++) {
                                 const input2 = await document.getElementById('imagenPdf'+i);
-                                input2.addEventListener("load", ()=>{
-                                    alert("HE SIDO CARGADO");
-                                });
                                 await html2canvas(input2)
                                     .then(async (canvas2) => {
                                         const imgData2 = await canvas2.toDataURL('image/png');
@@ -369,14 +368,29 @@ class RelacionAlumnos extends Component {
                             
                         </div>
                     </Tab>
+                    
                     <Tab label="PDF">
-                        {/* Aca ponemos el pdf */}
+                    
+                        <div className="panel row align-items-center" >
+                            <div className="panel-heading mt-3 mb-3">
+                                <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                            </div>
+                            <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
+                                {this.state.cargoFotos ?
+                                    <Pdf imagen2={this.state.arregloImagen}></Pdf> 
+                                : null}
+                            </div>
+                        </div>
+                        
                     </Tab>
+                    
                 </Tabs>
 
-                <div style={this.state.cargoTabla && this.state.cargoGrafica ? null : { display: 'none' }} id="copia">
-                    HOLA MUNDO
+                <div style={this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoFotos  ? null : { display: 'none' }} id="copia">
+                     {this.state.copiaParaPdf}
+                    
                 </div>
+                
                     
             </div>
         )
