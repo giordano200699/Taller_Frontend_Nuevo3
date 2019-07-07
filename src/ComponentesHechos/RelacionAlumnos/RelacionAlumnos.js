@@ -1,6 +1,6 @@
 //Importamos las librerias
 import React, { Component } from 'react';
-import {Tabs, Tab} from 'react-bootstrap-tabs';
+import {Tabs, Tab} from 'react-bootstrap';
 import CanvasJSReact, {CanvasJS} from './../../canvasjs.react';
 import Parser from 'html-react-parser';
 import html2canvas from 'html2canvas';
@@ -35,15 +35,26 @@ class RelacionAlumnos extends Component {
             copiaParaPdf: [],
             contadorCargaPaginas:0,
             arregloImagen:[],
-            tipoGraficaVerificador: this.props.graficoMF
+            tipoGraficaVerificador: this.props.graficoMF,
+            key: 'tabla'
         };
         this.obtenerTabla = this.obtenerTabla.bind(this);
         this.obtenerGrafica = this.obtenerGrafica.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
 
         //this.miFuncion2 = this.miFuncion2.bind(this)
 
         this.obtenerTabla();
         this.obtenerGrafica();
+    }
+
+    handleSelect(key) {
+        if(key=="pdf"){
+            if(key!=this.state.key){
+                //alert("ASFSFAFS");
+            }
+        }
+        this.setState({key});
     }
 
     // Esta función nos permitirá obtener los datos de la tabla
@@ -181,9 +192,9 @@ class RelacionAlumnos extends Component {
                 }
 
                 arregloData.push(
-                    <div class="panel row align-items-center">
-                        <div class="panel-body col-md-11 mr-md-auto ml-md-auto" style={{marginBottom: 50}}>
-                            <CanvasJSChart options = {{
+                    <div class="row align-items-center" style={{backgroundColor:"blue"}}>
+                        <div class="col col-md-12" style={{backgroundColor:"green"}}>
+                            <CanvasJSChart style={{marginBottom: 50,width:'100%'}} options = {{
                                 animationEnabled: true,
                                 title:{
                                     text: "Estado de Permanencia - "+anio
@@ -203,7 +214,8 @@ class RelacionAlumnos extends Component {
                                 },
                                 data: nuevaData
                             }} />
-                        </div>           
+                        </div>
+                            
                     </div>
                 );
             }
@@ -219,8 +231,9 @@ class RelacionAlumnos extends Component {
         // alert(htmlAFoto);
         //console.log(htmlAFoto);
         
-        if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos){
+        if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos && this.state.key=="pdf"){
             setTimeout(() => {
+                
                 htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioIni,this.state.jsonGrafica,this.props.anioFin).then(async(x) => {
                     
                     this.setState({
@@ -232,10 +245,12 @@ class RelacionAlumnos extends Component {
                             var arregloImagen = [];
                             for (var i = 1; i <= this.state.copiaParaPdf.length; i++) {
                                 const input2 = await document.getElementById('imagenPdf'+i);
+                                
                                 await html2canvas(input2)
                                     .then(async (canvas2) => {
                                         const imgData2 = await canvas2.toDataURL('image/png');
-                                        console.log(imgData2);
+                                        //console.log(imgData2);
+                                        
                                         await arregloImagen.push({ imagen: imgData2, orden: i });
                                         await this.setState({
                                             contadorCargaPaginas: this.state.contadorCargaPaginas + 1
@@ -243,7 +258,6 @@ class RelacionAlumnos extends Component {
                                             if (this.state.contadorCargaPaginas == this.state.copiaParaPdf.length) {
                                                 setTimeout(async () => {
                                                     this.setState({
-                                                        
                                                         arregloImagen: arregloImagen,
                                                         cargoFotos:true,
                                                         //imagen2: arregloImagen,
@@ -256,7 +270,7 @@ class RelacionAlumnos extends Component {
                                                         })
                                                     });
                                                     
-                                                }, 2000);
+                                                }, 3000);
                                             }
                                         });
         
@@ -264,10 +278,10 @@ class RelacionAlumnos extends Component {
                                     });
                             }
         
-                        }, 2000);
+                        }, 3000);
                     });
                 });
-            },2000);
+            },3000);
             
         }
 
@@ -275,7 +289,7 @@ class RelacionAlumnos extends Component {
         
         const aI = this.props.anioIni;
         const aF = this.props.anioFin;
-        if(!this.state.cargoFotos){
+        if(this.state.key=="pdf"&&!this.state.cargoFotos){
             document.body.classList.add("oculto");
         }else{
             document.body.classList.remove("oculto");
@@ -309,8 +323,8 @@ class RelacionAlumnos extends Component {
 
         return (
             <div>
-                <Tabs align="center" >
-                    <Tab label="Tabla">
+                <Tabs activeKey={this.state.key} onSelect={key => this.handleSelect(key)} align="center" >
+                    <Tab eventKey="tabla" title="Tabla">
                         {/* Aca ponemos la tabla */}
                         <div class="panel">
                             <div class="panel-heading"  >
@@ -352,28 +366,47 @@ class RelacionAlumnos extends Component {
                             </div>
                         </div>
                     </Tab>
-                    <Tab label="Gráfica">
+                    <Tab eventKey="grafica" title="Gráfica">
                         {/* Aca ponemos la gráfica */}
-                        <div class="panel align-items-center">
+                        <div class="panel row align-items-center">
                             <div className="panel-heading" >
                                 <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
                                 <hr></hr>
                             </div>
-                            <div class="panel-body">
-                                <div className="col-md-1"></div>
-                                <div className="col-md-10">
-                                     {this.state.cargoGrafica?this.state.jsonGrafica:null} 
+                            <div class="panel-body col-md-12">
+                                <div class="row">
+                                    <div className="col-md-1"></div>
+                                    <div className="col-md-10" style={{backgroundColor:"red"}}>
+                                            {this.state.cargoGrafica?this.state.jsonGrafica:null} 
+                                    </div>
                                 </div>
                             </div>
                             
                         </div>
                     </Tab>
                     
-                    <Tab label="PDF">
+                    <Tab eventKey="pdf" title="PDF">
                     
                         <div className="panel row align-items-center" >
-                            <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                            
+                            <div style={this.state.cargoTabla && this.state.cargoGrafica && this.state.cargoFotos ?{ display: 'none' }  : null} className="panel-heading col col-md-12">
+                                <div class="row">
+                                    <div class="col col-md-5"></div>
+                                    <div class="col col-md-2" style={{textAlign:"center",marginTop:180}}>
+                                        <div class="spiner">
+                                            <div class="ball"></div>
+                                            <div class="ball1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-5"></div>
+                                    <div class="col col-md-12" style={{textAlign:"center"}}>
+                                        <h1>Cargando...</h1>
+                                    </div>
+                                    {this.state.cargoFotos ?
+                                        <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                                    : null}
+                                </div>
+                                
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
                                 {this.state.cargoFotos ?
@@ -386,9 +419,8 @@ class RelacionAlumnos extends Component {
                     
                 </Tabs>
 
-                <div style={this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoFotos  ? null : { display: 'none' }} id="copia">
-                     {this.state.copiaParaPdf}
-                    
+                <div style={this.state.cargoTabla && this.state.cargoGrafica && this.state.cargoFotos  ?  { display: 'none' }: { marginTop: 500 }} id="copia">
+                    {this.state.copiaParaPdf}
                 </div>
                 
                     

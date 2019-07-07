@@ -22,21 +22,23 @@ class Pdf extends Component {
     constructor(props){
         super(props);
         this.state = {
-            paginasCargadas : null
+            paginasCargadas : null,
+            arregloCargado:false,
+            arregloCodigo:[],
+            visible:false
         };
-        
-
+     
+        this.analizarImagenes = this.analizarImagenes.bind(this);
+        this.analizarImagenes();
     }
-
-
     
+    async analizarImagenes(){
+      var arregloCodigo = [];
 
-    render() {
-
-        var arregloCodigo = [];
-        var resultado = this.props.imagen2;
-        
-        resultado.sort(function (a, b) {
+      
+      var resultado = this.props.imagen2;
+      if(resultado.length>0){
+        await resultado.sort(function (a, b) {
             if (a.orden > b.orden) {
               return 1;
             }
@@ -48,7 +50,7 @@ class Pdf extends Component {
           });
           
         for(var imagen of resultado){
-            arregloCodigo.push(
+            await arregloCodigo.push(
                 <Page size="A4">
                     <View >
                         <Image src={imagen.imagen}></Image>
@@ -56,8 +58,27 @@ class Pdf extends Component {
                 </Page>
             );
         }
+
+        await this.setState({
+          arregloCodigo:arregloCodigo
+        },async ()=>{
+          
+          await this.setState({
+            visible:true
+          })
+        })
+      }
+    }
+
+
+    
+
+     render() {
+        
         
         return (
+          <div>
+            {this.state.visible?
             <PDFViewer  style={{width:'100%', height:'100vh'}}>
             <Document >
             {/* <Page size="A4">
@@ -66,11 +87,13 @@ class Pdf extends Component {
                 </View>
             </Page> */}
             
-            {arregloCodigo}
+            {this.state.arregloCodigo}
+            
                 
             </Document>
             </PDFViewer>
-
+            :null}
+          </div>
         );
     }
 }
