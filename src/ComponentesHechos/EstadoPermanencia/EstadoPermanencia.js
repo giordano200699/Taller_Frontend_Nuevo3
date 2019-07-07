@@ -1,11 +1,12 @@
 /* App.js */
 
 import React, { Component } from 'react';
-import { Tabs, Tab } from 'react-bootstrap-tabs';
+import { Tabs, Tab } from 'react-bootstrap';
 import CanvasJSReact, { CanvasJS } from '../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
 import html2canvas from 'html2canvas';
+import htmlPDF from '../../BibliotecaFunciones/HtmlPDF.js';
 import { pdf } from '@react-pdf/renderer';
 //import './EstadoPermanencia.css';
 
@@ -16,81 +17,42 @@ class EstadoPermanencia extends Component {
     constructor(props) {//constructor inicial
         super(props);
         this.state = {
-            isUsed: false, //usado para saber si las aplicacion es usada
-            showPopover: false, //usado para mostrar o no el popup
-            verdades: {}, //usado para  ver que conceptos estan sieno usados
-            chartData: {}, //usado para dar datos al FusionChart (cuadro)
-            isChartLoaded: false, //usado para mostrat el FusionChart
-            tableData: {}, //usado para dar datos a la tabla
-            isTableLoaded: false, //usado para mostrar la tabla
-            conceptsData: {}, //usado para guardar los conceptos de la BD
-            isConceptsLoaded: false, //usado para saber si ya obtuvimos los conceptos de la BD
-            infoType: "importes", //usado para saber el tipo de informacion mostrada
-            titulo: 'REPORTE ESTADISTICO DE IMPORTES POR CONCEPTO', //usado para el titulo del cuadro
-            subtitulo: 'DEL 03/01/2015 AL 06/01/2015', //usado para el subtitulo del cuadro
-            fechaInicio: '1420243200', //usado para la fecha inicial del cuadro
-            fechaFin: '1420502400', //usado para la fecha final del cuadro
-            grafico: 'column2d', //usado para el tipo de grafico del cuadro
-            anioini: '' + this.props.anioIni, //usado para el año inicial del cuadro
-            aniofin: '' + this.props.anioFin, //usado para el año final del cuadro
-            anio: '2015', //usado para el año a biscar con el intervalo del mes
-            mesini: '1', //usado para el mes inicial del cuadro
-            mesfin: '12', //usado para el mes final del cuadro/grafico
-            opcion: 'fecha', //usado para la opcion del filtro
-            colores: "", //usado para el tipo de color del cuadro/grafico
-            grad: "0", //usado para el gradiente del cuadro
-            prefijo: "S/", //usado para el prefijo del cuadro
-            listaConceptos: "", //usado para guardar una lista de los conceptos del cuadro
-            todos: true, //usado para marcar todos los checkbox
-            conceptos: [], //usado para saber que checkboxes son marcados
-            todosConceptos: [], //usado para saber todos los conceptos que hay en la BD en otro tipo formato de dato
-            usuario: '', //usado para la sesion del usuario
-            listaConceptosEncontrados: "", //usado para saber que conceptos se encontraron en la consulta,
-            data: {},
+            anioini : ''+this.props.anioIni, //año inicial
+            aniofin : ''+this.props.anioFin, //año final
+            htmlTabla : '',   //Html de la tabla
             miHtml: '',
-            miHtml2: '',
-            imagen: null,
-            cargoImagen: false,
-            esVisible: false,
-            htmlGrafica: '',
-            banderaCarga: false,
-            myleyenda: '',
-            myleyenda2: '',
-            paginacion: '',
-            htmlencabezado: '',
-            contTabla: '',
-            contLeyenda: '',
-            miPDF: '',
-
-            graficasCargadas: false,
-            inicioRelativo: '' + this.props.anioIni,
-            finRelativo: '' + this.props.anioFin,
             tipoGrafica: 'column',
             tipoGraficaVerificador: this.props.graficoMF,
-
-
-            imagen1: null,
-            cargoImagen1: false,
-            imagen2: null,
-            cargoImagen2: false,
-            cantidadDePaginas: 0,
-            contadorCargaPaginas: 0
+            jsonGrafica: null,
+            cargoGrafica: false,
+            cargoTabla: false,
+            cargoTomadorFotos: false,
+            cargoFotos: false,
+            leyenda1: '',
+            leyenda2: '',
+            contadorLineaTabla: 0,
+            contadorTabla: 0,
+            htmlencabezado: [],
+            copiaParaPdf: [],
+            contadorCargaPaginas:0,
+            arregloImagen:[],
+            tipoGraficaVerificador: this.props.graficoMF,
+            key: 'tabla'
         };
-        this.miFuncion = this.miFuncion.bind(this);
+        this.obtenerTabla = this.obtenerTabla.bind(this);
+        this.obtenerGrafica = this.obtenerGrafica.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
 
-        this.miFuncion2 = this.miFuncion2.bind(this);
-        this.llamarFunciones();
-
-
-
-    }
-    async llamarFunciones() {
-        await this.miFuncion();
-        await this.miFuncion2();
+        this.obtenerTabla();
+        this.obtenerGrafica();
     }
 
+    handleSelect(key) {
+        this.setState({key});
+    }
 
-    miFuncion() {
+
+    obtenerTabla() {
         fetch('http://tallerbackend.herokuapp.com/ApiController/programaAlumnos?fecha_inicio=' + this.state.anioini + '&fecha_fin=' + this.state.aniofin)//hace el llamado al dominio que se le envió donde retornara respuesta de la funcion
             .then(async (response) => {
                 return await response.json();
@@ -115,10 +77,6 @@ class EstadoPermanencia extends Component {
                     sumaVertical['total'] = 0;
 
                     for (var anio in result[tipo]) {
-
-                        //Si no se utiliza esa variable, se bugea el contador
-                        contadorLinea++;
-                        contadorLinea--;
                         //No eliminar el codigo entre comentarios, existe un bug misterioso
                         //contadorTabla++;
                         if (contador == 1) {
@@ -202,101 +160,6 @@ class EstadoPermanencia extends Component {
                     contadorLinea = 50 + diferenciaAnios * 10 + (diferenciaAnios - 1) * 2;
                 }
                 //alert("contador tabla linea es "+contadorTabla);
-                //alert("contador leyenda linea es "+contadorLeyenda);
-                //alert("contador linea es "+contadorLinea);
-                //Tope: 50 lineas por hoja, sin contar el encabezado
-
-                //console.log(result);
-                await this.setState({
-                    isChartLoaded: true,
-                    miHtml: cadena2,
-                    miHtml2: cadena,
-                    myleyenda: leyenda,
-                    myleyenda2: leyenda2,
-                    paginacion: contadorLinea,
-                    contTabla: contadorTabla,
-                    contLeyenda: contadorLeyenda
-                }, async () => {
-                    //alert("CARGO FUNCION 1");
-                    const input = await document.getElementById('tabla');
-                    await html2canvas(input)
-                        .then((canvas) => {
-                            const imgData = canvas.toDataURL('image/png');
-                            this.setState({
-                                imagen1: imgData,
-                                cargoImagen1: true
-                            }, () => {
-
-                            });
-                        });
-                });
-
-            })
-    }
-
-    miFuncion2() {
-
-        fetch('http://tallerbackend.herokuapp.com/ApiController/programaAlumnosInverso?fecha_inicio=' + this.state.anioini + '&fecha_fin=' + this.state.aniofin)
-            .then(async (response) => {
-                return await response.json();
-            })
-            .then(async (result2) => {
-
-                var arregloData = [];
-
-                var bandera = false;
-                var anioInicioRelativo;
-                var anioUltimoRelativo;
-
-                for (var anio in result2) {
-                    if (!bandera) {
-                        anioInicioRelativo = anio;
-                        bandera = true;
-                    }
-                    anioUltimoRelativo = anio;
-                    var nuevaData = [];
-
-                    for (var estado in result2[anio]) {
-                        var miniArreglo = [];
-                        for (var tipo in result2[anio][estado]) {
-                            await miniArreglo.push({ label: tipo, y: result2[anio][estado][tipo] });
-                        }
-                        await nuevaData.push({
-                            type: this.state.tipoGrafica,
-                            name: estado,
-                            legendText: estado,
-                            showInLegend: true,
-                            dataPoints: miniArreglo
-                        });
-                    }
-
-                    await arregloData.push(
-                        {
-                            animationEnabled: true,
-                            title: {
-                                text: "Estado de Permanencia - " + anio
-                            },
-                            axisY: {
-                                title: "Número de Alumnos",
-                                titleFontColor: "#4F81BC",
-                                lineColor: "#4F81BC",
-                                labelFontColor: "#4F81BC",
-                                tickColor: "#4F81BC"
-                            },
-                            toolTip: {
-                                shared: true
-                            },
-                            legend: {
-                                cursor: "pointer"
-                            },
-                            data: nuevaData
-                        }
-                    );
-
-                }
-
-
-                //Encabezado (Logo UNMSM)
                 let encabezado = []
                 await encabezado.push(
                     <div class="row justify-content-center">
@@ -310,22 +173,91 @@ class EstadoPermanencia extends Component {
                         </div>
                     </div>
                 );
-                /////////////////
 
                 //console.log(result);
                 await this.setState({
-                    data: arregloData,
-                    inicioRelativo: anioInicioRelativo,
-                    htmlencabezado: encabezado,
-                    finRelativo: anioUltimoRelativo
-
-                }, async () => {
-
-                    await this.setState({
-                        graficasCargadas: true,
-                    });
-                    //alert("CARGO FUNCION 2");
+                    miHtml: cadena2,
+                    htmlTabla: cadena, 
+                    leyenda1: leyenda,
+                    leyenda2: leyenda2,
+                    contadorLineaTabla: contadorLinea,
+                    contadorTabla: contadorTabla,
+                    cargoTabla:true,
+                    htmlencabezado: encabezado
                 });
+
+            })
+    }
+
+    obtenerGrafica() {
+
+        fetch('http://tallerbackend.herokuapp.com/ApiController/programaAlumnosInverso?fecha_inicio=' + this.state.anioini + '&fecha_fin=' + this.state.aniofin)
+            .then(async (response) => {
+                return await response.json();
+            })
+            .then(async (resultado) => {
+
+                var arregloData = [];
+
+                var bandera = false;
+                var anioInicioRelativo;
+                var anioUltimoRelativo;
+
+                for(var anio in resultado){
+                    if(bandera){
+                        anioInicioRelativo = anio;
+                        bandera = false;
+                    }
+                    anioUltimoRelativo = anio;
+                    var nuevaData = [];
+    
+                    for(var estado in resultado[anio]){
+                        var miniArreglo = [];
+                        for(var tipo in resultado[anio][estado]){
+                            miniArreglo.push({ label: tipo, y: resultado[anio][estado][tipo] });
+                        }
+                        nuevaData.push({
+                            type: this.state.tipoGrafica,
+                            name: estado,
+                            legendText: estado,
+                            showInLegend: true, 
+                            dataPoints:miniArreglo
+                        });
+                    }
+    
+                    arregloData.push(
+                        <div class="row align-items-center">
+                            <div class="col col-md-12">
+                                <CanvasJSChart style={{marginBottom: 50,width:'100%'}} options = {{
+                                    animationEnabled: true,
+                                    title:{
+                                        text: "Estado de Permanencia - "+anio
+                                    },	
+                                    axisY: {
+                                        title: "Número de Alumnos",
+                                        titleFontColor: "#4F81BC",
+                                        lineColor: "#4F81BC",
+                                        labelFontColor: "#4F81BC",
+                                        tickColor: "#4F81BC"
+                                    },	
+                                    toolTip: {
+                                        shared: true
+                                    },
+                                    legend: {
+                                        cursor:"pointer"
+                                    },
+                                    data: nuevaData
+                                }} />
+                            </div>
+                                
+                        </div>
+                    );
+                }
+
+                await this.setState({
+                    jsonGrafica:arregloData,
+                    cargoGrafica:true
+                })
             })
     }
 
@@ -334,6 +266,12 @@ class EstadoPermanencia extends Component {
 
         const aI = this.props.anioIni;
         const aF = this.props.anioFin;
+
+        if(this.state.key=="pdf"&&!this.state.cargoFotos){
+            document.body.classList.add("oculto");
+        }else{
+            document.body.classList.remove("oculto");
+        }
 
         if (this.props.anioFin != this.state.aniofin || this.props.anioIni != this.state.anioini || this.state.tipoGraficaVerificador != this.props.graficoMF) {
             var tipoCadena = '';
@@ -350,426 +288,172 @@ class EstadoPermanencia extends Component {
                 anioini: this.props.anioIni,
                 tipoGraficaVerificador: this.props.graficoMF,
                 tipoGrafica: tipoCadena,
-                banderaCarga: false,
-                graficasCargadas: false,
-                cargoImagen1: false,
-                cargoImagen2: false
+                cargoGrafica: false,
+                cargoTabla: false,
+                cargoTomadorFotos: false,
+                cargoFotos: false
 
             }, async () => {
-                await this.miFuncion();
-                await this.miFuncion2();
+                this.obtenerTabla();
+                this.obtenerGrafica();
             });
         }
 
 
-        //Generar Tabla y leyenda del PDF
-        var totalLineas = this.state.paginacion;
-        var topeLinea = 50;
-        var totalPag = 0;
-        var tablaLineas = this.state.contTabla;
-        var leyendaLineas = this.state.contLeyenda;
-        var lineaActual = 0;
-        var paginaActual = 1;
-
-        let pdf = []
-
-        if (this.state.isChartLoaded && this.state.graficasCargadas && Object.keys(this.state.data).length != 0 && (this.state.banderaCarga != this.state.isChartLoaded)) {
-
-            pdf.push(
-
-            );
-            var banderaLeyendaGrande = false;
-            if ((tablaLineas + leyendaLineas) <= topeLinea) {
-                //totalPag = Math.round(totalPag);
-                totalPag = Math.round(totalLineas / topeLinea + 0.5);
-                pdf.push(
-                    <div>
-                        {/*Añadir encabezado
-                    Añadir tabla
-                    Añadir Leyenda
-                    "[paginaActual] de [totalPag]"
-                    Crear una hoja
-                    Crear encabezado
-                    */}
-
-                        <div id="tabla" className='container'>
-                            {/*Aca comienza la primera hoja */}
-                            <div id="imagenPdf1">
-                                {/*Encabezado*/}
-                                {this.state.htmlencabezado}
-                                <div style={{ marginTop: 0 }} class="row justify-content-md-center">
-                                    <div class="panel row" style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <div class="row" style={{ alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
-                                            <div className="col-md-12 ">
-                                                <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
-                                            </div>
-                                            {aI == aF ? (<div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) :
-                                                (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
-                                        </div>
-                                        <div className="col-md-10" style={{ marginTop: 20 }}>
-                                            {/*Tabla*/}
-                                            <table className="table table-bordered col-md-10 TablaEstadisticaAzulPDF">
-                                                <thead>
-                                                    <th>Programa</th>
-                                                    <th>Estado</th>
-                                                    {Parser(this.state.miHtml)}
-                                                </thead>
-                                                <tbody>
-                                                    {Parser(this.state.miHtml2)}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                                {/*Leyenda*/}
-                                <div class="row justify-content-md-center">
-                                    <div className="col-md-6">
-                                        <hr></hr>
-                                        <h5 className="titulo2PDF">Leyenda: </h5>
-                                        {Parser(this.state.myleyenda)}
-                                    </div>
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-3">
-                                        {Parser(this.state.myleyenda2)}
-                                    </div>
-                                </div>
-                                {/*"[paginaActual] de [totalPag]"*/}
-                                <div class="row align-items-end">
-                                    <div class="col">{paginaActual} de {totalPag}</div>
-                                </div>
-                                {/*Crear hoja*/}
-
-                                {/* Aca acaba la pimera hoja */}
-                            </div>
-
-                            <div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                );
-            }
-            else {
-                //totalPag = Math.round(totalPag - tablaLineas/ topeLinea + 1);
-                totalPag = Math.round(((totalLineas - tablaLineas) / topeLinea) + 0.5 + 1);
-                lineaActual = leyendaLineas;
-                banderaLeyendaGrande = true;
-                pdf.push(
-                    <div>
-                        {/*Añadir encabezado
-                    Añadir tabla
-                    "[paginaActual] de [totalPag]"
-                    Crear una hoja
-                    Añadir encabezado
-                    Añadir Leyenda
-                    */}
-                        <div id="tabla" className='container'>
-                            {/* Aca comienza la primera pagina */}
-                            <div id="imagenPdf1">
-                                {/*Encabezado*/}
-                                {this.state.htmlencabezado}
-                                <div style={{ marginTop: 0 }} class="row justify-content-md-center">
-                                    <div class="panel row" style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <div class="row" style={{ alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
-                                            <div className="col-md-12 ">
-                                                <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
-                                            </div>
-                                            {aI == aF ? (<div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) :
-                                                (<div className="subtituloPDF col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
-                                        </div>
-                                        <div className="col-md-10" style={{ marginTop: 20 }}>
-                                            {/*Tabla*/}
-                                            <table className="table table-bordered col-md-10 TablaEstadisticaAzulPDF">
-                                                <thead>
-                                                    <th>Programa</th>
-                                                    <th>Estado</th>
-                                                    {Parser(this.state.miHtml)}
-                                                </thead>
-                                                <tbody>
-                                                    {Parser(this.state.miHtml2)}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/*Leyenda*/}
-                                <div class="row justify-content-md-center">
-                                    <div className="col-md-6">
-                                        <hr></hr>
-                                        <h5 className="titulo2PDF">Leyenda: </h5>
-                                        {Parser(this.state.myleyenda)}
-                                    </div>
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-3">
-                                        {Parser(this.state.myleyenda2)}
-                                    </div>
-                                </div>
-                                {/*"[paginaActual] de [totalPag]"*/}
-                                <div class="row justify-content-md-center">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-9"></div>
-                                    <div class="col-md-1" style={{textAlign: "right"}}>{paginaActual} de {totalPag}</div>
-                                </div>
-                                {/*Crear hoja*/}
-                            </div>
-                            {/* Aca termina la primera pagina */}
-
-                            <div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                );
-            }
-
-            //Imprimir gráficas
-            if (banderaLeyendaGrande) {
-                //alert("la leyenda es grande");
-            } else {
-                //alert("la leyenda es chiquita");
-            }
-            let etiqueta = []
-            var iterador = 0;
-
-
-            var contenidoInterno = [];
-
-            var arregloInterno = [];
-            for (var i = this.state.inicioRelativo; i <= this.state.finRelativo; i++) {
-
-                // Ignorar----------------------------------------------------------------
-                etiqueta.push(
-                    <div class="panel row align-items-center">
-                        <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
-                            <CanvasJSChart options={this.state.data[iterador]} />
-                        </div>
-                    </div>
-                );
-                // Ignorar----------------------------------------------------------------
-
-                if ((lineaActual + 10 + 1) <= topeLinea) {
-
-                    //Se puede poner graficas
-                    arregloInterno.push(
-                        //Generar gráfico
-                        <div class="panel row align-items-center">
-                            <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
-                                <CanvasJSChart options={this.state.data[iterador]} />
-                            </div>
-                        </div>
-                    );
-                    lineaActual += 11;
-
-                    if(iterador === this.state.data.length -1){
-                        
-                        for (var j = lineaActual; j <= topeLinea - 15; j++) {
-                            //alert(j);
-                            arregloInterno.push(<br/>)
-                        }
+        if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos && this.state.key=="pdf"){
+            setTimeout(() => {
+                
+                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,this.state.miHtml, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioFin,this.state.jsonGrafica,this.props.anioFin).then(async(x) => {
+                    
+                    this.setState({
+                        copiaParaPdf:x,
+                        cargoTomadorFotos:true
+                    },()=>{
+                        setTimeout(async () => {
+                            //const input2 = document.getElementById('graficax');
+                            var arregloImagen = [];
+                            for (var i = 1; i <= this.state.copiaParaPdf.length; i++) {
+                                const input2 = await document.getElementById('imagenPdf'+i);
+                                
+                                await html2canvas(input2)
+                                    .then(async (canvas2) => {
+                                        const imgData2 = await canvas2.toDataURL('image/png');
+                                        //console.log(imgData2);
+                                        
+                                        await arregloImagen.push({ imagen: imgData2, orden: i });
+                                        await this.setState({
+                                            contadorCargaPaginas: this.state.contadorCargaPaginas + 1
+                                        }, () => {
+                                            if (this.state.contadorCargaPaginas == this.state.copiaParaPdf.length) {
+                                                setTimeout(async () => {
+                                                    this.setState({
+                                                        arregloImagen: arregloImagen,
+                                                        cargoFotos:true,
+                                                        contadorCargaPaginas: 0
+                                                    },()=>{
+                                                        this.setState({
+                                                            cargoFotos: true
+                                                        })
+                                                    });
+                                                    
+                                                }, 3000);
+                                            }
+                                        });
+        
+        
+                                    });
+                            }
+        
+                        }, 3000);
+                    });
+                });
+            },3000);
             
-                    }
-
-
-
-                } else {
-                    //Me indica que ya debo acabar la pagina
-                    lineaActual = 0;
-                    contenidoInterno.push(arregloInterno);
-                    arregloInterno = [];
-                    arregloInterno.push(
-                        <div class="panel row align-items-center">
-                            <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
-                                <CanvasJSChart options={this.state.data[iterador]} />
-                            </div>
-                        </div>
-                    );
-                    lineaActual += 11;
-                }
-
-                iterador++;
-            }
-            contenidoInterno.push(arregloInterno);
-
-            for (var pagina of contenidoInterno) {
-                paginaActual++;
-                pdf.push(
-                    <div id={"imagenPdf" + paginaActual}>
-
-                        {this.state.htmlencabezado}
-                        {/*Leyenda*/}
-                        {/*
-                        {banderaLeyendaGrande ?
-                            <div class="row justify-content-md-center">
-                                <div className="col-md-6">
-                                    <hr></hr>
-                                    <h5 className="titulo2PDF">Leyenda: </h5>
-                                    {Parser(this.state.myleyenda)}
-                                </div>
-                                <div className="col-md-1"></div>
-                                <div className="col-md-3">
-                                    {Parser(this.state.myleyenda2)}
-                                </div>
-                            </div>
-                            : null}
-                        */}
-
-                        {pagina}
-
-                        {/*"[paginaActual] de [totalPag]"*/}
-                        <div class="row justify-content-md-center">
-                            <div class="col-md-1"></div>
-                            <div class="col-md-9"></div>
-                            <div class="col-md-1" style={{textAlign: "right"}}>{paginaActual} de {totalPag}</div>
-                        </div>
-
-                    </div>
-
-                )
-                banderaLeyendaGrande = false;
-
-            }
-
-            
-
-
-
-
-            /////////////
-
-            this.setState({
-                htmlGrafica: etiqueta,
-                miPDF: pdf,
-                cantidadDePaginas: totalPag,
-
-                banderaCarga: true
-            }, () => {
-                setTimeout(async () => {
-                    //const input2 = document.getElementById('graficax');
-                    var arregloImagen = [];
-                    for (var i = 1; i <= this.state.cantidadDePaginas; i++) {
-                        const input2 = await document.getElementById('imagenPdf' + i);
-                        await html2canvas(input2)
-                            .then(async (canvas2) => {
-                                const imgData2 = await canvas2.toDataURL('image/png');
-                                await arregloImagen.push({ imagen: imgData2, orden: i });
-                                await this.setState({
-                                    //imagen2: imgData2,
-                                    //cargoImagen2: true
-                                    contadorCargaPaginas: this.state.contadorCargaPaginas + 1
-                                }, () => {
-                                    //alert(this.state.contadorCargaPaginas+" PROBANDO "+this.state.cantidadDePaginas);
-                                    if (this.state.contadorCargaPaginas == this.state.cantidadDePaginas) {
-                                        //alert("LLEGO");
-                                        setTimeout(async () => {
-                                            this.setState({
-                                                imagen2: arregloImagen,
-                                                cargoImagen2: true,
-                                                isChartLoaded: false,
-                                                contadorCargaPaginas: 0
-                                            })
-                                        }, 2000);
-                                    }
-                                });
-
-
-                            });
-                    }
-
-                }, 2000);
-
-            })
         }
-
 
         return (
             <div>
-                <Tabs align="center" className="textTab">
-                    <Tab label="Tabla">
-                        <div class="panel row" style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <div class="panel-heading">
-                                <div class="row" style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
-                                    <div className="col-md-10 ">
-                                        <h5 className="textTitulo" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                <Tabs activeKey={this.state.key} onSelect={key => this.handleSelect(key)} align="center" className="textTab">
+                    <Tab eventKey="tabla" title="Tabla">
+                        {/* Aca ponemos la tabla */}
+                        <div class="panel">
+                            <div class="panel-heading"  >
+                                <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
+                                    <div className="col-md-12 ">
+                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado (General)</h5>
                                     </div>
-                                    {aI == aF ? (<div className="textTitulo col-md-12" align="center">Espacio Temporal: {this.props.anioIni}</div>) :
-                                        (<div className="textTitulo col-md-12" align="center" >Espacio Temporal: {this.props.anioIni} al {this.props.anioFin}</div>)}
+                                    <div className="titulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
                                 </div>
-                                <br />
                             </div>
-                            <div className="col-md-11" style={{ marginTop: 10, marginLeft: 60}}>
-                                <table className="table table-bordered col-md-12 mr-md-auto TablaEstadisticaAzul">
-                                    <thead>
-
-                                        <th>Programa</th>
-                                        <th>Estado</th>
-                                        {Parser(this.state.miHtml)}
-
-                                    </thead>
-                                    <tbody>
-                                        {Parser(this.state.miHtml2)}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="col col-md-10">
-
-                                <div class="row justify-content-md-center">
-                                    <div className="col-md-6">
-                                        <br />
-                                        <h5 style={{ marginLeft: 10}} className="textSubtitulo">Leyenda: </h5>
-                                        {Parser(this.state.myleyenda)}      
-                                    </div>
+                            <div className="panel-body" style={{marginTop:20}}>
+                                <div class="row">
                                     <div className="col-md-1"></div>
-                                    <div className="col-md-3">
-                                        {Parser(this.state.myleyenda2)}
+                                    <div className="col-md-10" style={{marginTop:20}}>
+                                        <table className="table table-bordered TablaEstadisticaAzul">
+                                            <thead>
+                                                
+                                                <th>Programa</th>
+                                                <th>Estado</th>
+                                                {Parser(this.state.miHtml)}
+                                                
+                                            </thead>
+                                            <tbody>
+
+                                                { Parser(this.state.htmlTabla) }
+
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div className="col col-md-1"></div>
+                                    <div className="col col-md-10">
+                                        <hr></hr>
+                                        <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
+                                        {Parser(this.state.leyenda1)} 
+                                    </div> 
+                                </div>
                             </div>
                         </div>
                     </Tab>
-                    <Tab label="Grafico">
+                    <Tab eventKey="grafica" title="Gráfica">
+                        {/* Aca ponemos la gráfica */}
                         <div class="panel row align-items-center">
-                            <div className="panel-heading mt-3 mb-3" >
-                                <h5 style={{ marginLeft: 60 }} className="textTitulo">Gráficas: </h5>
-                                <br />
+                            <div className="panel-heading" >
+                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                                <hr></hr>
                             </div>
-                            <div className="panel-body col-md-11 justify-content-md-center">
-                                {this.state.banderaCarga ? this.state.htmlGrafica : null}
+                            <div class="panel-body col-md-12">
+                                <div class="row">
+                                    <div className="col-md-1"></div>
+                                    <div className="col-md-10">
+                                            {this.state.cargoGrafica?this.state.jsonGrafica:null} 
+                                    </div>
+                                </div>
                             </div>
+                            
                         </div>
                     </Tab>
 
-                    <Tab label="Visualizar PDF" >
+                    <Tab eventKey="pdf" title="PDF">
+                    
                         <div className="panel row align-items-center" >
-                            <div className="panel-heading mt-3 mb-3">
-                                <h4 style={{ marginLeft: 60 }} className="textTitulo">Visualizar PDF</h4>
+                            
+                            <div style={this.state.cargoTabla && this.state.cargoGrafica && this.state.cargoFotos ?{ display: 'none' }  : null} className="panel-heading col col-md-12">
+                                <div class="row">
+                                    <div class="col col-md-5"></div>
+                                    <div class="col col-md-2" style={{textAlign:"center",marginTop:180}}>
+                                        <div class="spiner">
+                                            <div class="ball"></div>
+                                            <div class="ball1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-5"></div>
+                                    <div class="col col-md-12" style={{textAlign:"center"}}>
+                                        <h1>Cargando...</h1>
+                                    </div>
+                                    {this.state.cargoFotos ?
+                                        <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                                    : null}
+                                </div>
+                                
                             </div>
                             <div className="panel-body col-md-11 mr-md-auto ml-md-auto">
-                                {this.state.cargoImagen1 && this.state.cargoImagen2 ? <Pdf imagen={this.state.imagen1} imagen2={this.state.imagen2}></Pdf> : null}
-
+                                {this.state.cargoFotos ?
+                                    <Pdf imagen2={this.state.arregloImagen}></Pdf> 
+                                : null}
                             </div>
                         </div>
+
+
+                        <div style={this.state.cargoTabla && this.state.cargoGrafica && this.state.cargoFotos  ?  { display: 'none' }: { marginTop: 500 }} id="copia">
+                            {this.state.copiaParaPdf}
+                        </div>
+                        
                     </Tab>
                 </Tabs>
 
-                <div style={this.state.cargoImagen1 && this.state.cargoImagen2 && this.state.banderaCarga ? { display: 'none' } : null} id="copia">
-                    {/*this.state.miPDF*/}
-                    <div id="tabla" className='container'>
-                    </div>
-                    <div class="panel row align-items-center" id="graficax" style={{ marginTop: 0 }}>
-                        <div className="col-md-3" >
-                            {/*<hr></hr>
-                            <h5 style={{ marginLeft: 60 }} className="titulo">Gráficas: </h5>
-                            <hr></hr>*/}
-                        </div>
-                        <div className="panel-body col-md-11 mr-md-auto ml-md-auto ">
-                            {this.state.banderaCarga ? this.state.miPDF : null}
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         );
     }

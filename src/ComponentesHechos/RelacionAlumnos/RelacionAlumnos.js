@@ -192,8 +192,8 @@ class RelacionAlumnos extends Component {
                 }
 
                 arregloData.push(
-                    <div class="row align-items-center" style={{backgroundColor:"blue"}}>
-                        <div class="col col-md-12" style={{backgroundColor:"green"}}>
+                    <div class="row align-items-center">
+                        <div class="col col-md-12">
                             <CanvasJSChart style={{marginBottom: 50,width:'100%'}} options = {{
                                 animationEnabled: true,
                                 title:{
@@ -376,7 +376,7 @@ class RelacionAlumnos extends Component {
                             <div class="panel-body col-md-12">
                                 <div class="row">
                                     <div className="col-md-1"></div>
-                                    <div className="col-md-10" style={{backgroundColor:"red"}}>
+                                    <div className="col-md-10">
                                             {this.state.cargoGrafica?this.state.jsonGrafica:null} 
                                     </div>
                                 </div>
@@ -414,14 +414,16 @@ class RelacionAlumnos extends Component {
                                 : null}
                             </div>
                         </div>
+
+                        <div style={this.state.cargoTabla && this.state.cargoGrafica && this.state.cargoFotos  ?  { display: 'none' }: { marginTop: 500 }} id="copia">
+                            {this.state.copiaParaPdf}
+                        </div>
                         
                     </Tab>
                     
                 </Tabs>
 
-                <div style={this.state.cargoTabla && this.state.cargoGrafica && this.state.cargoFotos  ?  { display: 'none' }: { marginTop: 500 }} id="copia">
-                    {this.state.copiaParaPdf}
-                </div>
+                
                 
                     
             </div>

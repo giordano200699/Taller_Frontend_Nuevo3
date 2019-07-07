@@ -3,7 +3,7 @@ import React, { Component }  from 'react';
 import CanvasJSReact, { CanvasJS } from '../canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1,leyenda2,htmlencabezado,inicioRelativo,finRelativo,jsonGrafica,finFake) =>{
+var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1,leyenda2,htmlencabezado,inicioRelativo,finRelativo,jsonGrafica,finFake,htmlPieTabla,htmlTodoHeadTabla) =>{
     //En esta variable guardaremos las hojas del pdf
     let pdf = [];
     var topeLinea = 50;
@@ -35,13 +35,23 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
                                 <div className="col-md-10" style={{ marginTop: 20 }}>
                                     <table className="table table-bordered col-md-10 TablaEstadisticaAzulPDF">
                                         <thead>
-                                            <th>Programa</th>
-                                            <th>Estado</th>
-                                            {htmlTituloTabla?Parser(htmlTituloTabla):null}
+                                            {htmlTodoHeadTabla?
+                                                Parser(htmlTodoHeadTabla)
+                                            :
+                                                htmlTituloTabla?
+                                                Parser("<th>Programa</th><th>Estado</th>"+htmlTituloTabla)
+                                                :Parser("<th>Programa</th><th>Estado</th><th>Total</th>")
+                                            }
+                                            
                                         </thead>
                                         <tbody>
                                             {Parser(htmlTabla)}
                                         </tbody>
+                                        {htmlPieTabla?
+                                            <tfoot>
+                                                {Parser(htmlPieTabla)}                                  
+                                            </tfoot>
+                                            :null}
                                     </table>
                                 </div>
                             </div>
@@ -95,14 +105,22 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
                                 <div className="col-md-10" style={{ marginTop: 20 }}>
                                     <table className="table table-bordered col-md-10 TablaEstadisticaAzulPDF">
                                         <thead>
-                                            <th>Programa</th>
-                                            <th>Estado</th>
-                                            {htmlTituloTabla?Parser(htmlTituloTabla):null}
-                                            <th>Total</th>
+                                            {htmlTodoHeadTabla?
+                                                Parser(htmlTodoHeadTabla)
+                                            :
+                                                htmlTituloTabla?
+                                                Parser("<th>Programa</th><th>Estado</th>"+htmlTituloTabla)
+                                                :Parser("<th>Programa</th><th>Estado</th><th>Total</th>")
+                                            }
                                         </thead>
                                         <tbody>
                                             {Parser(htmlTabla)}
                                         </tbody>
+                                        {htmlPieTabla?
+                                            <tfoot>
+                                                {Parser(htmlPieTabla)}                                  
+                                            </tfoot>
+                                            :null}
                                     </table>
                                 </div>
                             </div>
