@@ -360,7 +360,7 @@ class EstadoPermanencia extends Component {
                             <div class="panel-heading"  >
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
-                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado (General)</h5>
+                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
                                     </div>
                                     <div className="titulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
                                 </div>

@@ -83,9 +83,9 @@ class Index extends Component {
             cadenaGrafica +='<option value="spline">Spline</option>';
             primeraGrafica = "column";
         }else if(event.target.value==6){
-            cadenaGrafica = '<option value="column">Columnas</option>';
-            cadenaGrafica +='<option value="bar">Barras H</option>';
-            cadenaGrafica +='<option value="spline">Spline</option>';
+            cadenaGrafica = '<option value="column">Columnas Mútliples</option>';
+            cadenaGrafica +='<option value="bar">Barras H Múltiples</option>';
+            cadenaGrafica +='<option value="spline">Spline Múltiple</option>';
             primeraGrafica = "column";
         }else if(event.target.value==7){
             cadenaGrafica = '<option value="column">Columnas</option>';
