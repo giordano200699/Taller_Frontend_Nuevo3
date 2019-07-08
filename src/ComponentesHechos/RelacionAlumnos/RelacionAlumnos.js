@@ -36,7 +36,8 @@ class RelacionAlumnos extends Component {
             contadorCargaPaginas:0,
             arregloImagen:[],
             tipoGraficaVerificador: this.props.graficoMF,
-            key: 'tabla'
+            key: 'tabla',
+            titulo: "Estado de permanencia en los Programas de Posgrado (General)"
         };
         this.obtenerTabla = this.obtenerTabla.bind(this);
         this.obtenerGrafica = this.obtenerGrafica.bind(this);
@@ -114,21 +115,21 @@ class RelacionAlumnos extends Component {
 
             var leyenda = '';
             leyenda += "<hr></hr>";
-            leyenda += "<text className='leyenda'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática</td></text></br>";
-            leyenda += "<text className='leyenda'><tr><td>GTIC: Gestión de tecnología de información y comunicaciones</td></text></br>";
-            leyenda += "<text className='leyenda'><tr><td>ISW: Ingeniería de Software</td></text></br>";
-            leyenda += "<text className='leyenda'><tr><td>GIC: Gestión de la información y del conocimiento</td></text></br>";
-            leyenda += "<text className='leyenda'><tr><td>GTI: Gobierno de tecnologías de información</td></text></br>";
-            leyenda += "<text className='leyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
-            leyenda += "<text className='leyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
+            leyenda += "<text className='textLeyenda'><tr><td>DISI: Doctorado en Ingeniería de Sistemas e Informática</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>GTIC: Gestión de tecnología de información y comunicaciones</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>ISW: Ingeniería de Software</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>GIC: Gestión de la información y del conocimiento</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>GTI: Gobierno de tecnologías de información</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>GPTI: Gerencia de proyectos de tecnología de información</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>ASTI: Auditoria y seguridad de tecnología de información</td></text>";
 
             var leyenda2 = '';
-            leyenda2 += "<text className='leyenda'><tr><td>AC: Activo</td></text></br>";
-            leyenda2 += "<text className='leyenda'><tr><td>G: Graduado</td></text></br>";
-            leyenda2 += "<text className='leyenda'><tr><td>RM: Reserva</td></text></br>";
-            leyenda2 += "<text className='leyenda'><tr><td>INAC: Inactivo</td></text></br>";
-            leyenda2 += "<text className='leyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
-            leyenda2 += "<text className='leyenda'><tr><td>AC: Egresado</td></text>";
+            leyenda2 += "<text className='textLeyenda'><tr><td>AC: Activo</td></text></br>";
+            leyenda2 += "<text className='textLeyenda'><tr><td>G: Graduado</td></text></br>";
+            leyenda2 += "<text className='textLeyenda'><tr><td>RM: Reserva</td></text></br>";
+            leyenda2 += "<text className='textLeyenda'><tr><td>INAC: Inactivo</td></text></br>";
+            leyenda2 += "<text className='textLeyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
+            leyenda2 += "<text className='textLeyenda'><tr><td>AC: Egresado</td></text>";
 
             //Encabezado (Logo UNMSM)
             let encabezado = []
@@ -197,20 +198,51 @@ class RelacionAlumnos extends Component {
                             <CanvasJSChart style={{marginBottom: 50,width:'100%'}} options = {{
                                 animationEnabled: true,
                                 title:{
-                                    text: "Estado de Permanencia - "+anio
+                                    text: "Estado de Permanencia - "+ anio,
+                                    fontFamily: "Encode Sans Semi Expanded",
+                                    //fontSize: 30,
+                                    fontColor: "#4C4C4C",
+                                    fontWeight: "normal",
+                                },
+                                subtitles:[
+                                    {
+                                        text: " . ",
+                                        fontSize: 20,
+                                        fontColor:'white'
+                                    }
+                                ],
+                                axisX:{
+                                    title: "Programas",
+                                    titleFontFamily: "Encode Sans Semi Expanded",
+                                    //titleFontColor: "#4F81BC",
+                                    titleFontColor: "#4C4C4C",
+                                    //lineColor: "#4F81BC",
+                                    lineColor: "#4C4C4C",
+                                    //labelFontColor: "#4F81BC",
+                                    labelFontColor: "#4C4C4C",
+                                    //tickColor: "#4F81BC",
+                                    tickColor: "#4C4C4C",
                                 },	
                                 axisY: {
                                     title: "Número de Alumnos",
-                                    titleFontColor: "#4F81BC",
-                                    lineColor: "#4F81BC",
-                                    labelFontColor: "#4F81BC",
-                                    tickColor: "#4F81BC"
+                                    titleFontFamily: "Encode Sans Semi Expanded",
+                                    //titleFontColor: "#4F81BC",
+                                    titleFontColor: "#4C4C4C",
+                                    //lineColor: "#4F81BC",
+                                    lineColor: "#4C4C4C",
+                                    //labelFontColor: "#4F81BC",
+                                    labelFontColor: "#4C4C4C",
+                                    //tickColor: "#4F81BC",
+                                    tickColor: "#4C4C4C",
+                                    interlacedColor: "#F7F7F7",
                                 },	
                                 toolTip: {
                                     shared: true
                                 },
                                 legend: {
-                                    cursor:"pointer"
+                                    cursor:"pointer",
+                                    fontFamily: "Encode Sans Semi Expanded",
+                                    fontWeight: "normal",
                                 },
                                 data: nuevaData
                             }} />
@@ -234,7 +266,7 @@ class RelacionAlumnos extends Component {
         if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos && this.state.key=="pdf"){
             setTimeout(() => {
                 
-                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioIni,this.state.jsonGrafica,this.props.anioFin).then(async(x) => {
+                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,null, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioIni,this.state.jsonGrafica,this.props.anioFin, null, null, this.state.titulo).then(async(x) => {
                     
                     this.setState({
                         copiaParaPdf:x,
@@ -323,16 +355,16 @@ class RelacionAlumnos extends Component {
 
         return (
             <div>
-                <Tabs activeKey={this.state.key} onSelect={key => this.handleSelect(key)} align="center" >
+                <Tabs activeKey={this.state.key} onSelect={key => this.handleSelect(key)} align="center" className="textTab" >
                     <Tab eventKey="tabla" title="Tabla">
                         {/* Aca ponemos la tabla */}
                         <div class="panel">
                             <div class="panel-heading"  >
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
-                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado (General)</h5>
+                                        <h5 className="textTitulo" align="center">{this.state.titulo}</h5>
                                     </div>
-                                    <div className="titulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
+                                    <div className="textTitulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
                                 </div>
                             </div>
                             <div className="panel-body" style={{marginTop:20}}>
@@ -359,7 +391,7 @@ class RelacionAlumnos extends Component {
                                     <div className="col col-md-1"></div>
                                     <div className="col col-md-10">
                                         <hr></hr>
-                                        <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
+                                        <h5 style={{marginLeft:10, fontSize:13}} className="textSubtitulo">Leyenda: </h5> 
                                         {Parser(this.state.leyenda1)} 
                                     </div> 
                                 </div>
@@ -368,23 +400,18 @@ class RelacionAlumnos extends Component {
                     </Tab>
                     <Tab eventKey="grafica" title="Gráfica">
                         {/* Aca ponemos la gráfica */}
-                        <div class="panel row align-items-center">
-                            <div className="panel-heading" >
-                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                        <div class="container">
+                            <div className="row" >
+                                <h5 style={{marginLeft:10, marginTop:20}} className="textTitulo">Gráficas: </h5>
                                 <hr></hr>
                             </div>
-                            <div class="panel-body col-md-12">
-                                <div class="row">
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-10">
-                                            {this.state.cargoGrafica?this.state.jsonGrafica:null} 
-                                    </div>
+                            {this.state.cargoGrafica ?<div className="row" >
+                                <div class="panel-body col-md-7 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                                    {this.state.jsonGrafica}
                                 </div>
-                            </div>
-                            
+                            </div> : null} 
                         </div>
                     </Tab>
-                    
                     <Tab eventKey="pdf" title="PDF">
                     
                         <div className="panel row align-items-center" >
@@ -403,7 +430,7 @@ class RelacionAlumnos extends Component {
                                         <h1>Cargando...</h1>
                                     </div>
                                     {this.state.cargoFotos ?
-                                        <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                                        <h4 style={{ marginLeft: 60 }} className="textTitulo">Visualizar PDF</h4>
                                     : null}
                                 </div>
                                 

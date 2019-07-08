@@ -3,7 +3,7 @@ import React, { Component }  from 'react';
 import CanvasJSReact, { CanvasJS } from '../canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1,leyenda2,htmlencabezado,inicioRelativo,finRelativo,jsonGrafica,finFake,htmlPieTabla,htmlTodoHeadTabla) =>{
+var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1,leyenda2,htmlencabezado,inicioRelativo,finRelativo,jsonGrafica,finFake,htmlPieTabla,htmlTodoHeadTabla,titulo) =>{
     //En esta variable guardaremos las hojas del pdf
     let pdf = [];
     var topeLinea = 50;
@@ -28,7 +28,7 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
                             <div class="panel row" style={{ alignItems: 'center', justifyContent: 'center' }}>
                                 <div class="row" style={{ alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
                                     <div className="col-md-12 ">
-                                        <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                                        <h5 className="tituloPDF" align="center">{titulo}</h5>
                                     </div>
                                     <div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {inicioRelativo!=finFake?inicioRelativo+" al "+finFake:inicioRelativo}</div>
                                 </div>
@@ -69,7 +69,11 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
                             </div>
                         </div>
                         {/*"[paginaActual] de [totalPag]"*/}
-                        {paginaActual} de {totalPag}
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-9"></div>
+                            <div class="col-md-1" style={{textAlign: "right"}}>{paginaActual} de {totalPag}</div>
+                        </div>
                         {/*Crear hoja*/}
 
                         {/* Aca acaba la pimera hoja */}
@@ -98,7 +102,7 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
                             <div class="panel row" style={{ alignItems: 'center', justifyContent: 'center' }}>
                                 <div class="row" style={{ alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
                                     <div className="col-md-12 ">
-                                        <h5 className="tituloPDF" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                                        <h5 className="tituloPDF" align="center">{titulo}</h5>
                                     </div>
                                     <div className="subtituloPDF col-md-12" align="center">Espacio Temporal: {inicioRelativo!=finFake?inicioRelativo+" al "+finFake:inicioRelativo}</div>
                                 </div>
@@ -125,8 +129,27 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
                                 </div>
                             </div>
                         </div>
+                         {/*Leyenda*/}
+                         {banderaLeyendaGrande ?
+                            <div class="row justify-content-md-center">
+                                <div className="col-md-6">
+                                    <hr></hr>
+                                    <h5 className="titulo2PDF">Leyenda: </h5>
+                                    {Parser(leyenda1)}
+                                </div>
+                                <div className="col-md-1"></div>
+                                <div className="col-md-3">
+                                    {Parser(leyenda2)}
+                                </div>
+                            </div>
+                        : null}
+
                         {/*"[paginaActual] de [totalPag]"*/}
-                        {paginaActual} de {totalPag}
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-9"></div>
+                            <div class="col-md-1" style={{textAlign: "right"}}>{paginaActual} de {totalPag}</div>
+                        </div>
                         {/*Crear hoja*/}
                     </div>
                 </div>
@@ -151,10 +174,24 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
             arregloInterno.push(
                 //Generar gráfico
                 <div>
-                    {jsonGrafica[iterador]}
+                    <div class="panel row align-items-center">
+                        <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                            {jsonGrafica[iterador]}
+                        </div>
+                    </div>
                 </div>
             );
             lineaActual += 11;
+
+            if(iterador === jsonGrafica.length -1){
+                        
+                for (var j = lineaActual; j <= topeLinea ; j++) {
+                    //alert(j);
+                    arregloInterno.push(<br/>)
+                }
+    
+            }
+
         } else {
             //Me indica que ya debo acabar la pagina
             lineaActual = 0;
@@ -162,7 +199,11 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
             arregloInterno = [];
             arregloInterno.push(
                 <div>
-                    {jsonGrafica[iterador]}
+                    <div class="panel row align-items-center">
+                        <div class="panel-body col-md-6 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                            {jsonGrafica[iterador]}
+                        </div>
+                    </div>
                 </div>
             );
             lineaActual += 11;
@@ -178,26 +219,14 @@ var htmlPDF = async (totalLineas,tablaLineas,htmlTituloTabla, htmlTabla,leyenda1
             <div id={"imagenPdf" + paginaActual}>
 
                 {htmlencabezado}
-                {/*Leyenda*/}
-                {banderaLeyendaGrande ?
-                    <div class="row justify-content-md-center">
-                        <div className="col-md-6">
-                            <hr></hr>
-                            <h5 className="titulo2PDF">Leyenda: </h5>
-                            {Parser(leyenda1)}
-                        </div>
-                        <div className="col-md-1"></div>
-                        <div className="col-md-3">
-                            {Parser(leyenda2)}
-                        </div>
-                    </div>
-                    : null}
-
-
                 {pagina}
 
                 {/*"[paginaActual] de [totalPag]"*/}
-                {paginaActual} de {totalPag}
+                <div class="row justify-content-md-center">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"></div>
+                    <div class="col-md-1" style={{textAlign: "right"}}>{paginaActual} de {totalPag}</div>
+                </div>
 
             </div>
 
