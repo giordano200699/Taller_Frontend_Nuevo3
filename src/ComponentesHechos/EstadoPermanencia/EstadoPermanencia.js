@@ -10,6 +10,7 @@ import htmlPDF from '../../BibliotecaFunciones/HtmlPDF.js';
 import { pdf } from '@react-pdf/renderer';
 //import './EstadoPermanencia.css';
 
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class EstadoPermanencia extends Component {
@@ -37,7 +38,8 @@ class EstadoPermanencia extends Component {
             contadorCargaPaginas:0,
             arregloImagen:[],
             tipoGraficaVerificador: this.props.graficoMF,
-            key: 'tabla'
+            key: 'tabla',
+            titulo: "Estado de permanencia en los Programas de Posgrado (General)"
         };
         this.obtenerTabla = this.obtenerTabla.bind(this);
         this.obtenerGrafica = this.obtenerGrafica.bind(this);
@@ -226,31 +228,63 @@ class EstadoPermanencia extends Component {
                     }
     
                     arregloData.push(
-                        <div class="row align-items-center">
-                            <div class="col col-md-12">
+                        //<div class="panel row align-items-center">
+                            <div style={{ marginBottom: 50 }}>
                                 <CanvasJSChart style={{marginBottom: 50,width:'100%'}} options = {{
                                     animationEnabled: true,
+                                    theme: "light1", //"light1", "dark1", "dark2"
                                     title:{
-                                        text: "Estado de Permanencia - "+anio
-                                    },	
+                                        text: "Estado de Permanencia - "+anio,
+                                        fontFamily: "Encode Sans Semi Expanded",
+                                        //fontSize: 30,
+                                        fontColor: "#4C4C4C",
+                                        fontWeight: "normal",
+                                    },
+                                    subtitles:[
+                                        {
+                                            text: " . ",
+                                            fontSize: 20,
+                                            fontColor:'white'
+                                        }
+                                        ],
+                                    axisX:{
+                                        title: "Programas",
+                                        titleFontFamily: "Encode Sans Semi Expanded",
+                                        //titleFontColor: "#4F81BC",
+                                        titleFontColor: "#4C4C4C",
+                                        //lineColor: "#4F81BC",
+                                        lineColor: "#4C4C4C",
+                                        //labelFontColor: "#4F81BC",
+                                        labelFontColor: "#4C4C4C",
+                                        //tickColor: "#4F81BC",
+                                        tickColor: "#4C4C4C",
+                                        },	
                                     axisY: {
                                         title: "Número de Alumnos",
-                                        titleFontColor: "#4F81BC",
-                                        lineColor: "#4F81BC",
-                                        labelFontColor: "#4F81BC",
-                                        tickColor: "#4F81BC"
+                                        titleFontFamily: "Encode Sans Semi Expanded",
+                                        //titleFontColor: "#4F81BC",
+                                        titleFontColor: "#4C4C4C",
+                                        //lineColor: "#4F81BC",
+                                        lineColor: "#4C4C4C",
+                                        //labelFontColor: "#4F81BC",
+                                        labelFontColor: "#4C4C4C",
+                                        //tickColor: "#4F81BC",
+                                        tickColor: "#4C4C4C",
+                                        interlacedColor: "#F7F7F7",
                                     },	
                                     toolTip: {
                                         shared: true
                                     },
                                     legend: {
-                                        cursor:"pointer"
+                                        cursor:"pointer",
+                                        fontFamily: "Encode Sans Semi Expanded",
+                                        fontWeight: "normal",
                                     },
                                     data: nuevaData
                                 }} />
                             </div>
                                 
-                        </div>
+                        //</div>
                     );
                 }
 
@@ -303,7 +337,7 @@ class EstadoPermanencia extends Component {
         if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos && this.state.key=="pdf"){
             setTimeout(() => {
                 
-                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,this.state.miHtml, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioFin,this.state.jsonGrafica,this.props.anioFin).then(async(x) => {
+                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,this.state.miHtml, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioFin,this.state.jsonGrafica,this.props.anioFin,null, null, this.state.titulo).then(async(x) => {
                     
                     this.setState({
                         copiaParaPdf:x,
@@ -360,9 +394,9 @@ class EstadoPermanencia extends Component {
                             <div class="panel-heading"  >
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
-                                        <h5 className="titulo" align="center"> Estado de permanencia en los Programas de Posgrado</h5>
+                                        <h5 className="textTitulo" align="center"> {this.state.titulo}</h5>
                                     </div>
-                                    <div className="titulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
+                                    <div className="textTitulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
                                 </div>
                             </div>
                             <div className="panel-body" style={{marginTop:20}}>
@@ -389,7 +423,7 @@ class EstadoPermanencia extends Component {
                                     <div className="col col-md-1"></div>
                                     <div className="col col-md-10">
                                         <hr></hr>
-                                        <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
+                                        <h5 style={{marginLeft:10, fontSize:13}} className="textSubtitulo">Leyenda: </h5> 
                                         {Parser(this.state.leyenda1)} 
                                     </div> 
                                 </div>
@@ -398,20 +432,16 @@ class EstadoPermanencia extends Component {
                     </Tab>
                     <Tab eventKey="grafica" title="Gráfica">
                         {/* Aca ponemos la gráfica */}
-                        <div class="panel row align-items-center">
-                            <div className="panel-heading" >
-                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                        <div class="container">
+                            <div className="row" >
+                                <h5 style={{marginLeft:10, marginTop:20}} className="textTitulo">Gráficas: </h5>
                                 <hr></hr>
                             </div>
-                            <div class="panel-body col-md-12">
-                                <div class="row">
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-10">
-                                            {this.state.cargoGrafica?this.state.jsonGrafica:null} 
-                                    </div>
+                            {this.state.cargoGrafica ?<div className="row" >
+                                <div class="panel-body col-md-7 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                                    {this.state.jsonGrafica}
                                 </div>
-                            </div>
-                            
+                            </div> : null} 
                         </div>
                     </Tab>
 
@@ -430,10 +460,10 @@ class EstadoPermanencia extends Component {
                                     </div>
                                     <div class="col col-md-5"></div>
                                     <div class="col col-md-12" style={{textAlign:"center"}}>
-                                        <h1>Cargando...</h1>
+                                        <h1 className="textTitulo">Cargando...</h1>
                                     </div>
                                     {this.state.cargoFotos ?
-                                        <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                                        <h4 style={{ marginLeft: 60 }} className="textTitulo">Visualizar PDF</h4>
                                     : null}
                                 </div>
                                 

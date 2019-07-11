@@ -40,7 +40,8 @@ class ProgramaAlumnos extends Component {
             contadorCargaPaginas:0,
             arregloImagen:[],
             tipoGraficaVerificador: this.props.graficoMF,
-            key: 'tabla'
+            key: 'tabla',
+            titulo: "Demanda Social de los Programas de Posgrado"
         };
 
 
@@ -75,18 +76,64 @@ class ProgramaAlumnos extends Component {
 
             var arregloData = [];
             arregloData.push(
-                <div class="row align-items-center">
-                    <div class="col col-md-12">
+                //<div class="row align-items-center">
+                    //<div class="col col-md-12">
+                    <div style={{ marginBottom: 50 }}>
                         <CanvasJSChart style={{marginBottom: 50,width:'100%'}} options = {{
                             animationEnabled: true,
                             title:{
-                                text: "Demanda Social de los Programas de Posgrado"
+                                text: this.state.titulo,
+                                fontFamily: "Encode Sans Semi Expanded",
+                                //fontSize: 30,
+                                fontColor: "#4C4C4C",
+                                fontWeight: "normal",
                             },	
+                            subtitles:[
+                            {
+                                text: " . ",
+                                fontSize: 20,
+                                fontColor:'white'
+                            }
+                            ],
+                            axisX:{
+                                title: "Programas",
+                                titleFontFamily: "Encode Sans Semi Expanded",
+                                //titleFontColor: "#4F81BC",
+                                titleFontColor: "#4C4C4C",
+                                //lineColor: "#4F81BC",
+                                lineColor: "#4C4C4C",
+                                //labelFontColor: "#4F81BC",
+                                labelFontColor: "#4C4C4C",
+                                //tickColor: "#4F81BC",
+                                tickColor: "#4C4C4C",
+                                },	
+                            axisY: {
+                                title: "Demanda",
+                                titleFontFamily: "Encode Sans Semi Expanded",
+                                //titleFontColor: "#4F81BC",
+                                titleFontColor: "#4C4C4C",
+                                //lineColor: "#4F81BC",
+                                lineColor: "#4C4C4C",
+                                //labelFontColor: "#4F81BC",
+                                labelFontColor: "#4C4C4C",
+                                //tickColor: "#4F81BC",
+                                tickColor: "#4C4C4C",
+                                interlacedColor: "#F7F7F7",
+                            },
+                            toolTip: {
+                                shared: true
+                            },
+                            legend: {
+                                cursor:"pointer",
+                                fontFamily: "Encode Sans Semi Expanded",
+                                fontWeight: "normal",
+                            },	
+
                             data: result
                         }} />
                     </div>
                         
-                </div>
+                //</div>
             );
 
             await this.setState({
@@ -177,7 +224,7 @@ class ProgramaAlumnos extends Component {
             leyenda2 += "<text className='textLeyenda'><tr><td>AI: Ingreso anulado</td></text></br>";
             leyenda2 += "<text className='textLeyenda'><tr><td>AC: Egresado</td></text>";
 
-            contadorLinea += 11 + contadorTabla;
+            contadorLinea += 10 + contadorTabla;
 
             let encabezado = []
             await encabezado.push(
@@ -244,7 +291,7 @@ class ProgramaAlumnos extends Component {
         if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos && this.state.key=="pdf"){
             setTimeout(() => {
                 
-                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,this.state.cadenaAnios, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioFin,this.state.jsonGrafica,this.props.anioFin,this.state.cadenaFooter).then(async(x) => {
+                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,this.state.cadenaAnios, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioFin,this.state.jsonGrafica,this.props.anioFin,this.state.cadenaFooter,null, this.state.titulo).then(async(x) => {
                     console.log(x);
                     this.setState({
                         copiaParaPdf:x,
@@ -300,9 +347,9 @@ class ProgramaAlumnos extends Component {
                             <div class="panel-heading"  >
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
-                                        <h5 className="titulo" align="center"> Demanda Social de los Programas de Posgrado</h5>
+                                        <h5 className="textTitulo" align="center">{this.state.titulo}</h5>
                                     </div>
-                                    <div className="titulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
+                                    <div className="textTitulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
                                 </div>
                             </div>
                             <div className="panel-body" style={{marginTop:20}}>
@@ -332,7 +379,7 @@ class ProgramaAlumnos extends Component {
                                     <div className="col col-md-1"></div>
                                     <div className="col col-md-10">
                                         <hr></hr>
-                                        <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
+                                        <h5 style={{marginLeft:10, fontSize:13}} className="textSubtitulo">Leyenda: </h5> 
                                         {Parser(this.state.leyenda1)} 
                                     </div> 
                                 </div>
@@ -341,20 +388,16 @@ class ProgramaAlumnos extends Component {
                     </Tab>
                 <Tab eventKey="grafica" title="Gráfica">
                         {/* Aca ponemos la gráfica */}
-                        <div class="panel row align-items-center">
-                            <div className="panel-heading" >
-                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                        <div class="container">
+                            <div className="row" >
+                                <h5 style={{marginLeft:10, marginTop:20}} className="textTitulo">Gráficas: </h5>
                                 <hr></hr>
                             </div>
-                            <div class="panel-body col-md-12">
-                                <div class="row">
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-10">
-                                            {this.state.cargoGrafica?this.state.jsonGrafica:null} 
-                                    </div>
+                            {this.state.cargoGrafica ?<div className="row" >
+                                <div class="panel-body col-md-7 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                                    {this.state.jsonGrafica}
                                 </div>
-                            </div>
-                            
+                            </div> : null} 
                         </div>
                     </Tab>
                 <Tab eventKey="pdf" title="PDF" >
@@ -371,10 +414,10 @@ class ProgramaAlumnos extends Component {
                                 </div>
                                 <div class="col col-md-5"></div>
                                 <div class="col col-md-12" style={{textAlign:"center"}}>
-                                    <h1>Cargando...</h1>
+                                    <h1 className="textTitulo">Cargando...</h1>
                                 </div>
                                 {this.state.cargoFotos ?
-                                    <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                                    <h4 style={{ marginLeft: 60 }} className="texTitulo">Visualizar PDF</h4>
                                 : null}
                             </div>
                             
