@@ -1,7 +1,7 @@
 /* App.js */
 
 import React, { Component } from 'react';
-import {Tabs, Tab} from 'react-bootstrap-tabs';
+import {Tabs, Tab} from 'react-bootstrap';
 import CanvasJSReact, {CanvasJS} from '../../canvasjs.react';
 import Parser from 'html-react-parser';
 import Pdf from '../Pdf/pdf';
@@ -57,7 +57,7 @@ class EstadoAlumno extends Component {
     }
 
     obtenerGrafica() {
-        fetch('http://tallerbackend.herokuapp.com/ApiController/graficoBeneficio?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)
+        fetch('http://tallerbackend.herokuapp.com/ApiController/estadoAlumnoGrafica?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)
         .then((response)=>{
             return response.json();
         })
@@ -75,18 +75,55 @@ class EstadoAlumno extends Component {
 
             var arregloData = [];
             arregloData.push(
-                <div class="row align-items-center">
-                    <div class="col col-md-12">
+                //<div class="row align-items-center">
+                    //<div class="col col-md-12">
+                    <div style={{ marginBottom: 50 }}>
                         <CanvasJSChart style={{marginBottom: 50,width:'100%'}} options = {{
                             animationEnabled: true,
                             title:{
-                                text: "Beneficios de los Programas de Posgrado"
+                                text: this.state.titulo,
+                                fontFamily: "Encode Sans Semi Expanded",
+                                fontColor: "#4C4C4C",
+                                fontWeight: "normal",
                             },	
+                            subtitles:[
+                            {
+                                text: " . ",
+                                fontSize: 20,
+                                fontColor:'white'
+                            }
+                            ],
+                            axisX:{
+                                title: "Programas",
+                                titleFontFamily: "Encode Sans Semi Expanded",
+                                titleFontColor: "#4C4C4C",
+                                lineColor: "#4C4C4C",
+                                labelFontColor: "#4C4C4C",
+                                tickColor: "#4C4C4C",
+                                },	
+                            axisY: {
+                                title: "Demanda",
+                                titleFontFamily: "Encode Sans Semi Expanded",
+                                titleFontColor: "#4C4C4C",
+                                lineColor: "#4C4C4C",
+                                labelFontColor: "#4C4C4C",
+                                tickColor: "#4C4C4C",
+                                interlacedColor: "#F7F7F7",
+                            },
+                            toolTip: {
+                                shared: true
+                            },
+                            legend: {
+                                cursor:"pointer",
+                                fontFamily: "Encode Sans Semi Expanded",
+                                fontWeight: "normal",
+                            },	
+
                             data: result
                         }} />
                     </div>
                         
-                </div>
+                //</div>
             );
 
             await this.setState({
@@ -99,7 +136,7 @@ class EstadoAlumno extends Component {
 
     obtenerTabla(){
 
-        fetch('http://tallerbackend.herokuapp.com/ApiController/Beneficio?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)//hace el llamado al dominio que se le envió donde retornara respuesta de la funcion
+        fetch('http://tallerbackend.herokuapp.com/ApiController/estadoAlumno?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)//hace el llamado al dominio que se le envió donde retornara respuesta de la funcion
         .then((response)=>{
             return response.json();
         })
@@ -111,7 +148,6 @@ class EstadoAlumno extends Component {
             let cadenaFooter = "";
             var totalD=0;
             var totalA = [];
-            var bandera = false;
             var totalTotal = 0;
             var cadenaAnios = '';
 
@@ -121,42 +157,37 @@ class EstadoAlumno extends Component {
 
             for(var i=parseInt(this.state.anioini);i<=parseInt(this.state.aniofin);i++){
                 cadenaAnios += '<th><b>'+i+'</b></th>';
+                totalA[""+i]=0;
             }
 
-            for(var i in result) {
-
-                if(bandera==false){
-                    bandera=true;
-                    for(var j in result[i]){
-                        totalA[j]=0;
-                    }
-                }
+            for(var tipo of result){
                 totalD=0;
-                cadena = cadena + "<tr><td>"+ i +"</td>";
-
-                for(var j in result[i]){
-                    if(result[i][j]==0){
-                        cadena = cadena+"<td></td>";
-                    }else{
-                        cadena = cadena+"<td>"+result[i][j]+"</td>";
-                        totalD = totalD + result[i][j];
-                        totalA[j]=totalA[j]+result[i][j];
-                } 
-               }
-               cadena = cadena + "<td>"+totalD+"</td>";
-               totalTotal= totalTotal + totalD;
+                cadena = cadena + "<tr><td>"+ tipo.tipo.substring(0,3) +"</td>";
+                for(var i=parseInt(this.state.anioini);i<=parseInt(this.state.aniofin);i++){
+                    cadena += "<td>"+tipo.anios[""+i]+"</td>"
+                    totalD += tipo.anios[""+i];
+                    totalA[""+i] += tipo.anios[""+i];
+                }
+                cadena += "<td>"+totalD+"</td></tr>";
             }
-            //cadena = cadena + "<tfoot><tr><td><b>Total General</b></td>";
+
             cadenaFooter = cadenaFooter + "<tr><td><b>Total General</b></td>";
             for(var i in totalA){
-                //cadena = cadena+"<td><b>"+totalA[i]+"</b></td>";
                 cadenaFooter = cadenaFooter + "<td><b>"+totalA[i]+"</b></td>";
+                totalTotal += totalA[i];
             }
-            //cadena = cadena + "<td><b>"+totalTotal+"</b></td></tfoot>";
             cadenaFooter = cadenaFooter +  "<td><b>"+totalTotal+"</b></td>";
             
             //Aqui se llena los datos de la leyenda
-            leyenda += "";
+            leyenda += "<hr></hr>";
+            leyenda += "<text className='textLeyenda'><tr><td>CAS: CASADO</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>SOL: SOLTERO</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>DIV: DIVORCIADO</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>VIU: VIUDO</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>SEP: SEPARADO</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>CON: CONVIVIENTE</td></text></br>";
+            leyenda += "<text className='textLeyenda'><tr><td>FAL: FALLECIDO</td></text></br>";
+            leyenda += "<hr></hr>";
 
             leyenda2 += "";
 
@@ -310,7 +341,7 @@ class EstadoAlumno extends Component {
                                         </table>
                                     </div>
                                 </div>
-                                {/*
+                                
                                 <div class="row">
                                     <div className="col col-md-1"></div>
                                     <div className="col col-md-10">
@@ -319,7 +350,7 @@ class EstadoAlumno extends Component {
                                         {Parser(this.state.leyenda1)} 
                                     </div> 
                                 </div>
-                                */}
+                               
                             </div>
                         </div>
                     </Tab>
@@ -374,7 +405,14 @@ class EstadoAlumno extends Component {
                         {this.state.copiaParaPdf}
                     </div>
                 </Tab>
+
             </Tabs>
+
+
+
+
+
+
         </div>
         );
     }
