@@ -41,7 +41,8 @@ class TiposDeBeneficio extends Component {
             contadorCargaPaginas:0,
             arregloImagen:[],
             tipoGraficaVerificador: this.props.graficoMF,
-            key: 'tabla'
+            key: 'tabla',
+            titulo: "Beneficios de los Programas de Posgrado"
         };
 
 
@@ -103,7 +104,7 @@ class TiposDeBeneficio extends Component {
                                 tickColor: "#4C4C4C",
                                 },	
                             axisY: {
-                                title: "Demanda",
+                                title: "Alumnos",
                                 titleFontFamily: "Encode Sans Semi Expanded",
                                 titleFontColor: "#4C4C4C",
                                 lineColor: "#4C4C4C",
@@ -254,7 +255,7 @@ class TiposDeBeneficio extends Component {
         if(this.state.cargoTabla && this.state.cargoGrafica && !this.state.cargoTomadorFotos && this.state.key=="pdf"){
             setTimeout(() => {
                 
-                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,this.state.cadenaAnios, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioFin,this.state.jsonGrafica,this.props.anioFin,this.state.cadenaFooter).then(async(x) => {
+                htmlPDF(this.state.contadorLineaTabla,this.state.contadorTabla,this.state.cadenaAnios, this.state.htmlTabla,this.state.leyenda1, this.state.leyenda2,this.state.htmlencabezado,this.props.anioIni,this.props.anioFin,this.state.jsonGrafica,this.props.anioFin,this.state.cadenaFooter,null, this.state.titulo).then(async(x) => {
                     console.log(x);
                     this.setState({
                         copiaParaPdf:x,
@@ -310,9 +311,9 @@ class TiposDeBeneficio extends Component {
                             <div class="panel-heading"  >
                                 <div  class="row" style={{alignItems:'center', justifyContent:'center', marginTop:20}}>
                                     <div className="col-md-12 ">
-                                        <h5 className="titulo" align="center">Beneficios de los Programas de Posgrado</h5>
+                                        <h5 className="textTitulo" align="center">{this.state.titulo}</h5>
                                     </div>
-                                    <div className="titulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
+                                    <div className="textTitulo col-md-12" align="center" >Espacio Temporal: {aI==aF?aI:aI+" al "+aF}</div>
                                 </div>
                             </div>
                             <div className="panel-body" style={{marginTop:20}}>
@@ -343,7 +344,7 @@ class TiposDeBeneficio extends Component {
                                     <div className="col col-md-1"></div>
                                     <div className="col col-md-10">
                                         <hr></hr>
-                                        <h5 style={{marginLeft:10, fontSize:13}} className="subtitulo">Leyenda: </h5> 
+                                        <h5 style={{marginLeft:10, fontSize:13}} className="textSubtitulo">Leyenda: </h5> 
                                         {Parser(this.state.leyenda1)} 
                                     </div> 
                                 </div>
@@ -351,22 +352,18 @@ class TiposDeBeneficio extends Component {
                             </div>
                         </div>
                     </Tab>
-                <Tab eventKey="grafica" title="Gráfica">
+                    <Tab eventKey="grafica" title="Gráfica">
                         {/* Aca ponemos la gráfica */}
-                        <div class="panel row align-items-center">
-                            <div className="panel-heading" >
-                                <h5 style={{marginLeft:10}} className="titulo">Gráficas: </h5>
+                        <div class="container">
+                            <div className="row" >
+                                <h5 style={{marginLeft:10, marginTop:20}} className="textTitulo">Gráficas: </h5>
                                 <hr></hr>
                             </div>
-                            <div class="panel-body col-md-12">
-                                <div class="row">
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-10">
-                                            {this.state.cargoGrafica?this.state.jsonGrafica:null} 
-                                    </div>
+                            {this.state.cargoGrafica ?<div className="row" >
+                                <div class="panel-body col-md-7 mr-md-auto ml-md-auto" style={{ marginBottom: 50 }}>
+                                    {this.state.jsonGrafica}
                                 </div>
-                            </div>
-                            
+                            </div> : null} 
                         </div>
                     </Tab>
                 <Tab eventKey="pdf" title="PDF" >
@@ -386,7 +383,7 @@ class TiposDeBeneficio extends Component {
                                     <h1>Cargando...</h1>
                                 </div>
                                 {this.state.cargoFotos ?
-                                    <h4 style={{ marginLeft: 60 }} className="titulo">Visualizar PDF</h4>
+                                    <h4 style={{ marginLeft: 60 }} className="texTitulo">Visualizar PDF</h4>
                                 : null}
                             </div>
                             
