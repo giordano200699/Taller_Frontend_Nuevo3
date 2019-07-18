@@ -73,7 +73,7 @@ class TiposDeBeneficio extends Component {
             for(var tipo of result)(async function(index){
                 filas.push(
                     <tr>
-                        <td>{index.tipo}</td>
+                        <td>{index.tipo.substring(0,3)}</td>
                         <td>{index.cod_alumno}</td>
                         <td>{index.ape_paterno}</td>
                         <td>{index.ape_materno}</td>
@@ -86,7 +86,7 @@ class TiposDeBeneficio extends Component {
                 )
             })(tipo)
             tablaExtra.push(
-                <table className="table table-bordered TablaEstadisticaAzul">
+                <table className="table table-bordered TablaEstadisticaAzul2">
                     <thead>
                         <tr>
                             <th><b>Tipo</b></th>
@@ -118,7 +118,7 @@ class TiposDeBeneficio extends Component {
         })
         .then(async (result)=>{
 
-            var miContador = this.state.anioini;
+            var miContador = result[0].anio;
             var resultado =[];
            for (let fila of result) {
                 console.log(fila);
@@ -149,7 +149,7 @@ class TiposDeBeneficio extends Component {
                             }
                             ],
                             axisX:{
-                                title: "Programas",
+                                title: "Beneficios",
                                 titleFontFamily: "Encode Sans Semi Expanded",
                                 titleFontColor: "#4C4C4C",
                                 lineColor: "#4C4C4C",
@@ -397,12 +397,11 @@ class TiposDeBeneficio extends Component {
                             </div>
                             <div className="panel-body" style={{marginTop:20}}>
                                 <div class="row">
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-10" style={{marginTop:20}}>
+                                    <div className="col-md-10 mr-md-auto ml-md-auto" style={{marginTop:20}}>
                                         <table className="table table-bordered TablaEstadisticaAzul">
                                             <thead>
                                                 <tr>
-                                                    <th><b>Programas</b></th>
+                                                    <th><b>Beneficios</b></th>
                                                     {Parser(this.state.cadenaAnios)} 
                                                     <th><b>Total General</b></th>
                                                     <th><b>Observar</b></th>
@@ -420,7 +419,7 @@ class TiposDeBeneficio extends Component {
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div className="col-md-10" style={{marginTop:20}}>
+                                    <div className="col-md-11 mr-md-auto ml-md-auto" style={{marginTop:20}}>
                                         {this.state.tablaExtra}
                                     </div>
                                 </div>

@@ -214,6 +214,45 @@ table.TablaEstadisticaAzul tfoot td {
   font-size: 15px;
 }
 
+/*estilos tabla pdf*/
+table.TablaEstadisticaAzul2 {
+  font-family: Calibri, Helvetica, sans-serif;
+  border: 3px solid #B3D5F5;
+  background-color: #FBFBFB;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.TablaEstadisticaAzul2 td, table.TablaEstadisticaAzul th {
+  border-bottom: 1px solid #B3D5F5;
+  border-top: 1px solid #B3D5F5;
+  border-left: 0px solid #B3D5F5;
+  border-right: 0px solid #B3D5F5;
+  padding: 1px 15px;
+}
+table.TablaEstadisticaAzul2 tbody td {
+  font-size: 13px;
+}
+table.TablaEstadisticaAzul2 thead {
+  background: #D0E4F5;
+  border-bottom: 3px solid #B3D5F5;
+}
+table.TablaEstadisticaAzul2 thead th {
+  font-size: 13px;
+  font-weight: bold;
+  color: #444444;
+  text-align: center;
+}
+table.TablaEstadisticaAzul2 tfoot {
+  font-size: 13px;
+  font-weight: bold;
+  color: #444444;
+  background: #D0E4F5;
+}
+table.TablaEstadisticaAzul2 tfoot td {
+  font-size: 13px;
+}
+
 
 
 

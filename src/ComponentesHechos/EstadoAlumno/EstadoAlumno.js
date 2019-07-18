@@ -84,7 +84,7 @@ class EstadoAlumno extends Component {
                 )
             })(tipo)
             tablaExtra.push(
-                <table className="table table-bordered TablaEstadisticaAzul">
+                <table className="table table-bordered TablaEstadisticaAzul2">
                     <thead>
                         <tr>
                             <th><b>Año Ingreso</b></th>
@@ -116,7 +116,7 @@ class EstadoAlumno extends Component {
         })
         .then(async (result)=>{
 
-            var miContador = this.state.anioini;
+            var miContador = result[0].anio;
             var resultado =[];
            for (let fila of result) {
                 console.log(fila);
@@ -147,7 +147,7 @@ class EstadoAlumno extends Component {
                             }
                             ],
                             axisX:{
-                                title: "Programas",
+                                title: "Estados",
                                 titleFontFamily: "Encode Sans Semi Expanded",
                                 titleFontColor: "#4C4C4C",
                                 lineColor: "#4C4C4C",
@@ -373,12 +373,11 @@ class EstadoAlumno extends Component {
                             </div>
                             <div className="panel-body" style={{marginTop:20}}>
                                 <div class="row">
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-10" style={{marginTop:20}}>
+                                    <div className="col-md-10 mr-md-auto ml-md-auto" style={{marginTop:20}}>
                                         <table className="table table-bordered TablaEstadisticaAzul">
                                             <thead>
                                                 <tr>
-                                                    <th><b>Programas</b></th>
+                                                    <th><b>Estados</b></th>
                                                     {Parser(this.state.cadenaAnios)} 
                                                     <th><b>Total General</b></th>
                                                 </tr>
@@ -393,17 +392,13 @@ class EstadoAlumno extends Component {
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-12" style={{marginTop:20}}>
+                                    <div className="col-md-11 mr-md-auto ml-md-auto" style={{marginTop:20}}>
                                         {this.state.tablaExtra}
                                     </div>
-                                    <div className="col-md-1"></div>
                                 </div>
                                 
                                 <div class="row">
-                                    <div className="col col-md-1"></div>
-                                    <div className="col col-md-10">
+                                    <div className="col col-md-10  mr-md-auto ml-md-auto">
                                         <hr></hr>
                                         <h5 style={{marginLeft:10, fontSize:13}} className="textSubtitulo">Leyenda: </h5> 
                                         {Parser(this.state.leyenda1)} 
