@@ -41,20 +41,72 @@ class EstadoAlumno extends Component {
             arregloImagen:[],
             tipoGraficaVerificador: this.props.graficoMF,
             key: 'tabla',
-            titulo: "Estado de Alumnos"
+            titulo: "Estado de Alumnos",
+            tablaExtra: []
         };
 
 
         this.obtenerTabla = this.obtenerTabla.bind(this);
         this.obtenerGrafica = this.obtenerGrafica.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.dibujarTablaExtra = this.dibujarTablaExtra.bind(this);
 
         this.obtenerTabla();
         this.obtenerGrafica();
+        this.dibujarTablaExtra();
     }
 
     handleSelect(key) {
         this.setState({key});
+    }
+
+    dibujarTablaExtra(){
+        fetch('http://tallerbackend.herokuapp.com/ApiController/estadoAlumnoFallecido?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)
+        .then((response)=>{
+            return response.json();
+        })
+        .then(async (result)=>{
+            var tablaExtra = [];
+            var filas =[];
+            for(var tipo of result)(async function(index){
+                filas.push(
+                    <tr>
+                        <td>{index.anio_ingreso}</td>
+                        <td>{index.cod_alumno}</td>
+                        <td>{index.ape_paterno}</td>
+                        <td>{index.ape_materno}</td>
+                        <td>{index.nom_alumno}</td>
+                        <td>{index.dni_m}</td>
+                        <td>{index.correo}</td>
+                        <td>{index.correo_personal}</td>
+                        <td>{index.telefono_movil}</td>
+                    </tr>
+                )
+            })(tipo)
+            tablaExtra.push(
+                <table className="table table-bordered TablaEstadisticaAzul">
+                    <thead>
+                        <tr>
+                            <th><b>Año Ingreso</b></th>
+                            <th><b>Código Alumno</b></th>
+                            <th><b>Apellido Paterno</b></th>
+                            <th><b>Apellido Materno</b></th>
+                            <th><b>Nombre</b></th>
+                            <th><b>DNI</b></th>
+                            <th><b>Correo Institucional</b></th>
+                            <th><b>Correo Personal</b></th>
+                            <th><b>Teléfono/Celular</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filas}
+                    </tbody>
+                </table>
+            )
+            await this.setState({
+                tablaExtra:tablaExtra
+            })
+        })
     }
 
     obtenerGrafica() {
@@ -341,6 +393,12 @@ class EstadoAlumno extends Component {
                                             </tfoot>
                                         </table>
                                     </div>
+                                    <div className="col-md-1"></div>
+                                    <div className="col-md-1"></div>
+                                    <div className="col-md-12" style={{marginTop:20}}>
+                                        {this.state.tablaExtra}
+                                    </div>
+                                    <div className="col-md-1"></div>
                                 </div>
                                 
                                 <div class="row">

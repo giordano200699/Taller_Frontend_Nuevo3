@@ -236,7 +236,8 @@ class TiposDeBeneficio extends Component {
                         <tr>
                             <td>{index.tipo.substring(0,3)}</td>
                             {tdReact}
-                            <td><button class='btn btn-link' onClick={async (e)=>{await mithis.handleClick(e,index.id)}}>{totalD}</button></td>
+                            <td>{totalD}</td>
+                            <td><button class='btn btn-link' onClick={async (e)=>{await mithis.handleClick(e,index.id)}}>Ver info</button></td>
                         </tr>
                 )
             })(tipo,this)
@@ -252,6 +253,7 @@ class TiposDeBeneficio extends Component {
             }
             cadenaFooter = cadenaFooter +  "<td><b>"+totalTotal+"</b></td>";
             tdReact.push(<td><b>{totalTotal}</b></td>);
+            tdReact.push(<td></td>);
             trReact2.push(<tr>{tdReact}</tr>);
 
             
@@ -403,6 +405,7 @@ class TiposDeBeneficio extends Component {
                                                     <th><b>Programas</b></th>
                                                     {Parser(this.state.cadenaAnios)} 
                                                     <th><b>Total General</b></th>
+                                                    <th><b>Observar</b></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -413,7 +416,7 @@ class TiposDeBeneficio extends Component {
                                             </tbody>
                                             <tfoot>
                                                 {/* {Parser(this.state.cadenaFooter)}    */}
-                                                {this.state.trReact2}                               
+                                                {this.state.trReact2}                          
                                             </tfoot>
                                         </table>
                                     </div>
