@@ -42,13 +42,17 @@ class TiposDeBeneficio extends Component {
             arregloImagen:[],
             tipoGraficaVerificador: this.props.graficoMF,
             key: 'tabla',
-            titulo: "Beneficios de los Programas de Posgrado"
+            titulo: "Beneficios de los Programas de Posgrado",
+            trReact: [],
+            trReact2: [],
+            tablaExtra: []
         };
 
 
         this.obtenerTabla = this.obtenerTabla.bind(this);
         this.obtenerGrafica = this.obtenerGrafica.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.handleClick = this.handleClick.bind(this);
 
         this.obtenerTabla();
         this.obtenerGrafica();
@@ -57,6 +61,55 @@ class TiposDeBeneficio extends Component {
     handleSelect(key) {
         this.setState({key});
     }
+    handleClick(e,id) {
+        e.preventDefault();
+        fetch('http://tallerbackend.herokuapp.com/ApiController/beneficioExtendido?beneficado_id='+id+'&fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)
+        .then((response)=>{
+            return response.json();
+        })
+        .then(async (result)=>{
+            var tablaExtra = [];
+            var filas =[];
+            for(var tipo of result)(async function(index){
+                filas.push(
+                    <tr>
+                        <td>{index.tipo}</td>
+                        <td>{index.cod_alumno}</td>
+                        <td>{index.ape_paterno}</td>
+                        <td>{index.ape_materno}</td>
+                        <td>{index.nom_alumno}</td>
+                        <td>{index.dni_m}</td>
+                        <td>{index.correo}</td>
+                        <td>{index.correo_personal}</td>
+                        <td>{index.telefono_movil}</td>
+                    </tr>
+                )
+            })(tipo)
+            tablaExtra.push(
+                <table className="table table-bordered TablaEstadisticaAzul">
+                    <thead>
+                        <tr>
+                            <th><b>Tipo</b></th>
+                            <th><b>Código Alumno</b></th>
+                            <th><b>Apellido Paterno</b></th>
+                            <th><b>Apellido Materno</b></th>
+                            <th><b>Nombre</b></th>
+                            <th><b>DNI</b></th>
+                            <th><b>Correo Institucional</b></th>
+                            <th><b>Correo Personal</b></th>
+                            <th><b>Teléfono/Celular</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filas}
+                    </tbody>
+                </table>
+            )
+            await this.setState({
+                tablaExtra:tablaExtra
+            })
+        })
+      }
 
     obtenerGrafica() {
         fetch('http://tallerbackend.herokuapp.com/ApiController/beneficioGrafica?fecha_inicio='+this.state.anioini+'&fecha_fin='+this.state.aniofin)
@@ -157,28 +210,50 @@ class TiposDeBeneficio extends Component {
             var contadorTabla = 10;
             var contadorLinea = 0;
 
+            var tdReact = [];
+            var trReact = [];
+
             for(var i=parseInt(this.state.anioini);i<=parseInt(this.state.aniofin);i++){
                 cadenaAnios += '<th><b>'+i+'</b></th>';
                 totalA[""+i]=0;
             }
 
-            for(var tipo of result){
+            for(var tipo of result)(async function(index,mithis){
                 totalD=0;
-                cadena = cadena + "<tr><td>"+ tipo.tipo.substring(0,3) +"</td>";
-                for(var i=parseInt(this.state.anioini);i<=parseInt(this.state.aniofin);i++){
-                    cadena += "<td>"+tipo.anios[""+i]+"</td>"
-                    totalD += tipo.anios[""+i];
-                    totalA[""+i] += tipo.anios[""+i];
+                tdReact = [];
+                cadena = cadena + "<tr><td>"+ index.tipo.substring(0,3) +"</td>";
+                for(var i=parseInt(mithis.state.anioini);i<=parseInt(mithis.state.aniofin);i++){
+                    cadena += "<td>"+index.anios[""+i]+"</td>"
+                    var guardado =index.id+0;//await this.handleClick(e,""+guardado)
+                    tdReact.push(<td>
+                                    {index.anios[""+i]}
+                    </td>)
+                    totalD += index.anios[""+i];
+                    totalA[""+i] += index.anios[""+i];
                 }
                 cadena += "<td>"+totalD+"</td></tr>";
-            }
+                await trReact.push(
+                        <tr>
+                            <td>{index.tipo.substring(0,3)}</td>
+                            {tdReact}
+                            <td><button class='btn btn-link' onClick={async (e)=>{await mithis.handleClick(e,index.id)}}>{totalD}</button></td>
+                        </tr>
+                )
+            })(tipo,this)
 
             cadenaFooter = cadenaFooter + "<tr><td><b>Total General</b></td>";
+            tdReact = [];
+            var trReact2 = [];
+            tdReact.push(<td><b>Total General</b></td>)
             for(var i in totalA){
                 cadenaFooter = cadenaFooter + "<td><b>"+totalA[i]+"</b></td>";
+                tdReact.push(<td><b>{totalA[i]}</b></td>)
                 totalTotal += totalA[i];
             }
             cadenaFooter = cadenaFooter +  "<td><b>"+totalTotal+"</b></td>";
+            tdReact.push(<td><b>{totalTotal}</b></td>);
+            trReact2.push(<tr>{tdReact}</tr>);
+
             
             //Aqui se llena los datos de la leyenda
             leyenda += "<hr></hr>";
@@ -214,7 +289,9 @@ class TiposDeBeneficio extends Component {
                 contadorLineaTabla: contadorLinea,
                 contadorTabla: contadorTabla,
                 cargoTabla:true,
-                htmlencabezado: encabezado
+                htmlencabezado: encabezado,
+                trReact: trReact,
+                trReact2:trReact2
             });
             
             
@@ -330,13 +407,18 @@ class TiposDeBeneficio extends Component {
                                             </thead>
                                             <tbody>
 
-                                                { Parser(this.state.htmlTabla) }
+                                                {/* { Parser(this.state.htmlTabla) } */}
+                                                {this.state.trReact}
 
                                             </tbody>
                                             <tfoot>
-                                                {Parser(this.state.cadenaFooter)}                                  
+                                                {/* {Parser(this.state.cadenaFooter)}    */}
+                                                {this.state.trReact2}                               
                                             </tfoot>
                                         </table>
+                                    </div>
+                                    <div className="col-md-10" style={{marginTop:20}}>
+                                        {this.state.tablaExtra}
                                     </div>
                                 </div>
                                 
