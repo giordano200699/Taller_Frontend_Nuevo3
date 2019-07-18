@@ -158,19 +158,19 @@ class TiposDeBeneficio extends Component {
             var contadorLinea = 0;
 
             for(var i=parseInt(this.state.anioini);i<=parseInt(this.state.aniofin);i++){
-                cadenaAnios += '<th><b>'+i+'</b></th>';
+                cadenaAnios += '<th><b>'+ i + '</b></th>';
                 totalA[""+i]=0;
             }
 
             for(var tipo of result){
                 totalD=0;
-                cadena = cadena + "<tr><td>"+ tipo.tipo.substring(0,3) +"</td>";
+                cadena = cadena + "<tr><td>"+ tipo.tipo.substring(0,3) + "</td>";
                 for(var i=parseInt(this.state.anioini);i<=parseInt(this.state.aniofin);i++){
-                    cadena += "<td>"+tipo.anios[""+i]+"</td>"
+                    cadena += "<td>"+tipo.anios[""+i]+ "</td>" //Aqui muestras los datos de las tablas
                     totalD += tipo.anios[""+i];
                     totalA[""+i] += tipo.anios[""+i];
                 }
-                cadena += "<td>"+totalD+"</td></tr>";
+                cadena += "<td><button class='btn btn-link'>"+totalD+"</button></td></tr>"; //Se muestra el total lado derecho
             }
 
             cadenaFooter = cadenaFooter + "<tr><td><b>Total General</b></td>";
