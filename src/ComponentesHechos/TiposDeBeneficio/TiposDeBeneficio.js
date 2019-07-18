@@ -214,7 +214,7 @@ class TiposDeBeneficio extends Component {
             var trReact = [];
 
             for(var i=parseInt(this.state.anioini);i<=parseInt(this.state.aniofin);i++){
-                cadenaAnios += '<th><b>'+i+'</b></th>';
+                cadenaAnios += '<th><b>'+ i + '</b></th>';
                 totalA[""+i]=0;
             }
 
